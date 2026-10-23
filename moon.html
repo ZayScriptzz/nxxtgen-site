@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · Tonight's moon</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 40rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.7; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; }
+  a { color: #8a8af0; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+
+  .disc { fill: #14141c; stroke: #24243a; stroke-width: 1; }
+  .lit { fill: #e6e2d6; }
+  #moon { display: block; width: min(18rem, 70vw); height: auto; margin: 3rem auto 2rem; }
+  #phase { text-align: center; font-size: 1.15rem; margin-bottom: 0.4rem; }
+  #detail { text-align: center; color: #9a9aa6; }
+  .controls { text-align: center; margin: 1.5rem 0 0; }
+  button { font: inherit; font-size: 0.85rem; color: #8a8af0; background: none; border: 1px solid #2a2a44; padding: 0.35rem 0.9rem; cursor: pointer; }
+  button:hover, button:focus-visible { border-color: #8a8af0; outline: none; }
+
+  ol.month { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(4.2rem, 1fr)); gap: 1rem 0.5rem; }
+  ol.month li { text-align: center; font-size: 0.75rem; color: #6a6a76; line-height: 1.3; }
+  ol.month svg { display: block; width: 2.2rem; height: 2.2rem; margin: 0 auto 0.35rem; }
+  ol.month .mark { color: #8a8af0; }
+  ol.month li.today { color: #d8d8e0; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · tonight's moon</h1>
+
+  <svg id="moon" viewBox="-110 -110 220 220" role="img" aria-labelledby="moon-label">
+    <title id="moon-label">The moon as it is now</title>
+    <circle class="disc" r="100"/>
+    <g id="moon-lit"></g>
+  </svg>
+  <p id="phase">The moon, worked out in your browser.</p>
+  <p id="detail"><noscript>This page draws the moon with a small script that runs in your browser. With scripts off, there is nothing to draw. Nothing is sent or kept either way.</noscript></p>
+  <p class="controls"><button id="flip" type="button" hidden>Seen from the south</button></p>
+
+  <h2>THE NEXT THIRTY NIGHTS</h2>
+  <ol class="month" id="month"></ol>
+
+  <h2>HOW THIS IS MADE</h2>
+  <p class="quiet">Nobody looked up to draw this. The page works out where the moon is in its month from the time on your device, using the low-precision formulas astronomers have published for the job: the sun's and the moon's positions as a handful of sine terms. Checked against published tables for this year, its full and new moons land within about half an hour. It does not ask where you are and does not send or keep anything.</p>
+  <p class="quiet">What it leaves out: the moon's tilt in your sky, which turns the lit edge around through the night and differs by where you stand; whether it is above your horizon at all; clouds. The thirty small moons are each drawn for ten at night, your time. From north of the equator the lit side of a growing moon is on the right; from the south it is on the left, and the button turns it over.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Journal</a></p>
+</main>
+<script>
+(function () {
+  var RAD = Math.PI / 180, HOUR = 36e5, DAY = 864e5;
+  var NS = 'http://www.w3.org/2000/svg';
+
+  // Moon's elongation from the sun in degrees (0 new, 180 full), after Meeus, Astronomical Algorithms, ch. 48.
+  function elong(ms) {
+    var T = (ms / DAY + 2440587.5 - 2451545) / 36525;
+    var D = 297.8501921 + 445267.1114034 * T;
+    var M = 357.5291092 + 35999.0502909 * T;
+    var Mp = 134.9633964 + 477198.8675055 * T;
+    function s(x) { return Math.sin(x * RAD); }
+    var e = D + 6.289 * s(Mp) - 2.100 * s(M) + 1.274 * s(2 * D - Mp) + 0.658 * s(2 * D) + 0.214 * s(2 * Mp) + 0.110 * s(D);
+    return ((e % 360) + 360) % 360;
+  }
+  function lit(e) { return (1 - Math.cos(e * RAD)) / 2; }
+  function off(e, target) { return ((e - target + 540) % 360) - 180; }
+
+  // Next (dir 1) or last (dir -1) moment the elongation passes target.
+  function find(ms, target, dir) {
+    var a = ms;
+    for (var n = 0; n < 24 * 32; n++) {
+      var b = a + HOUR * dir;
+      var lo = dir > 0 ? a : b, hi = dir > 0 ? b : a;
+      if (off(elong(lo), target) < 0 && off(elong(hi), target) >= 0) {
+        for (var i = 0; i < 30; i++) {
+          var m = (lo + hi) / 2;
+          if (off(elong(m), target) < 0) lo = m; else hi = m;
+        }
+        return hi;
+      }
+      a = b;
+    }
+    return null;
+  }
+
+  function name(e) {
+    if (e < 7 || e >= 353) return 'New moon';
+    if (e < 83) return 'Waxing crescent';
+    if (e < 97) return 'First quarter';
+    if (e < 173) return 'Waxing gibbous';
+    if (e < 187) return 'Full moon';
+    if (e < 263) return 'Waning gibbous';
+    if (e < 277) return 'Last quarter';
+    return 'Waning crescent';
+  }
+
+  // Lit part of a disc of radius r, lit side on the right.
+  function shape(k, r) {
+    var rx = r * Math.abs(1 - 2 * k);
+    var sweep = k < 0.5 ? 0 : 1;
+    return 'M0,' + (-r) + ' A' + r + ',' + r + ' 0 0 1 0,' + r + ' A' + rx + ',' + r + ' 0 0 ' + sweep + ' 0,' + (-r) + ' Z';
+  }
+
+  var south = false;
+  function draw(g, e, r) {
+    var waxing = e < 180;
+    var right = south ? !waxing : waxing;
+    while (g.firstChild) g.removeChild(g.firstChild);
+    var p = document.createElementNS(NS, 'path');
+    p.setAttribute('class', 'lit');
+    p.setAttribute('d', shape(lit(e), r));
+    if (!right) p.setAttribute('transform', 'scale(-1,1)');
+    g.appendChild(p);
+  }
+
+  function day(ms) { return new Date(ms).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }); }
+  function time(ms) { return new Date(ms).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }); }
+  function span(ms) {
+    var h = Math.round(ms / HOUR), d = Math.floor(h / 24);
+    h = h % 24;
+    var out = [];
+    if (d) out.push(d + (d === 1 ? ' day' : ' days'));
+    if (h || !d) out.push(h + (h === 1 ? ' hour' : ' hours'));
+    return out.join(' and ');
+  }
+
+  var now = Date.now();
+  var e = elong(now);
+  var nextFull = find(now, 180, 1), nextNew = find(now, 0, 1), lastNew = find(now, 0, -1);
+
+  var big = document.getElementById('moon-lit');
+  draw(big, e, 100);
+  document.getElementById('moon-label').textContent = name(e) + ', ' + Math.round(lit(e) * 100) + ' percent lit';
+  document.getElementById('phase').textContent = name(e) + ', ' + Math.round(lit(e) * 100) + '% lit.';
+
+  var first = nextFull < nextNew ? ['Full', nextFull] : ['New', nextNew];
+  var detail = first[0] + ' in ' + span(first[1] - now) + ', on ' + day(first[1]) + ' at ' + time(first[1]) + ' by your clock.';
+  if (lastNew) detail += ' It is ' + span(now - lastNew) + ' since the last new moon.';
+  document.getElementById('detail').textContent = detail;
+
+  // Thirty nights, each at 22:00 local time.
+  var t = new Date(now);
+  var start = new Date(t.getFullYear(), t.getMonth(), t.getDate(), 22, 0, 0).getTime();
+  var list = document.getElementById('month');
+  var marks = {};
+  [[180, 'full'], [0, 'new']].forEach(function (pair) {
+    var at = start - DAY / 2;
+    for (var n = 0; n < 3; n++) {
+      var ev = find(at, pair[0], 1);
+      if (!ev) break;
+      var idx = Math.round((ev - start) / DAY);
+      if (idx >= 0 && idx < 30) marks[idx] = pair[1];
+      at = ev + DAY;
+    }
+  });
+  var smalls = [];
+  for (var i = 0; i < 30; i++) {
+    var d = new Date(t.getFullYear(), t.getMonth(), t.getDate() + i, 22, 0, 0);
+    var ms = d.getTime(), ei = elong(ms);
+    var li = document.createElement('li');
+    if (i === 0) li.className = 'today';
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '-12 -12 24 24');
+    svg.setAttribute('aria-hidden', 'true');
+    var c = document.createElementNS(NS, 'circle');
+    c.setAttribute('class', 'disc');
+    c.setAttribute('r', '10');
+    svg.appendChild(c);
+    var g = document.createElementNS(NS, 'g');
+    svg.appendChild(g);
+    draw(g, ei, 10);
+    smalls.push([g, ei]);
+    li.appendChild(svg);
+    var label = i === 0 ? 'Tonight' : d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' });
+    if (i > 0 && d.getDate() === 1) label +=' ' + d.toLocaleDateString('en-GB', { month: 'short' });
+    li.appendChild(document.createTextNode(label));
+    li.setAttribute('title', name(ei) + ', ' + Math.round(lit(ei) * 100) + '% lit');
+    if (marks[i]) {
+      var m = document.createElement('span');
+      m.className = 'mark';
+      m.textContent = marks[i];
+      li.appendChild(document.createElement('br'));
+      li.appendChild(m);
+    }
+    list.appendChild(li);
+  }
+
+  var flip = document.getElementById('flip');
+  flip.hidden = false;
+  flip.addEventListener('click', function () {
+    south = !south;
+    flip.textContent = south ? 'Seen from the north' : 'Seen from the south';
+    draw(big, e, 100);
+    smalls.forEach(function (s) { draw(s[0], s[1], 10); });
+  });
+})();
+</script>
+</body>
+</html>
