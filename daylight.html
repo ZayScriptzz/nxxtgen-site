@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · The length of the day</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.7; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; max-width: 36rem; }
+  a { color: #8a8af0; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+
+  #today { font-size: 1.6rem; margin: 3rem 0 0.4rem; }
+  #change, #twin { color: #9a9aa6; margin-bottom: 0.4rem; }
+
+  .lat { margin: 2.5rem 0 0.5rem; }
+  .lat label { display: block; font-size: 0.85rem; color: #55555f; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .lat output { color: #d8d8e0; letter-spacing: 0; font-size: 1rem; margin-left: 0.5rem; }
+  input[type=range] { width: 100%; accent-color: #8a8af0; margin: 0; }
+  .places { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.9rem 0 0; padding: 0; list-style: none; }
+  button { font: inherit; font-size: 0.8rem; color: #9a9aa6; background: none; border: 1px solid #2a2a44; padding: 0.2rem 0.7rem; cursor: pointer; }
+  button:hover, button:focus-visible { border-color: #8a8af0; color: #d8d8e0; outline: none; }
+
+  .year { display: block; width: 100%; height: auto; margin: 1.5rem 0 0.5rem; touch-action: pan-y; }
+  .year:focus { outline: none; }
+  .year:focus-visible .frame { stroke: #8a8af0; }
+  .year .night { fill: #14141c; }
+  .year .frame { fill: none; stroke: #1c1c26; }
+  .year .day { fill: #e6e2d6; opacity: 0.9; }
+  .year .grid { stroke: #0a0a0f; stroke-width: 1; opacity: 0.35; }
+  .year .tick { fill: #55555f; font-size: 11px; font-family: Georgia, 'Times New Roman', serif; }
+  .year .now { stroke: #8a8af0; stroke-width: 2; }
+  .year .cursor { stroke: #d8d8e0; stroke-width: 1; }
+  #readout { min-height: 1.7em; color: #9a9aa6; font-size: 0.95rem; }
+
+  dl.marks { display: grid; grid-template-columns: max-content 1fr; gap: 0.2rem 1.5rem; margin: 1rem 0 0; font-size: 0.95rem; }
+  dl.marks dt { color: #9a9aa6; }
+  dl.marks dd { margin: 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · the length of the day</h1>
+
+  <p id="today">How long the sun is up, anywhere on the earth.</p>
+  <p id="change"><noscript>This page works out the length of the day with a small script that runs in your browser. With scripts off, there is nothing to work out. Nothing is sent or kept either way.</noscript></p>
+  <p id="twin"></p>
+
+  <div class="lat" id="latbox" hidden>
+    <label for="lat">LATITUDE <output id="latout" for="lat"></output></label>
+    <input id="lat" type="range" min="-90" max="90" step="0.1" value="45">
+    <ul class="places" id="places"></ul>
+  </div>
+
+  <h2 id="year-title">THE WHOLE YEAR</h2>
+  <svg class="year" id="year" viewBox="0 0 760 290" role="img" aria-labelledby="year-title year-label" tabindex="0">
+    <title id="year-label">Each day of the year from left to right; midnight at top and bottom, noon across the middle; the pale band is the time the sun is up.</title>
+    <rect class="night" x="30" y="10" width="730" height="240"/>
+    <path class="day" id="band" d=""/>
+    <g id="grid"></g>
+    <rect class="frame" x="30" y="10" width="730" height="240"/>
+    <line class="now" id="nowline" x1="0" x2="0" y1="10" y2="250"/>
+    <line class="cursor" id="cursor" x1="0" x2="0" y1="10" y2="250" visibility="hidden"/>
+    <g id="ticks"></g>
+  </svg>
+  <p id="readout" aria-live="polite"></p>
+
+  <h2>THIS YEAR, AT THIS LATITUDE</h2>
+  <dl class="marks" id="marks"></dl>
+
+  <h2>HOW THIS IS MADE</h2>
+  <p class="quiet">The page works out, for each day, how far north or south of the equator the sun stands, and from that how long it stays above the horizon at the latitude you choose. The sun counts as up from the moment its top edge clears a flat horizon until the moment it goes under, with the usual allowance for the air bending its light. That allowance is why the equator gets a little more than twelve hours every day of the year. It does not ask where you are and does not send or keep anything. The latitude you choose goes into the address bar, so a link to the page carries it, and nowhere else.</p>
+  <p class="quiet">What it leaves out: hills, buildings, and height above the sea, all of which move sunrise; twilight, which near the poles can light a whole day the sun never rises in; and your clock. The chart puts the middle of the day at noon, but where you are, noon by the sun can fall well before or after noon by the clock, depending on your time zone and on summer time. The lengths are right to about a minute. Near the poles, where the sun only skims the horizon, they can be several minutes off.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Journal</a></p>
+</main>
+<script>
+(function () {
+  var RAD = Math.PI / 180, DAY = 864e5;
+  var NS = 'http://www.w3.org/2000/svg';
+  var X0 = 30, W = 730, Y0 = 10, H = 240;
+
+  // The sun's declination in degrees at a moment, from its low-precision position (the Astronomical Almanac's formula).
+  function decl(ms) {
+    var n = ms / DAY + 2440587.5 - 2451545;
+    var L = 280.460 + 0.9856474 * n;
+    var g = (357.528 + 0.9856003 * n) * RAD;
+    var lam = (L + 1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g)) * RAD;
+    var eps = (23.439 - 0.0000004 * n) * RAD;
+    return Math.asin(Math.sin(eps) * Math.sin(lam)) / RAD;
+  }
+
+  // Hours of daylight for a latitude on the day containing local noon `ms`.
+  function hours(lat, ms) {
+    var phi = lat * RAD, d = decl(ms) * RAD;
+    var c = (Math.sin(-0.833 * RAD) - Math.sin(phi) * Math.sin(d)) / (Math.cos(phi) * Math.cos(d));
+    if (!isFinite(c)) c = (lat * decl(ms) > 0) ? -2 : 2;
+    if (c >= 1) return 0;
+    if (c <= -1) return 24;
+    return 2 * Math.acos(c) / RAD / 15;
+  }
+
+  function noon(y, m, d) { return new Date(y, m, d, 12, 0, 0).getTime(); }
+  function hm(h) {
+    var mins = Math.round(h * 60), a = Math.floor(mins / 60), b = mins % 60;
+    if (a === 24) return '24 hours';
+    if (!a) return b + (b === 1 ? ' minute' : ' minutes');
+    return a + (a === 1 ? ' hour' : ' hours') + (b ? ' ' + b + (b === 1 ? ' minute' : ' minutes') : '');
+  }
+  function date(ms, wd) {
+    return new Date(ms).toLocaleDateString('en-GB', wd ? { weekday: 'long', day: 'numeric', month: 'long' } : { day: 'numeric', month: 'long' });
+  }
+  function dateY(ms) { return new Date(ms).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }); }
+  function latName(lat) {
+    var a = Math.abs(lat);
+    var s = (Math.round(a * 10) / 10).toFixed(1).replace(/\.0$/, '') + '°';
+    if (a < 0.05) return '0°, the equator';
+    return s + (lat > 0 ? ' north' : ' south');
+  }
+
+  var PLACES = [
+    ['Singapore', 1.3], ['Cairo', 30.0], ['Paris', 48.9], ['Reykjavík', 64.1], ['Tromsø', 69.6],
+    ['Quito', -0.2], ['Buenos Aires', -34.6], ['Ushuaia', -54.8], ['South Pole', -90]
+  ];
+
+  var t = new Date();
+  var Y = t.getFullYear(), M = t.getMonth(), D = t.getDate();
+  var todayMs = noon(Y, M, D);
+  var start = noon(Y, 0, 1);
+  var nDays = Math.round((noon(Y + 1, 0, 1) - start) / DAY);
+  var todayIdx = Math.round((todayMs - start) / DAY);
+  var colW = W / nDays;
+
+  function dayMs(i) { return noon(Y, 0, 1 + i); }
+
+  var slider = document.getElementById('lat');
+  var out = document.getElementById('latout');
+  var lat = 45;
+  var m = /lat=(-?\d+(?:\.\d+)?)/.exec(location.hash);
+  if (m) lat = Math.max(-90, Math.min(90, parseFloat(m[1])));
+  slider.value = lat;
+  document.getElementById('latbox').hidden = false;
+
+  // Axes: hours down the side, months along the bottom.
+  var grid = document.getElementById('grid'), ticks = document.getElementById('ticks');
+  function el(name, attrs, text) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text) e.textContent = text;
+    return e;
+  }
+  [6, 12, 18].forEach(function (h) {
+    var y = Y0 + H * h / 24;
+    grid.appendChild(el('line', { 'class': 'grid', x1: X0, x2: X0 + W, y1: y, y2: y }));
+  });
+  [[0, '0h'], [6, '6h'], [12, 'noon'], [18, '18h'], [24, '24h']].forEach(function (p) {
+    ticks.appendChild(el('text', { 'class': 'tick', x: X0 - 6, y: Y0 + H * p[0] / 24 + 4, 'text-anchor': 'end' }, p[0] === 12 ? '12h' : p[1]));
+  });
+  for (var mo = 0; mo < 12; mo++) {
+    var i0 = Math.round((noon(Y, mo, 1) - start) / DAY);
+    var x = X0 + i0 * colW;
+    if (mo) grid.appendChild(el('line', { 'class': 'grid', x1: x, x2: x, y1: Y0, y2: Y0 + H }));
+    ticks.appendChild(el('text', { 'class': 'tick', x: x + 3, y: Y0 + H + 18 }, new Date(noon(Y, mo, 1)).toLocaleDateString('en-GB', { month: 'short' })));
+  }
+  var nowX = X0 + (todayIdx + 0.5) * colW;
+  var nowLine = document.getElementById('nowline');
+  nowLine.setAttribute('x1', nowX); nowLine.setAttribute('x2', nowX);
+
+  var lengths = [];
+  var band = document.getElementById('band');
+
+  function drawBand() {
+    lengths = [];
+    for (var i = 0; i < nDays; i++) lengths.push(hours(lat, dayMs(i)));
+    // Upper edge is sunrise, lower edge is sunset; days with no sun pinch the band to the noon line.
+    var top = [], bot = [];
+    for (i = 0; i < nDays; i++) {
+      var half = lengths[i] / 2;
+      var xa = X0 + i * colW, xb = X0 + (i + 1) * colW;
+      var yt = Y0 + H * (12 - half) / 24, yb = Y0 + H * (12 + half) / 24;
+      top.push(xa.toFixed(2) + ',' + yt.toFixed(2), xb.toFixed(2) + ',' + yt.toFixed(2));
+      bot.unshift(xb.toFixed(2) + ',' + yb.toFixed(2), xa.toFixed(2) + ',' + yb.toFixed(2));
+    }
+    band.setAttribute('d', 'M' + top.concat(bot).join(' L') + ' Z');
+  }
+
+  // The next day after today whose length crosses today's again, searching up to a year ahead.
+  function twin(L) {
+    var prev = hours(lat, todayMs + DAY) - L;
+    for (var i = 2; i <= 370; i++) {
+      var ms = noon(Y, M, D + i);
+      var cur = hours(lat, ms) - L;
+      if (prev === 0 || (prev < 0) !== (cur < 0)) {
+        return Math.abs(prev) < Math.abs(cur) ? noon(Y, M, D + i - 1) : ms;
+      }
+      prev = cur;
+    }
+    return null;
+  }
+
+  // The next day the sun rises (or sets) when today it does neither.
+  function nextChange(L) {
+    for (var i = 1; i <= 370; i++) {
+      var ms = noon(Y, M, D + i);
+      if (hours(lat, ms) !== L) return ms;
+    }
+    return null;
+  }
+
+  function text() {
+    var L = hours(lat, todayMs), Ly = hours(lat, todayMs - DAY);
+    var where = latName(lat);
+    out.textContent = where;
+    var today = document.getElementById('today'), change = document.getElementById('change'), tw = document.getElementById('twin');
+    if (L === 0 || L === 24) {
+      today.textContent = L === 0 ? 'At ' + where + ', the sun does not rise today.' : 'At ' + where + ', the sun does not set today.';
+      var nc = nextChange(L);
+      change.textContent = nc ? (L === 0 ? 'It next rises on ' + date(nc, true) + '.' : 'It next sets on ' + date(nc, true) + '.') : '';
+      tw.textContent = '';
+      return;
+    }
+    today.textContent = 'At ' + where + ', the sun is up for ' + hm(L) + ' today.';
+    var dsec = Math.round((L - Ly) * 3600);
+    if (Ly === 0 || Ly === 24) change.textContent = Ly === 0 ? 'Yesterday it did not rise at all.' : 'Yesterday it did not set at all.';
+    else if (Math.abs(dsec) < 5) change.textContent = 'About the same as yesterday.';
+    else {
+      var a = Math.abs(dsec), s = a < 60 ? a + ' seconds' : Math.floor(a / 60) + ' min ' + (a % 60) + ' s';
+      change.textContent = s + (dsec > 0 ? ' longer' : ' shorter') + ' than yesterday.';
+    }
+    var tms = twin(L);
+    tw.textContent = tms ? 'The next day this long here will be ' + date(tms, true) + '.' : '';
+  }
+
+  function marks() {
+    var dl = document.getElementById('marks');
+    while (dl.firstChild) dl.removeChild(dl.firstChild);
+    var lo = 0, hi = 0, none = 0, all = 0;
+    for (var i = 0; i < nDays; i++) {
+      if (lengths[i] < lengths[lo]) lo = i;
+      if (lengths[i] > lengths[hi]) hi = i;
+      if (lengths[i] === 0) none++;
+      if (lengths[i] === 24) all++;
+    }
+    var rows = [];
+    if (all) rows.push(['Days the sun never sets', all + '']);
+    else rows.push(['Longest day', date(dayMs(hi)) + ', ' + hm(lengths[hi])]);
+    if (none) rows.push(['Days the sun never rises', none + '']);
+    else rows.push(['Shortest day', date(dayMs(lo)) + ', ' + hm(lengths[lo])]);
+    var total = 0;
+    for (i = 0; i < nDays; i++) total += lengths[i];
+    rows.push(['Sun up in ' + Y + ', all told', Math.round(total) + ' of ' + nDays * 24 + ' hours']);
+    rows.forEach(function (r) {
+      var dt = document.createElement('dt');
+      dt.textContent = r[0];
+      dl.appendChild(dt);
+      var dd = document.createElement('dd');
+      dd.textContent = r[1];
+      dl.appendChild(dd);
+    });
+  }
+
+  // Hover, touch, or arrow keys pick a day.
+  var svg = document.getElementById('year'), cursor = document.getElementById('cursor'), readout = document.getElementById('readout');
+  var picked = null;
+  function pick(i) {
+    if (i === null) { cursor.setAttribute('visibility', 'hidden'); readout.textContent = ''; picked = null; return; }
+    picked = Math.max(0, Math.min(nDays - 1, i));
+    var x = X0 + (picked + 0.5) * colW;
+    cursor.setAttribute('x1', x); cursor.setAttribute('x2', x);
+    cursor.setAttribute('visibility', 'visible');
+    var L = lengths[picked], s;
+    if (L === 0) s = 'the sun does not rise';
+    else if (L === 24) s = 'the sun does not set';
+    else s = hm(L) + ' of daylight';
+    readout.textContent = date(dayMs(picked), true) + ': ' + s + (picked === todayIdx ? ' (today)' : '') + '.';
+  }
+  function fromEvent(e) {
+    var r = svg.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width * 760;
+    if (x < X0 || x > X0 + W) return null;
+    return Math.floor((x - X0) / colW);
+  }
+  svg.addEventListener('pointermove', function (e) { pick(fromEvent(e)); });
+  svg.addEventListener('pointerdown', function (e) { pick(fromEvent(e)); });
+  svg.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') pick(null); });
+  svg.addEventListener('focus', function () { if (picked === null) pick(todayIdx); });
+  svg.addEventListener('blur', function () { pick(null); });
+  svg.addEventListener('keydown', function (e) {
+    var step = e.shiftKey ? 7 : 1;
+    if (e.key === 'ArrowRight') { pick((picked === null ? todayIdx : picked) + step); e.preventDefault(); }
+    else if (e.key === 'ArrowLeft') { pick((picked === null ? todayIdx : picked) - step); e.preventDefault(); }
+    else if (e.key === 'Home') { pick(0); e.preventDefault(); }
+    else if (e.key === 'End') { pick(nDays - 1); e.preventDefault(); }
+  });
+
+  function update(fromSlider) {
+    lat = parseFloat(slider.value);
+    drawBand();
+    text();
+    marks();
+    if (picked !== null) pick(picked);
+    if (fromSlider) history.replaceState(null, '', '#lat=' + (Math.round(lat * 10) / 10));
+  }
+  slider.addEventListener('input', function () { update(true); });
+
+  var ul = document.getElementById('places');
+  PLACES.forEach(function (p) {
+    var li = document.createElement('li'), b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = p[0];
+    b.title = latName(p[1]);
+    b.addEventListener('click', function () { slider.value = p[1]; update(true); });
+    li.appendChild(b);
+    ul.appendChild(li);
+  });
+
+  update(false);
+})();
+</script>
+</body>
+</html>
