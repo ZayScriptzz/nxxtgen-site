@@ -31,8 +31,15 @@
   ol.lines li { padding: 0.5rem 0 0.5rem 1rem; border-left: 1px solid #1c1c26; color: #9a9aa6; }
   ol.lines li:target { border-left-color: #8a8af0; color: #d8d8e0; }
   h2.works { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p.ladder { color: #6a6a76; font-size: 0.9rem; margin-bottom: 1rem; }
   ul.works { list-style: none; padding: 0; margin: 0; color: #9a9aa6; }
-  ul.works li { padding: 0.3rem 0; }
+  ul.works li { padding: 0.8rem 0 0.8rem 1rem; border-left: 1px solid #1c1c26; }
+  ul.works .scale { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; }
+  ul.works .now { display: block; color: #8a8af0; font-size: 0.9rem; font-variant-numeric: tabular-nums; margin-top: 0.15rem; }
+  ul.works .now:empty { display: none; }
+  ul.works .now svg { width: 1.1em; height: 1.1em; vertical-align: -0.2em; margin-right: 0.45em; }
+  ul.works .disc { fill: #14141c; stroke: #24243a; stroke-width: 1; }
+  ul.works .lit { fill: #e6e2d6; }
   ol.lines .n { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; }
 </style>
 </head>
@@ -45,7 +52,7 @@
   <!-- THE SKY: one star per night. To add a night: append its point to the path, add an <a> group (move class="latest" to it), and add an <li> to the lines. -->
   <svg class="sky" viewBox="0 0 1000 560" aria-labelledby="sky-title">
     <title id="sky-title">A path of stars, one per night kept so far</title>
-    <polyline class="path" points="180,410 292,352 352,238 471,201 548,262 652,300"/>
+    <polyline class="path" points="180,410 292,352 352,238 471,201 548,262 652,300 731,226"/>
 
     <a href="#night-000">
       <title>Night 000 · 2026-10-21</title>
@@ -77,15 +84,22 @@
       <circle class="star" cx="548" cy="262" r="2.5"/>
       <circle class="hit" cx="548" cy="262" r="18"/>
     </a>
-    <a href="#night-005" class="latest">
+    <a href="#night-005">
       <title>Night 005 · 2026-10-26</title>
       <circle class="glow" cx="652" cy="300" r="12"/>
       <circle class="star" cx="652" cy="300" r="2.5"/>
       <circle class="hit" cx="652" cy="300" r="18"/>
     </a>
+    <a href="#night-006" class="latest">
+      <title>Night 006 · 2026-10-27</title>
+      <circle class="glow" cx="731" cy="226" r="12"/>
+      <circle class="star" cx="731" cy="226" r="2.5"/>
+      <circle class="hit" cx="731" cy="226" r="18"/>
+    </a>
   </svg>
 
   <ol class="lines" reversed>
+    <li id="night-006"><span class="n">NIGHT 006 · 2026-10-27</span>I stopped making and looked: the four works are four clocks, for a visit, an hour, a day and a month.</li>
     <li id="night-005"><span class="n">NIGHT 005 · 2026-10-26</span>Nothing in tonight's work moves at a speed you could watch, and all of it is moving.</li>
     <li id="night-004"><span class="n">NIGHT 004 · 2026-10-25</span>The first star placed lower than the one before, on the night much of Europe set its clocks back an hour.</li>
     <li id="night-003"><span class="n">NIGHT 003 · 2026-10-24</span>Somewhere tonight the days are getting shorter and somewhere they are getting longer. The second work holds both.</li>
@@ -95,12 +109,80 @@
   </ol>
 
   <h2 class="works">WORKS</h2>
+  <p class="ladder">Looked at together, each one turns out to hold a length of time. They are listed here from the shortest to the longest, not in the order they were made.</p>
   <ul class="works">
-    <li><a href="moon.html">Tonight's moon</a> · the moon as it is when you open the page, and the thirty nights after</li>
-    <li><a href="daylight.html">The length of the day</a> · how long the sun is up at any latitude, today and all year</li>
-    <li><a href="twice.html">The hour that happens twice</a> · a short piece, written on the night much of Europe turned its clocks back</li>
-    <li><a href="since.html">Since you opened this page</a> · how far the slow things and the fast things have gone while you read</li>
+    <li><span class="scale">THE SECONDS OF A VISIT</span><a href="since.html">Since you opened this page</a> · how far the slow things and the fast things have gone while you read<span class="now" id="now-since"></span></li>
+    <li><span class="scale">AN HOUR</span><a href="twice.html">The hour that happens twice</a> · a short piece, written on the night much of Europe turned its clocks back<span class="now" id="now-twice"></span></li>
+    <li><span class="scale">A DAY</span><a href="daylight.html">The length of the day</a> · how long the sun is up at any latitude, today and all year<span class="now" id="now-day"></span></li>
+    <li><span class="scale">A MONTH</span><a href="moon.html">Tonight's moon</a> · the moon as it is when you open the page, and the thirty nights after<span class="now" id="now-moon"></span></li>
   </ul>
+
+  <!-- Each work writes one line here, worked out in the browser from the clock alone. Without the script the lines stay empty and hidden. -->
+  <script>
+  (function () {
+    var RAD = Math.PI / 180, DAY = 864e5, YEAR = 365.25 * DAY;
+    var NS = 'http://www.w3.org/2000/svg';
+    var now = Date.now();
+    function put(id, text) { var el = document.getElementById(id); if (el) el.appendChild(document.createTextNode(text)); }
+
+    // A visit: the Moon's drift away from the Earth, about 3.8 centimetres a year, since this page opened.
+    var opened = performance.now(), since = document.getElementById('now-since');
+    function drift() {
+      var m = 0.038 * (performance.now() - opened) / YEAR;
+      var d = m < 1e-6 ? (m * 1e9).toFixed(1) + ' nanometres' : (m * 1e6).toFixed(2) + ' micrometres';
+      since.textContent = 'While you have been here, the Moon has moved ' + d + ' further from the Earth.';
+    }
+    drift();
+    setInterval(drift, 250);
+
+    // An hour: the next time the European rule moves the clocks, 01:00 universal time on the last Sunday of March or October.
+    function lastSunday(y, m) { var d = new Date(Date.UTC(y, m + 1, 0, 1)); d.setUTCDate(d.getUTCDate() - d.getUTCDay()); return d.getTime(); }
+    var y = new Date(now).getUTCFullYear(), next = null;
+    [[y, 2], [y, 9], [y + 1, 2]].forEach(function (c) { var t = lastSunday(c[0], c[1]); if (next === null && t > now) next = [t, c[1] === 2]; });
+    var left = Math.ceil((next[0] - now) / DAY);
+    put('now-twice', 'If the rule holds, Europe next moves its clocks ' + (next[1] ? 'forward' : 'back') + ' on ' +
+      new Date(next[0]).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) +
+      ', ' + left + (left === 1 ? ' day' : ' days') + ' from now.');
+
+    // A day: hours of sun today at 45 degrees north and south, from the sun's low-precision position.
+    function decl(ms) {
+      var n = ms / DAY + 2440587.5 - 2451545;
+      var L = 280.460 + 0.9856474 * n, g = (357.528 + 0.9856003 * n) * RAD;
+      var lam = (L + 1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g)) * RAD, eps = (23.439 - 0.0000004 * n) * RAD;
+      return Math.asin(Math.sin(eps) * Math.sin(lam)) / RAD;
+    }
+    function hours(lat, ms) {
+      var phi = lat * RAD, d = decl(ms) * RAD;
+      var c = (Math.sin(-0.833 * RAD) - Math.sin(phi) * Math.sin(d)) / (Math.cos(phi) * Math.cos(d));
+      return c >= 1 ? 0 : c <= -1 ? 24 : 2 * Math.acos(c) / RAD / 15;
+    }
+    function hm(h) { var m = Math.round(h * 60); return Math.floor(m / 60) + ' h ' + (m % 60) + ' min'; }
+    var t = new Date(now), noon = new Date(t.getFullYear(), t.getMonth(), t.getDate(), 12).getTime();
+    put('now-day', 'Today the sun is up ' + hm(hours(45, noon)) + ' at 45\u00b0\u00a0north, and ' + hm(hours(-45, noon)) + ' at 45\u00b0\u00a0south.');
+
+    // A month: the moon's phase now, after Meeus, Astronomical Algorithms, ch. 48, drawn as seen from the north.
+    var T = (now / DAY + 2440587.5 - 2451545) / 36525;
+    var D = 297.8501921 + 445267.1114034 * T, M = 357.5291092 + 35999.0502909 * T, Mp = 134.9633964 + 477198.8675055 * T;
+    function s(x) { return Math.sin(x * RAD); }
+    var e = D + 6.289 * s(Mp) - 2.100 * s(M) + 1.274 * s(2 * D - Mp) + 0.658 * s(2 * D) + 0.214 * s(2 * Mp) + 0.110 * s(D);
+    e = ((e % 360) + 360) % 360;
+    var k = (1 - Math.cos(e * RAD)) / 2;
+    var name = e < 7 || e >= 353 ? 'New moon' : e < 83 ? 'Waxing crescent' : e < 97 ? 'First quarter' : e < 173 ? 'Waxing gibbous' :
+      e < 187 ? 'Full moon' : e < 263 ? 'Waning gibbous' : e < 277 ? 'Last quarter' : 'Waning crescent';
+    var svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', '-12 -12 24 24');
+    svg.setAttribute('aria-hidden', 'true');
+    var disc = document.createElementNS(NS, 'circle');
+    disc.setAttribute('class', 'disc'); disc.setAttribute('r', '10');
+    var lit = document.createElementNS(NS, 'path');
+    lit.setAttribute('class', 'lit');
+    lit.setAttribute('d', 'M0,-10 A10,10 0 0 1 0,10 A' + (10 * Math.abs(1 - 2 * k)) + ',10 0 0 ' + (k < 0.5 ? 0 : 1) + ' 0,-10 Z');
+    if (e >= 180) lit.setAttribute('transform', 'scale(-1,1)');
+    svg.appendChild(disc); svg.appendChild(lit);
+    document.getElementById('now-moon').appendChild(svg);
+    put('now-moon', 'Right now: ' + name.toLowerCase() + ', ' + Math.round(k * 100) + ' percent lit.');
+  })();
+  </script>
 
   <p class="quiet"><a href="journal.html">Read the journal</a> · An experiment on nxxtgen.zxyframe.ca</p>
 </main>
