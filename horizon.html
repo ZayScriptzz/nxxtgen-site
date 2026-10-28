@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · How far you can see</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.7; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; max-width: 36rem; }
+  a { color: #8a8af0; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+
+  #far { font-size: 1.6rem; margin: 3rem 0 0.4rem; }
+  #bent, #straight { color: #9a9aa6; margin-bottom: 0.4rem; }
+
+  .eye { margin: 2.5rem 0 0.5rem; }
+  .eye label { display: block; font-size: 0.85rem; color: #55555f; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .eye output { color: #d8d8e0; letter-spacing: 0; font-size: 1rem; margin-left: 0.5rem; }
+  input[type=range] { width: 100%; accent-color: #8a8af0; margin: 0; }
+  .heights { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.9rem 0 0; padding: 0; list-style: none; }
+  button { font: inherit; font-size: 0.8rem; color: #9a9aa6; background: none; border: 1px solid #2a2a44; padding: 0.2rem 0.7rem; cursor: pointer; }
+  button:hover, button:focus-visible { border-color: #8a8af0; color: #d8d8e0; outline: none; }
+
+  .side { display: block; width: 100%; height: auto; margin: 1.5rem 0 0.5rem; }
+  .side .earth { fill: #14141c; }
+  .side .ground { fill: none; stroke: #2a2a44; stroke-width: 1.5; }
+  .side .seen { fill: none; stroke: #e6e2d6; stroke-width: 2; }
+  .side .sight { stroke: #8a8af0; stroke-width: 1; opacity: 0.7; }
+  .side .past { stroke: #8a8af0; stroke-width: 1; opacity: 0.35; stroke-dasharray: 4 5; }
+  .side .you { fill: #8a8af0; }
+  .side .mark { fill: #e6e2d6; }
+  .side .label { fill: #6a6a76; font-size: 24px; font-family: Georgia, 'Times New Roman', serif; }
+  #stretch { color: #6a6a76; font-size: 0.85rem; min-height: 1.4em; }
+
+  dl.facts { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1.5rem; margin: 1rem 0 0; font-size: 0.95rem; }
+  dl.facts dt { color: #9a9aa6; }
+  dl.facts dd { margin: 0; }
+  @media (max-width: 34rem) {
+    dl.facts { grid-template-columns: 1fr; gap: 0; }
+    dl.facts dd { margin-bottom: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · how far you can see</h1>
+
+  <p id="far">How far away the edge of the earth is, from any height.</p>
+  <p id="bent"><noscript>This page works out the distance to the horizon with a small script that runs in your browser. With scripts off, here is the one answer most people want: standing at the edge of a calm sea, with your eyes about 1.6 metres up, the horizon is about 4.5 kilometres away. Nothing is sent or kept either way.</noscript></p>
+  <p id="straight"></p>
+
+  <div class="eye" id="eyebox" hidden>
+    <label for="h">YOUR EYES ARE <output id="hout" for="h"></output></label>
+    <input id="h" type="range" min="-1" max="6" step="0.001" value="0.204">
+    <ul class="heights" id="heights"></ul>
+  </div>
+
+  <svg class="side" id="side" viewBox="0 0 1000 320" role="img" aria-labelledby="side-title" hidden>
+    <title id="side-title">The earth seen from the side, with your eye above it and the two lines that just touch the curve. The lit part of the ground is all you can see.</title>
+    <path class="earth" id="earth" d=""/>
+    <path class="ground" id="ground" d=""/>
+    <path class="seen" id="seen" d=""/>
+    <line class="past" id="pastL"/><line class="past" id="pastR"/>
+    <line class="sight" id="sightL"/><line class="sight" id="sightR"/>
+    <circle class="mark" id="markL" r="4.5"/><circle class="mark" id="markR" r="4.5"/>
+    <text class="label" id="labL" text-anchor="middle">horizon</text>
+    <text class="label" id="labR" text-anchor="middle">horizon</text>
+    <circle class="you" id="you" r="6"/>
+    <text class="label" id="labYou" text-anchor="middle">you</text>
+  </svg>
+  <p id="stretch"></p>
+
+  <h2 id="facts-title" hidden>FROM THIS HEIGHT</h2>
+  <dl class="facts" id="facts"></dl>
+
+  <h2>WHAT IT MEANS</h2>
+  <p>The edge of a calm sea is closer than it looks. Standing at the water, it is about four and a half kilometres away, an hour's walk if you could walk on it. Climbing does less than you would think. The distance grows with the square root of your height, so to see twice as far you have to go four times as high. A chair adds almost nothing. A lighthouse adds a lot.</p>
+  <p>The horizon is also lower than your eyes. From the beach it sits about two and a half minutes of arc below level, less than a twelfth of the width of the moon, which is why it looks flat and level and is neither. You have to be about 260 metres up before it drops a whole moon-width below level. From a plane at cruising height it is more than three degrees down.</p>
+  <p>Things past the horizon are not gone. Only their lower parts are hidden, and the page above says how much. That is why a ship going away loses its hull before its mast, and why two high places can see each other across far more than either one's horizon: each has its own, and the line of sight only has to clear the curve in between. The longest view on earth ever photographed was taken in December 2024, from the mountains of northern Turkey to Shkhara, the highest peak in Georgia, 493 kilometres away across the eastern end of the Black Sea.</p>
+
+  <h2>HOW THIS IS MADE</h2>
+  <p class="quiet">The earth is treated as a smooth ball 6,371 kilometres in radius, and the horizon is the place where a straight line from your eye just touches it. The page gives that distance along the ground, and in a straight line once the two are far enough apart to differ. The second figure allows for the air, which bends light a little way round the curve. Under ordinary conditions this carries the horizon about eight percent further; the page uses the usual allowance and stops giving it above twenty kilometres, where the light that reaches you has passed through air the allowance was not made for. It does not ask where you are and does not send or keep anything. The height you choose goes into the address bar, so a link to the page carries it, and nowhere else.</p>
+  <p class="quiet">What it leaves out: the ground. Every figure here is for a calm sea or a perfectly flat plain at sea level. Hills, waves, haze and your own eyesight all cut the view short, and on land something is usually in the way long before the curve is. The bending of light changes with the weather. Over cold water on a warm day it can lift a coast into view that should be hidden, or squash it flat, and the true horizon can be well nearer or further than the page says. The heights on the buttons are round figures: the space station climbs and sinks by kilometres over a few months, and planes cruise at many heights.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Journal</a></p>
+</main>
+<script>
+(function () {
+  var R = 6371000, K = 7 / 6, EARTH_AREA = 4 * Math.PI * R * R, MOON = 0.52;
+
+  var HEIGHTS = [
+    ['Sitting on the sand', 0.8], ['Standing at the water', 1.6], ['A lighthouse', 40],
+    ['A tall tower', 500], ['Everest', 8849], ['A plane', 11000], ['The space station', 420000]
+  ];
+
+  // Angle at the centre of the earth between your feet and the horizon, in radians.
+  function theta(h) { return Math.atan(Math.sqrt(2 * R * h + h * h) / R); }
+  function ground(h) { return R * theta(h); }
+  function straight(h) { return Math.sqrt(2 * R * h + h * h); }
+  function bent(h) { return Math.sqrt(2 * K * R * h); }
+  // How much of something `d` metres away along the ground is hidden below the horizon.
+  function hidden(h, d) {
+    var past = d - ground(h);
+    return past <= 0 ? 0 : R / Math.cos(past / R) - R;
+  }
+
+  function group(n) { return Math.round(n).toLocaleString('en-GB'); }
+  function dist(m) {
+    if (m < 1) return Math.round(m * 100) + ' centimetres';
+    if (m < 10) return m.toFixed(1).replace(/\.0$/, '') + (m === 1 ? ' metre' : ' metres');
+    if (m < 1000) return Math.round(m) + ' metres';
+    var km = m / 1000;
+    if (km < 10) return km.toFixed(1).replace(/\.0$/, '') + ' kilometres';
+    return group(km) + ' kilometres';
+  }
+  function height(m) {
+    if (m < 1) return Math.round(m * 100) + ' centimetres up';
+    if (m < 10) return m.toFixed(1).replace(/\.0$/, '') + (m === 1 ? ' metre up' : ' metres up');
+    if (m < 10000) return group(m) + ' metres up';
+    return group(m / 1000) + ' kilometres up';
+  }
+  var PARTS = ['', '', 'half', 'third', 'quarter', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth',
+    'thirteenth', 'fourteenth', 'fifteenth', 'sixteenth', 'seventeenth', 'eighteenth', 'nineteenth', 'twentieth'];
+  function angle(deg) {
+    if (deg >= 1) return deg.toFixed(1).replace(/\.0$/, '') + (deg.toFixed(1) === '1.0' ? ' degree' : ' degrees');
+    var min = deg * 60;
+    return (min < 10 ? min.toFixed(1) : Math.round(min)) + ' minutes of arc';
+  }
+  function moons(deg) {
+    var r = deg / MOON;
+    if (r >= 2.5) return 'about ' + Math.round(r) + ' times the width of the moon';
+    if (r >= 1.5) return 'about twice the width of the moon';
+    if (r >= 0.9) return 'about the width of the moon';
+    if (r >= 0.75) return 'nearly the width of the moon';
+    if (r >= 0.6) return 'about two thirds of the width of the moon';
+    var n = Math.round(1 / r);
+    if (n > 20) return 'less than a twentieth of the width of the moon';
+    return n === 2 ? 'about half the width of the moon' : 'about ' + (PARTS[n].charAt(0) === 'e' ? 'an ' : 'a ') + PARTS[n] + ' of the width of the moon';
+  }
+  function share(frac) {
+    if (frac >= 0.001) return (frac * 100).toFixed(frac >= 0.01 ? 1 : 2) + ' percent of the whole earth';
+    var n = 1 / frac;
+    var s = n >= 1e6 ? (n >= 1e7 ? group(n / 1e6) : (n / 1e6).toFixed(1).replace(/\.0$/, '')) + ' million' : group(Number(n.toPrecision(2)));
+    return 'one part in ' + s + ' of the whole earth';
+  }
+
+  var slider = document.getElementById('h'), out = document.getElementById('hout');
+  var h = 1.6;
+  var m = /h=(\d+(?:\.\d+)?)/.exec(location.hash);
+  if (m) h = Math.max(0.1, Math.min(1e6, parseFloat(m[1])));
+  slider.value = Math.log(h) / Math.LN10;
+  document.getElementById('eyebox').hidden = false;
+  document.getElementById('side').hidden = false;
+  document.getElementById('facts-title').hidden = false;
+
+  function set(id, attrs) { var e = document.getElementById(id); for (var k in attrs) e.setAttribute(k, attrs[k]); }
+
+  // The side view. Distances along the ground fill the width; heights are stretched until the curve shows, never squashed.
+  function draw() {
+    var th = theta(h), xt = R * Math.sin(th), dt = R - R * Math.cos(th);
+    var xe = Math.min(1.3 * xt, 0.98 * R), de = R - Math.sqrt(R * R - xe * xe);
+    var sx = 470 / xe, sy = Math.max(sx, 230 / (h + de));
+    function X(x) { return 500 + x * sx; }
+    function Y(y) { return 40 + (y + h) * sy; }
+    var pts = [];
+    for (var i = 0; i <= 200; i++) {
+      var x = -xe + 2 * xe * i / 200;
+      pts.push(X(x).toFixed(1) + ',' + Y(R - Math.sqrt(R * R - x * x)).toFixed(1));
+    }
+    set('ground', { d: 'M' + pts.join(' L') });
+    set('earth', { d: 'M' + pts.join(' L') + ' L1000,320 L0,320 Z' });
+    var seen = [];
+    for (i = 0; i <= 100; i++) {
+      x = -xt + 2 * xt * i / 100;
+      seen.push(X(x).toFixed(1) + ',' + Y(R - Math.sqrt(R * R - x * x)).toFixed(1));
+    }
+    set('seen', { d: 'M' + seen.join(' L') });
+    var ye = -h + (dt + h) * xe / xt;
+    [[-1, 'L'], [1, 'R']].forEach(function (s) {
+      var tx = X(s[0] * xt), ty = Y(dt);
+      set('sight' + s[1], { x1: 500, y1: Y(-h), x2: tx, y2: ty });
+      set('past' + s[1], { x1: tx, y1: ty, x2: X(s[0] * xe), y2: Y(ye) });
+      set('mark' + s[1], { cx: tx, cy: ty });
+      set('lab' + s[1], { x: tx, y: ty + 34 });
+    });
+    set('you', { cx: 500, cy: Y(-h) });
+    set('labYou', { x: 500, y: Y(-h) - 16 });
+    var E = sy / sx;
+    document.getElementById('stretch').textContent = E < 1.05 ? 'Drawn to scale.' :
+      'Heights in this drawing are stretched ' + (E < 10 ? E.toFixed(1) : group(Number(E.toPrecision(2)))) + ' times.' +
+      (E >= 20 ? ' Drawn true, the curve would be too slight to see.' : '');
+  }
+
+  function text() {
+    out.textContent = height(h);
+    document.getElementById('far').textContent = 'From ' + height(h) + ', the horizon is ' + dist(ground(h)) + ' away.';
+    document.getElementById('bent').textContent = h <= 20000 ?
+      'With the usual bending of light by the air, a little further: about ' + dist(bent(h)) + '.' :
+      'At this height the usual allowance for the air no longer holds, so this is the bare geometry.';
+    var s = straight(h), g = ground(h);
+    document.getElementById('straight').textContent = s / g > 1.01 ?
+      'That is along the ground. In a straight line from your eye, it is ' + dist(s) + '.' : '';
+
+    var dl = document.getElementById('facts');
+    while (dl.firstChild) dl.removeChild(dl.firstChild);
+    var dip = theta(h) * 180 / Math.PI;
+    var area = 2 * Math.PI * R * R * h / (R + h);
+    var rows = [
+      ['The horizon is below your eye by', angle(dip) + ', ' + moons(dip)],
+      ['Surface you can see', 'about ' + group(Number((area / 1e6).toPrecision(2))) + ' square kilometres, ' + share(area / EARTH_AREA)]
+    ];
+    [10e3, 50e3, 200e3].forEach(function (d) {
+      var x = hidden(h, d);
+      rows.push(['Something ' + group(d / 1000) + ' kilometres off',
+        x < 0.05 ? 'is in full view' : 'has its lowest ' + dist(x) + ' hidden']);
+    });
+    rows.forEach(function (r) {
+      var dt = document.createElement('dt'), dd = document.createElement('dd');
+      dt.textContent = r[0];
+      dd.textContent = r[1];
+      dl.appendChild(dt);
+      dl.appendChild(dd);
+    });
+  }
+
+  function update(write) {
+    draw();
+    text();
+    if (write) history.replaceState(null, '', '#h=' + Number(h.toPrecision(3)));
+  }
+  slider.addEventListener('input', function () {
+    h = Number(Math.pow(10, parseFloat(slider.value)).toPrecision(3));
+    update(true);
+  });
+
+  var ul = document.getElementById('heights');
+  HEIGHTS.forEach(function (p) {
+    var li = document.createElement('li'), b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = p[0];
+    b.title = height(p[1]);
+    b.addEventListener('click', function () { h = p[1]; slider.value = Math.log(h) / Math.LN10; update(true); });
+    li.appendChild(b);
+    ul.appendChild(li);
+  });
+
+  update(false);
+})();
+</script>
+</body>
+</html>
