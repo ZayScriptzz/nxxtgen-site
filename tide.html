@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · Two tides</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.7; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; max-width: 36rem; }
+  a { color: #8a8af0; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+
+  #lead { font-size: 1.6rem; margin: 3rem 0 0.4rem; }
+  #next { color: #9a9aa6; }
+
+  .month { display: block; width: 100%; height: auto; margin: 1.5rem 0 0.5rem; }
+  .month .band { fill: #8a8af0; opacity: 0.08; }
+  .month .edge { fill: none; stroke: #8a8af0; stroke-width: 1; opacity: 0.55; stroke-dasharray: 4 5; }
+  .month .sea { fill: none; stroke: #e6e2d6; stroke-width: 1; opacity: 0.85; }
+  .month .axis { stroke: #2a2a44; stroke-width: 1; }
+  .month .tick { stroke: #2a2a44; stroke-width: 1; }
+  .month .phase { stroke: #55555f; stroke-width: 1; stroke-dasharray: 2 4; }
+  .month .label { fill: #6a6a76; font-size: 22px; font-family: Georgia, 'Times New Roman', serif; }
+  .month .kind { fill: #9a9aa6; font-size: 22px; font-family: Georgia, 'Times New Roman', serif; }
+  .month .now { fill: #8a8af0; }
+
+  .listen { margin: 1.2rem 0 0; }
+  .listen label { display: block; font-size: 0.85rem; color: #55555f; letter-spacing: 0.1em; margin: 1.4rem 0 0.5rem; }
+  input[type=range] { width: 100%; accent-color: #8a8af0; margin: 0; }
+  .play { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; list-style: none; }
+  button { font: inherit; font-size: 0.8rem; color: #9a9aa6; background: none; border: 1px solid #2a2a44; padding: 0.2rem 0.7rem; cursor: pointer; }
+  button:hover, button:focus-visible { border-color: #8a8af0; color: #d8d8e0; outline: none; }
+  button[aria-pressed=true] { border-color: #8a8af0; color: #d8d8e0; }
+  #speedtext { color: #9a9aa6; font-size: 0.95rem; margin-top: 0.8rem; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · two tides</h1>
+
+  <p id="lead">Twice a day the sea comes in. It is keeping time with two clocks at once.</p>
+  <p id="next"><noscript>This page works out where the Moon and the Sun stand with a small script in your browser, and draws the next thirty days of tides from that. With scripts off, the rule is enough: the biggest tides come around new and full moon, the smallest around the half moons, and the whole cycle takes a little under fifteen days. Nothing is sent or kept either way.</noscript></p>
+
+  <svg class="month" id="month" viewBox="0 0 1000 330" role="img" aria-labelledby="month-title" hidden>
+    <title id="month-title">The next thirty days of the tide the Moon and the Sun ask for together. The pale band swells at new and full moon and narrows at the half moons.</title>
+    <path class="band" id="band" d=""/>
+    <path class="edge" id="top" d=""/>
+    <path class="edge" id="bottom" d=""/>
+    <path class="sea" id="sea" d=""/>
+    <line class="axis" x1="40" y1="262" x2="960" y2="262"/>
+    <g id="ticks"></g>
+    <g id="phases"></g>
+    <circle class="now" cx="40" cy="262" r="5"/>
+    <text class="label" x="50" y="250">now</text>
+  </svg>
+
+  <h2>WHY THERE ARE TWO</h2>
+  <p>The Moon pulls a little harder on the side of the earth that faces it than on the middle, and a little less hard on the far side. The difference stretches the oceans. As the earth turns under that stretch, any shore passes through it twice a day. The Moon is moving the same way the earth turns, so each time the shore has to go a little further round to catch it up, and the Moon's tide comes back every twelve hours and twenty-five minutes.</p>
+  <p>The Sun does the same, less strongly. It is far heavier than the Moon and far further away, and the stretch weakens with the cube of the distance, so in the end its pull on the tides is a little less than half the Moon's. Its tide comes back every twelve hours exactly, because that is what the clock was made from.</p>
+  <p>So the sea is answering two clocks that almost agree. Each time round, the Moon's tide falls about twenty-five minutes further behind the Sun's. After about a week it is half a cycle behind: the Sun's high water lands on the Moon's low, they mostly cancel, and the tides are small. Those are neap tides, at the half moons. After fourteen days and eighteen hours it has fallen a whole cycle behind, the two highs land together again, and the tides are large. Those are spring tides, at new moon and full moon. The name has nothing to do with the season.</p>
+
+  <h2>HEAR IT</h2>
+  <p>Two notes that are nearly in tune do exactly the same thing. Their peaks drift in and out of step and the sound swells and fades, which is how a piano tuner hears that a string is off. So the sky can be sped up until the tides are notes. At the speed below, a whole day goes by in about a hundredth of a second. The Moon's tide becomes a note a little over half a semitone below the Sun's. Play one, then the other, then both.</p>
+  <div class="listen" id="listen" hidden>
+    <ul class="play">
+      <li><button type="button" data-mode="moon" aria-pressed="false">The Moon's tide</button></li>
+      <li><button type="button" data-mode="sun" aria-pressed="false">The Sun's tide</button></li>
+      <li><button type="button" data-mode="both" aria-pressed="false">Both together</button></li>
+      <li><button type="button" data-mode="stop">Stop</button></li>
+    </ul>
+    <label for="speed">HOW FAST THE SKY GOES</label>
+    <input id="speed" type="range" min="2.0414" max="2.6435" step="0.001" value="2.3424">
+    <p id="speedtext"></p>
+  </div>
+  <p class="quiet">The sound is made in your browser as it plays; there is no recording. It starts only when you press a button and stops when you press Stop or leave the page. The Sun's note is quieter than the Moon's in the same proportion as its tide. Small speakers lose the lowest settings; headphones help.</p>
+
+  <h2>HOW THIS IS MADE</h2>
+  <p class="quiet">The page works out how far the Moon is from the Sun in the sky, from your device's clock and a short formula, the same one the <a href="moon.html">moon page</a> uses, which lands within about half an hour of the published phases. From that it knows how far apart the two tides are: in step at new and full moon, opposed at the half moons. The pale band in the drawing is how high the two together can reach, with the Moon's tide as one and the Sun's as 0.46 of it, the proportion their pulls on the sea have. The wavy line inside it is the tide itself, drawn for the meridian through Greenwich and for no real shore; it is there to show the two highs a day, and only the band is meant. It does not ask where you are and does not send or keep anything.</p>
+  <p class="quiet">What it leaves out: the shore. This is the tide the sky asks for, not the one any coast gets. The shape and depth of a bay decide how it answers. In the Bay of Fundy the range at its greatest is about sixteen metres; along much of the Mediterranean it is a few tens of centimetres; much of the Gulf of Mexico gets one tide a day instead of two, from parts of the pull this page leaves out. On most coasts the biggest tides of the fortnight come a day or two after the new or full moon rather than on the day, and the delay differs from place to place. The Moon's distance changes over the month as well, and when it is nearest at a spring tide the tides are higher still; that is not drawn here. For the tides where you are, ask a tide table, not this page.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Journal</a></p>
+</main>
+<script>
+(function () {
+  var RAD = Math.PI / 180, DAY = 864e5, HOUR = 36e5;
+  var MOON_PERIOD = 12.4206012, SUN_PERIOD = 12, SUN_SHARE = 0.46;
+  var NAMES = ['new moon', 'first quarter', 'full moon', 'last quarter'];
+
+  // How far the Moon is east of the Sun, in degrees, after Meeus, Astronomical Algorithms, ch. 48.
+  function elong(ms) {
+    var T = (ms / DAY + 2440587.5 - 2451545) / 36525;
+    var D = 297.8501921 + 445267.1114034 * T, M = 357.5291092 + 35999.0502909 * T, Mp = 134.9633964 + 477198.8675055 * T;
+    function s(x) { return Math.sin(x * RAD); }
+    var e = D + 6.289 * s(Mp) - 2.100 * s(M) + 1.274 * s(2 * D - Mp) + 0.658 * s(2 * D) + 0.214 * s(2 * Mp) + 0.110 * s(D);
+    return ((e % 360) + 360) % 360;
+  }
+  // The next times the Moon reaches each quarter of its circuit, stepping an hour at a time.
+  function quarters(from, days) {
+    var out = [], prev = Math.floor(elong(from) / 90);
+    for (var t = from + HOUR; t <= from + days * DAY; t += HOUR) {
+      var q = Math.floor(elong(t) / 90);
+      if (q !== prev) out.push([t - HOUR / 2, q]);
+      prev = q;
+    }
+    return out;
+  }
+  // How high the two tides together can reach, with the Moon's alone as one.
+  function reach(e) { return Math.sqrt(1 + SUN_SHARE * SUN_SHARE + 2 * SUN_SHARE * Math.cos(2 * e * RAD)); }
+  // The tide itself at Greenwich: the Sun's hour angle from the clock, the Moon's behind it by the elongation.
+  function sea(ms) {
+    var hs = (ms / DAY % 1) * 360 - 180, hm = hs - elong(ms);
+    return Math.cos(2 * hm * RAD) + SUN_SHARE * Math.cos(2 * hs * RAD);
+  }
+  function day(ms) { return new Date(ms).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' }); }
+
+  var now = Date.now(), e = elong(now);
+  var ahead = quarters(now, 31);
+  var spring = null, neap = null;
+  ahead.forEach(function (q) {
+    if (q[1] % 2 === 0 && !spring) spring = q;
+    if (q[1] % 2 === 1 && !neap) neap = q;
+  });
+  var growing = e % 180 >= 90;
+  document.getElementById('lead').textContent = growing ?
+    'Today the tides are growing. The Moon’s tide and the Sun’s are drifting into step.' :
+    'Today the tides are shrinking. The Moon’s tide and the Sun’s are drifting out of step.';
+  var s1 = 'Spring tides come with the ' + NAMES[spring[1]] + ' on ' + day(spring[0]);
+  var s2 = 'neap tides with the ' + NAMES[neap[1]] + ' on ' + day(neap[0]);
+  document.getElementById('next').textContent = (growing ? s1 + ', and ' + s2 : 'N' + s2.slice(1) + ', and s' + s1.slice(1)) + '.';
+
+  // The drawing: thirty days from now across the width.
+  var X0 = 40, W = 920, MID = 132, AMP = 80, SPAN = 30 * DAY;
+  function X(t) { return X0 + W * (t - now) / SPAN; }
+  var top = [], bot = [], wave = [];
+  for (var i = 0; i <= 1440; i++) {
+    var t = now + SPAN * i / 1440, r = reach(elong(t)) / (1 + SUN_SHARE);
+    var x = X(t).toFixed(1);
+    if (i % 8 === 0) { top.push(x + ',' + (MID - AMP * r).toFixed(1)); bot.push(x + ',' + (MID + AMP * r).toFixed(1)); }
+    wave.push(x + ',' + (MID - AMP * sea(t) / (1 + SUN_SHARE)).toFixed(1));
+  }
+  function set(id, d) { document.getElementById(id).setAttribute('d', d); }
+  set('top', 'M' + top.join(' L'));
+  set('bottom', 'M' + bot.join(' L'));
+  set('band', 'M' + top.join(' L') + ' L' + bot.slice().reverse().join(' L') + ' Z');
+  set('sea', 'M' + wave.join(' L'));
+
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(name, attrs, text) {
+    var n = document.createElementNS(NS, name);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text) n.textContent = text;
+    return n;
+  }
+  var ticks = document.getElementById('ticks');
+  var midnight = new Date(now); midnight.setHours(24, 0, 0, 0);
+  for (t = midnight.getTime(); t < now + SPAN; t += DAY) ticks.appendChild(el('line', { 'class': 'tick', x1: X(t), y1: 258, x2: X(t), y2: 266 }));
+  var phases = document.getElementById('phases');
+  ahead.forEach(function (q) {
+    if (q[0] > now + SPAN) return;
+    var x = X(q[0]), anchor = x < 110 ? 'start' : x > 890 ? 'end' : 'middle';
+    phases.appendChild(el('line', { 'class': 'phase', x1: x, y1: 30, x2: x, y2: 262 }));
+    phases.appendChild(el('text', { 'class': 'kind', x: x, y: 22, 'text-anchor': anchor }, q[1] % 2 === 0 ? 'spring tides' : 'neap tides'));
+    phases.appendChild(el('text', { 'class': 'label', x: x, y: 300, 'text-anchor': anchor }, NAMES[q[1]]));
+    phases.appendChild(el('text', { 'class': 'label', x: x, y: 326, 'text-anchor': anchor },
+      new Date(q[0]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })));
+  });
+  document.getElementById('month').hidden = false;
+
+  // The sound. The Sun's tide becomes a note of `f` hertz; the Moon's, slower in the same proportion as its period is longer.
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  document.getElementById('listen').hidden = false;
+  var slider = document.getElementById('speed');
+  var ctx = null, master, oM, oS, gM, gS;
+  function freq() { return Math.pow(10, parseFloat(slider.value)); }
+  function describe() {
+    var f = freq(), fm = f * SUN_PERIOD / MOON_PERIOD, beat = f - fm;
+    document.getElementById('speedtext').textContent =
+      'A day goes by in ' + (2000 / f).toFixed(1) + ' milliseconds. The Sun’s tide is a note of ' + Math.round(f) +
+      ' hertz and the Moon’s ' + fm.toFixed(1) + '. Together they swell ' + beat.toFixed(1) +
+      ' times a second: each swell is one spring tide, each fade one neap.';
+  }
+  function tune() {
+    if (!ctx) return;
+    var f = freq();
+    oS.frequency.setTargetAtTime(f, ctx.currentTime, 0.02);
+    oM.frequency.setTargetAtTime(f * SUN_PERIOD / MOON_PERIOD, ctx.currentTime, 0.02);
+  }
+  function play(mode) {
+    if (!ctx) {
+      ctx = new AC();
+      master = ctx.createGain(); master.gain.value = 0; master.connect(ctx.destination);
+      oM = ctx.createOscillator(); oS = ctx.createOscillator();
+      gM = ctx.createGain(); gS = ctx.createGain(); gM.gain.value = 0; gS.gain.value = 0;
+      oM.connect(gM); oS.connect(gS); gM.connect(master); gS.connect(master);
+      var f = freq();
+      oS.frequency.value = f; oM.frequency.value = f * SUN_PERIOD / MOON_PERIOD;
+      oM.start(); oS.start();
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    var at = ctx.currentTime, on = mode !== 'stop';
+    gM.gain.setTargetAtTime(mode === 'moon' || mode === 'both' ? 1 / (1 + SUN_SHARE) : 0, at, 0.03);
+    gS.gain.setTargetAtTime(mode === 'sun' || mode === 'both' ? SUN_SHARE / (1 + SUN_SHARE) : 0, at, 0.03);
+    master.gain.setTargetAtTime(on ? 0.3 : 0, at, 0.05);
+    [].forEach.call(document.querySelectorAll('.play button[data-mode]'), function (b) {
+      if (b.getAttribute('data-mode') !== 'stop') b.setAttribute('aria-pressed', String(b.getAttribute('data-mode') === mode));
+    });
+  }
+  [].forEach.call(document.querySelectorAll('.play button'), function (b) {
+    b.addEventListener('click', function () { play(b.getAttribute('data-mode')); });
+  });
+  slider.addEventListener('input', function () { describe(); tune(); });
+  document.addEventListener('visibilitychange', function () { if (document.hidden && ctx) play('stop'); });
+  window.addEventListener('pagehide', function () { if (ctx) play('stop'); });
+  describe();
+})();
+</script>
+</body>
+</html>
