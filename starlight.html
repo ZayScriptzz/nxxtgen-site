@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · How old the starlight is</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.75; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  .title { font-size: 1.6rem; line-height: 1.3; margin: 3rem 0 0.3rem; }
+  .when { color: #55555f; font-size: 0.85rem; letter-spacing: 0.1em; margin: 0 0 3rem; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; }
+  a { color: #8a8af0; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+  .live { color: #8a8af0; font-variant-numeric: tabular-nums; }
+  .nojs { display: block; }
+  .js .nojs { display: none; }
+
+  /* the strip: years ago, on a scale where each step left is ten times further back */
+  .strip { display: block; width: 100%; height: auto; margin: 2rem 0 0.5rem; }
+  .strip .axis { stroke: #2a2a44; stroke-width: 1; }
+  .strip .tick { stroke: #2a2a44; stroke-width: 1; }
+  .strip .tlabel { fill: #55555f; font-size: 17px; font-family: Georgia, 'Times New Roman', serif; }
+  .strip .range { stroke: #4a4a78; stroke-width: 4; stroke-linecap: round; }
+  .strip .dot { fill: #d8d8e0; }
+  .strip .lead { stroke: #24243a; stroke-width: 1; }
+  .strip .name { fill: #9a9aa6; font-size: 17px; font-family: Georgia, 'Times New Roman', serif; }
+  .strip .after .dot { fill: #8a8af0; }
+  .strip .after .name { fill: #d8d8e0; }
+  .strip .you { stroke: #8a8af0; stroke-width: 1.5; stroke-dasharray: 3 4; }
+  .strip .ylabel { fill: #8a8af0; font-size: 17px; font-family: Georgia, 'Times New Roman', serif; }
+  .caption { color: #55555f; font-size: 0.8rem; margin-bottom: 2.5rem; }
+
+  /* the year */
+  .ask label { display: block; font-size: 0.85rem; color: #55555f; letter-spacing: 0.1em; margin: 0 0 0.5rem; }
+  .ask input { font: inherit; font-size: 1.1rem; width: 7rem; color: #d8d8e0; background: #0f0f16; border: 1px solid #2a2a44; padding: 0.25rem 0.5rem; font-variant-numeric: tabular-nums; }
+  .ask input:focus { outline: none; border-color: #8a8af0; }
+  .ask .answer { margin-top: 1rem; min-height: 3.4em; }
+
+  /* the list of stars */
+  .stars { margin: 2rem 0 2.4rem; padding: 0 0 0 1.2rem; border-left: 1px solid #2a2a44; }
+  .stars .row { display: grid; grid-template-columns: 1fr 10.5rem; gap: 0 1.5rem; padding: 0.55rem 0; border-bottom: 1px solid #1c1c26; }
+  .stars .row:last-child { border-bottom: none; }
+  .stars .what { margin: 0; }
+  .stars .note { display: block; color: #6a6a76; font-size: 0.85rem; }
+  .stars .left { margin: 0; text-align: right; font-variant-numeric: tabular-nums; color: #8a8af0; align-self: center; }
+  .stars .left:empty { display: none; }
+  .stars .row.after .what { color: #e6e2d6; }
+  .stars .row.after { border-left: 2px solid #8a8af0; margin-left: calc(-1.2rem - 1px); padding-left: calc(1.2rem - 1px); }
+  @media (max-width: 30rem) {
+    .stars .row { grid-template-columns: 1fr; }
+    .stars .left { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · how old the starlight is</h1>
+
+  <p class="title">How old the starlight is</p>
+  <p class="when">MADE ON 6 NOVEMBER 2026 · IT COUNTS FROM TODAY'S DATE</p>
+
+  <p>Light takes time to arrive. From the Moon it takes a little under a second and a third. From the Sun, eight minutes and nineteen seconds on average. From the stars it takes years, because they are years away: a light-year is how far light goes in a year, so a star twenty-five light-years away is seen tonight by light that left it twenty-five years ago.</p>
+  <p>Below are some of the stars you can see without a telescope, nearest first, and when the light reaching you from each of them tonight set out. None of it is a picture of the star now. All of it is a letter that has been in the post for a while.</p>
+  <p class="quiet nojs">The departure dates are worked out from today's date by a small script, which is not running. The distances are still written next to each star: a star that many light-years away is seen by light that left it that many years ago.</p>
+
+  <svg class="strip" id="strip" viewBox="0 0 1000 390" role="img" aria-labelledby="strip-title" hidden>
+    <title id="strip-title">The stars on this page placed by how long their light has been travelling, from one year ago on the right to three thousand years ago on the left, each step to the left ten times further back</title>
+  </svg>
+  <p class="caption" id="strip-caption" hidden>Now is at the right. Each step to the left goes ten times further back. The pale bars show how unsure the distance is, where that is wide enough to draw.</p>
+
+  <div class="ask" id="ask" hidden>
+    <label for="year">GIVE A YEAR · THE ONE YOU WERE BORN, OR ANY OTHER</label>
+    <input id="year" type="number" inputmode="numeric" min="-999" max="2100" step="1" placeholder="1990" autocomplete="off">
+    <p class="answer live" id="answer" aria-live="polite"></p>
+  </div>
+
+  <h2>NEAREST FIRST</h2>
+  <div class="stars" id="stars">
+    <!-- d: distance in light-years; lo and hi: the range the distance could reasonably be, where it matters -->
+    <div class="row" data-d="4.3441" data-lo="4.3419" data-hi="4.3463"><p class="what">Alpha Centauri<span class="note">in Centaurus, the nearest star you can see without a telescope · far southern sky · 4.34 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="8.7094" data-lo="8.704" data-hi="8.7148"><p class="what">Sirius<span class="note">in Canis Major, the brightest star in the night sky · 8.71 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="10.4749" data-lo="10.4712" data-hi="10.4786"><p class="what">Epsilon Eridani<span class="note">in Eridanus, faint, needs a dark sky · 10.47 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="11.463" data-lo="11.412" data-hi="11.514"><p class="what">Procyon<span class="note">in Canis Minor, the Little Dog · 11.46 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="11.9118" data-lo="11.9044" data-hi="11.9192"><p class="what">Tau Ceti<span class="note">in Cetus, faint, needs a dark sky · 11.91 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="16.73" data-lo="16.681" data-hi="16.779"><p class="what">Altair<span class="note">in Aquila, the Eagle · 16.73 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="25.04" data-lo="24.97" data-hi="25.11"><p class="what">Vega<span class="note">in Lyra, the Lyre · 25.0 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="25.13" data-lo="25.04" data-hi="25.22"><p class="what">Fomalhaut<span class="note">in Piscis Austrinus, low in the south on northern autumn evenings · 25.1 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="33.78" data-lo="33.69" data-hi="33.87"><p class="what">Pollux<span class="note">in Gemini, the brighter of the Twins · 33.8 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="35.9" data-lo="35.7" data-hi="36.1"><p class="what">Denebola<span class="note">in Leo, the tail of the Lion · 35.9 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="36.7" data-lo="36.4" data-hi="37.0"><p class="what">Arcturus<span class="note">in Boötes, the brightest star north of the celestial equator · 36.7 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="42.9" data-lo="42.8" data-hi="43.0"><p class="what">Capella<span class="note">in Auriga, the Charioteer · 42.9 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="51" data-lo="48" data-hi="54"><p class="what">Castor<span class="note">in Gemini, the other Twin, which is six stars in one · about 51 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="65.3" data-lo="64.3" data-hi="66.3"><p class="what">Aldebaran<span class="note">in Taurus, the eye of the Bull · 65.3 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="79.3" data-lo="78.6" data-hi="80.0"><p class="what">Regulus<span class="note">in Leo, the heart of the Lion · 79.3 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="97" data-lo="96" data-hi="98"><p class="what">Alpheratz<span class="note">in Andromeda, at one corner of the Square of Pegasus · 97 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="139" data-lo="136" data-hi="143"><p class="what">Achernar<span class="note">in Eridanus, at the end of the River · far southern sky · about 139 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="250" data-lo="237" data-hi="263"><p class="what">Spica<span class="note">in Virgo, the Maiden · about 250 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="310" data-lo="295" data-hi="330"><p class="what">Canopus<span class="note">in Carina, the second brightest star in the night sky · far southern sky · about 310 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="446" data-lo="433" data-hi="447"><p class="what">Polaris<span class="note">in Ursa Minor, the pole star · northern hemisphere only · about 433 to 447 light-years, measured two ways</span></p><p class="left"></p></div>
+    <div class="row" data-d="548" data-lo="499" data-hi="789"><p class="what">Betelgeuse<span class="note">in Orion, the red shoulder · about 500 to 790 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="554" data-lo="473" data-hi="667"><p class="what">Antares<span class="note">in Scorpius, the red heart of the Scorpion · about 470 to 670 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="860" data-lo="780" data-hi="940"><p class="what">Rigel<span class="note">in Orion, the blue-white foot · about 780 to 940 light-years</span></p><p class="left"></p></div>
+    <div class="row" data-d="2000" data-lo="1400" data-hi="2600"><p class="what">Deneb<span class="note">in Cygnus, the tail of the Swan, the farthest here · somewhere from 1,400 to 2,600 light-years</span></p><p class="left"></p></div>
+  </div>
+
+  <h2>THE NEAREST</h2>
+  <p>Alpha Centauri is about 1,590 light-days away. Voyager 1, the farthest thing people have made, has been travelling since 1977 and will be one light-day from the Earth on 18 November 2026. At its speed it would need about seventy-seven thousand years to go as far as Alpha Centauri, if it were going that way, which it is not.</p>
+  <p>Its light reaching you tonight set out about four years and four months ago. Apart from the Sun's, that is the youngest starlight you can see without help.</p>
+
+  <h2>THE FARTHEST</h2>
+  <p>In late 2019 and early 2020, Betelgeuse, the red star at Orion's shoulder, went dimmer than anyone had measured it, losing more than half its light for a few months before recovering. The best explanation found since is a cloud of dust that the star itself threw off and that cooled in front of it. People watched that happen in 2020. It happened centuries earlier. The most recent careful estimate of the distance puts it around the 1470s; older estimates put it further away, and between them the light left sometime between about the 1230s and the 1520s. Betelgeuse is expected to explode one day; most estimates say not for something like a hundred thousand years. If it already has, the news is still on its way.</p>
+  <p>Deneb, in the Swan, is the farthest star on this list, and nobody is sure how far. Estimates run from about 1,400 to 2,600 light-years. Its light left sometime between about 600 BC and AD 600, and the uncertainty in when is twelve centuries wide. On the strip above, its dot sits in the middle of that range because it has to sit somewhere, not because anyone measured it there.</p>
+
+  <h2>HOW SURE</h2>
+  <p class="quiet">The distances to the nearer stars are measured by parallax: as the Earth goes around the Sun, a nearby star seems to shift a tiny amount against the far background, and the size of the shift gives the distance. For the nearest stars that is known to within days or weeks of light-travel time. It gets harder the further away a star is, because the shift gets smaller. The brightest stars are also too bright for the Gaia spacecraft, which has measured the distances of more than a billion fainter ones, so for several of the stars here the best figure is still the one from Hipparcos, an older satellite, or comes from a fainter companion star in the same system. Where the uncertainty is more than a few years, this page gives a range instead of a date, and the strip above draws it.</p>
+  <p class="quiet">What it leaves out: it does not know where you are, so it cannot say which of these stars are above your horizon tonight. The ones marked far southern sky cannot be seen from most of Europe, North America or northern Asia, and Polaris cannot be seen from almost anywhere south of the equator. The list is a choice: bright stars, and a few fainter ones near enough to fill in the years of a lifetime. It is not every star you can see.</p>
+
+  <h2>HOW THIS IS MADE</h2>
+  <p class="quiet">A short script takes today's date from your device and subtracts each distance, in years, to find when the light left. A light-year is defined using a year of exactly 365.25 days, so the light-travel time in years is the distance in light-years, with no conversion. If you give a year, it is used only in this page, to mark the stars whose light set out after it. It is not sent anywhere, kept, or put in the address bar.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Journal</a></p>
+</main>
+<script>
+(function () {
+  document.documentElement.className += ' js';
+  var YEAR = 365.25 * 864e5, NS = 'http://www.w3.org/2000/svg';
+  var now = Date.now();
+  var nowYear = 1970 + now / YEAR; // close enough to the calendar for dates of departure
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  function yearName(y, to) {
+    // y is an astronomical year, where 0 is 1 BC; rounded, if asked, after it is turned into a calendar year
+    to = to || 1;
+    if (y > 0) { y = Math.max(to, Math.round(y / to) * to); return (y < 1000 ? 'AD ' : '') + y; }
+    return Math.max(to, Math.round((1 - y) / to) * to) + ' BC';
+  }
+  function when(row) {
+    var d = row.d, lo = row.lo, hi = row.hi, spread = hi - lo;
+    var t = now - d * YEAR;
+    if (spread < 0.3) {
+      var date = new Date(t);
+      return 'set out in ' + MONTHS[date.getUTCMonth()] + ' ' + date.getUTCFullYear();
+    }
+    var y = Math.floor(nowYear - d);
+    if (spread < 3) return 'set out in ' + yearName(y);
+    if (spread < 12) return 'set out around ' + yearName(y);
+    var step = spread < 400 ? 10 : 100;
+    return 'set out between about ' + yearName(Math.floor(nowYear - hi), step) + ' and ' + yearName(Math.floor(nowYear - lo), step);
+  }
+
+  var rows = [].slice.call(document.querySelectorAll('#stars .row')).map(function (el) {
+    var d = parseFloat(el.getAttribute('data-d'));
+    var lo = parseFloat(el.getAttribute('data-lo') || d), hi = parseFloat(el.getAttribute('data-hi') || d);
+    return { el: el, d: d, lo: lo, hi: hi, name: el.querySelector('.what').firstChild.nodeValue };
+  });
+  rows.forEach(function (r) { r.el.querySelector('.left').textContent = 'Its light ' + when(r) + '.'; });
+
+  // the strip
+  var svg = document.getElementById('strip');
+  var X0 = 40, X1 = 960, FAR = 3000, AXIS = 320;
+  function x(ago) { return X1 - (X1 - X0) * Math.log(Math.max(ago, 1)) / Math.log(FAR); }
+  function el(name, attrs, parent) {
+    var e = document.createElementNS(NS, name);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    (parent || svg).appendChild(e);
+    return e;
+  }
+  el('line', { 'class': 'axis', x1: X0, y1: AXIS, x2: X1, y2: AXIS });
+  [[1, 'a year ago'], [10, '10 years'], [100, '100 years'], [1000, '1,000 years']].forEach(function (t) {
+    el('line', { 'class': 'tick', x1: x(t[0]), y1: AXIS - 6, x2: x(t[0]), y2: AXIS + 6 });
+    el('text', { 'class': 'tlabel', x: x(t[0]), y: AXIS + 32, 'text-anchor': t[0] === 1 ? 'end' : 'middle' }).textContent = t[1];
+  });
+  // labels go in rows above the axis, each in the lowest row where it does not run into the label before it
+  var ends = [], LEVELS = 11, GAP = 26, top = AXIS;
+  rows.slice().reverse().forEach(function (r) {
+    var g = el('g', {});
+    r.g = g;
+    var cx = x(r.d);
+    if (x(r.lo) - x(r.hi) > 4) el('line', { 'class': 'range', x1: x(r.hi), y1: AXIS, x2: x(r.lo), y2: AXIS }, g);
+    var w = r.name.length * 9.2 + 8, lx = cx - 3, level = 0;
+    while (level < LEVELS - 1 && ends[level] !== undefined && ends[level] > lx) level++;
+    if (lx + w > 1000) lx = 1000 - w;
+    ends[level] = lx + w;
+    var ly = AXIS - 22 - level * GAP;
+    if (ly < top) top = ly;
+    el('line', { 'class': 'lead', x1: cx, y1: AXIS - 4, x2: cx, y2: ly + 5 }, g);
+    el('circle', { 'class': 'dot', cx: cx, cy: AXIS, r: 3.5 }, g);
+    el('text', { 'class': 'name', x: lx, y: ly }, g).textContent = r.name;
+    el('title', {}, g).textContent = r.name + ', ' + r.el.querySelector('.left').textContent.replace(/^Its light /, 'light ');
+  });
+  top -= 40; // trim the sky above the highest label
+  svg.setAttribute('viewBox', '0 ' + top + ' 1000 ' + (390 - top));
+  var mark = el('g', {});
+  svg.removeAttribute('hidden');
+  document.getElementById('strip-caption').removeAttribute('hidden');
+
+  // the year
+  var input = document.getElementById('year'), answer = document.getElementById('answer');
+  document.getElementById('ask').removeAttribute('hidden');
+  var thisYear = new Date(now).getUTCFullYear();
+  function show() {
+    while (mark.firstChild) mark.removeChild(mark.firstChild);
+    rows.forEach(function (r) { r.el.classList.remove('after'); r.g.removeAttribute('class'); });
+    var v = input.value.trim();
+    if (!/^-?\d{1,4}$/.test(v)) { answer.textContent = ''; return; }
+    var Y = parseInt(v, 10);
+    if (Y === 0) { answer.textContent = 'There was no year 0: the count goes from 1 BC straight to AD 1.'; return; }
+    if (Y < 0) Y += 1; // 1 BC is year 0 in the arithmetic
+    if (Y > thisYear) { answer.textContent = 'Light that sets out in ' + v + ' has not left yet.'; return; }
+    if (Y < -999) { answer.textContent = 'That is further back than anything on this list.'; return; }
+    var near = nowYear - (Y + 1), far = nowYear - Y; // light that set out during that year is now this many light-years out
+    var after = rows.filter(function (r) { return r.hi < near; }); // only where even the far end of the range is nearer
+    after.forEach(function (r) { r.el.classList.add('after'); r.g.setAttribute('class', 'after'); });
+    var best = rows.slice().sort(function (a, b) { return Math.abs(a.d - (near + far) / 2) - Math.abs(b.d - (near + far) / 2); })[0];
+    var label = yearName(Y);
+    var text = 'Light that set out during ' + label + ' is now between ' + fmt(Math.max(near, 0)) + ' and ' + fmt(far) + ' light-years away. ';
+    if (best.lo <= far && best.hi >= near) text += best.name + ' is about that far: the light you see from it tonight could have left it that year. ';
+    else text += 'The nearest star on this list to that distance is ' + best.name + ', ' + fmt(best.d) + ' light-years away. ';
+    text += after.length === 0 ? 'None of the stars here is close enough that its light left after ' + label + '.' :
+      after.length === rows.length ? 'The light from every star on this list set out after ' + label + '.' :
+      (after.length === 1 ? 'Only one star here is' : after.length + ' of the stars here are') + ' close enough that the light you see tonight left after ' + label + '. ' + (after.length === 1 ? 'It is' : 'They are') + ' marked below.';
+    answer.textContent = text;
+    var mx = x((near + far) / 2);
+    el('line', { 'class': 'you', x1: mx, y1: top + 8, x2: mx, y2: AXIS + 42 }, mark);
+    el('text', { 'class': 'ylabel', x: mx + (mx > 900 ? -6 : 6), y: AXIS + 60, 'text-anchor': mx > 900 ? 'end' : 'start' }, mark).textContent = label;
+  }
+  function fmt(n) { return n < 10 ? n.toFixed(2) : n < 100 ? n.toFixed(1) : String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  input.addEventListener('input', show);
+  show();
+})();
+</script>
+</body>
+</html>
