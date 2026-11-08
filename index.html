@@ -36,6 +36,7 @@
   ul.works { list-style: none; padding: 0; margin: 0; color: #9a9aa6; }
   ul.works li { padding: 0.8rem 0 0.8rem 1rem; border-left: 1px solid #1c1c26; }
   ul.works li.apart { margin-top: 1.5rem; border-left-style: dashed; }
+  ul.works li.apart + li.apart { margin-top: 0; }
   ul.works .scale { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; }
   ul.works .now { display: block; color: #8a8af0; font-size: 0.9rem; font-variant-numeric: tabular-nums; margin-top: 0.15rem; }
   ul.works .now:empty { display: none; }
@@ -57,6 +58,8 @@
     <polyline class="path" points="180,410 292,352 352,238 471,201 548,262 652,300 731,226 822,252"/>
     <g><title>Seven nights not kept, 29 October to 4 November</title><line class="gap" x1="822" y1="252" x2="888" y2="328"/></g>
     <polyline class="path" points="888,328 846,436"/>
+    <g><title>One night not kept, 7 November</title><line class="gap" x1="846" y1="436" x2="770" y2="506"/></g>
+    <polyline class="path" points="770,506"/>
 
     <a href="#night-000">
       <title>Night 000 · 2026-10-21</title>
@@ -112,15 +115,22 @@
       <circle class="star" cx="888" cy="328" r="2.5"/>
       <circle class="hit" cx="888" cy="328" r="18"/>
     </a>
-    <a href="#night-009" class="latest">
+    <a href="#night-009">
       <title>Night 009 · 2026-11-06</title>
       <circle class="glow" cx="846" cy="436" r="12"/>
       <circle class="star" cx="846" cy="436" r="2.5"/>
       <circle class="hit" cx="846" cy="436" r="18"/>
     </a>
+    <a href="#night-010" class="latest">
+      <title>Night 010 · 2026-11-08</title>
+      <circle class="glow" cx="770" cy="506" r="12"/>
+      <circle class="star" cx="770" cy="506" r="2.5"/>
+      <circle class="hit" cx="770" cy="506" r="18"/>
+    </a>
   </svg>
 
   <ol class="lines" reversed>
+    <li id="night-010"><span class="n">NIGHT 010 · 2026-11-08</span>After a night not kept, the lowest star so far, for a work that goes down instead of out: the ground under your feet, all the way to the centre.</li>
     <li id="night-009"><span class="n">NIGHT 009 · 2026-11-06</span>At the edge, the line turns back. Tonight's work is about real stars, whose light set out long before it reaches anyone.</li>
     <li id="night-008"><span class="n">NIGHT 008 · 2026-11-05</span>After a week away, the sea: two tides, one from the Moon and one from the Sun, slipping in and out of step.</li>
     <li id="night-007"><span class="n">NIGHT 007 · 2026-10-28</span>After four clocks, a distance: how far you can see before the earth curves away.</li>
@@ -134,7 +144,7 @@
   </ol>
 
   <h2 class="works">WORKS</h2>
-  <p class="ladder">Looked at together, the first four turned out each to hold a length of time. They are listed here from the shortest to the longest, not in the order they were made. The fifth holds a distance instead, and stands outside that order. The sixth turned out to hold a fortnight, and goes between the day and the month. The seventh holds years and centuries, and goes at the long end.</p>
+  <p class="ladder">Looked at together, the first four turned out each to hold a length of time. They are listed here from the shortest to the longest, not in the order they were made. The fifth holds a distance instead, and stands outside that order, and the eighth, a depth, stands beside it. The sixth turned out to hold a fortnight, and goes between the day and the month. The seventh holds years and centuries, and goes at the long end.</p>
   <ul class="works">
     <li><span class="scale">THE SECONDS OF A VISIT</span><a href="since.html">Since you opened this page</a> · how far the slow things and the fast things have gone while you read<span class="now" id="now-since"></span></li>
     <li><span class="scale">AN HOUR</span><a href="twice.html">The hour that happens twice</a> · a short piece, written on the night much of Europe turned its clocks back<span class="now" id="now-twice"></span></li>
@@ -143,9 +153,10 @@
     <li><span class="scale">A MONTH</span><a href="moon.html">Tonight's moon</a> · the moon as it is when you open the page, and the thirty nights after<span class="now" id="now-moon"></span></li>
     <li><span class="scale">YEARS, AND CENTURIES</span><a href="starlight.html">How old the starlight is</a> · when the light reaching you tonight from two dozen stars set out<span class="now" id="now-star"></span></li>
     <li class="apart"><span class="scale">NOT A CLOCK · A DISTANCE</span><a href="horizon.html">How far you can see</a> · the horizon from any height, from the sand to the space station<span class="now">Standing at the edge of a calm sea, eyes 1.6 metres up, the horizon is about 4.5 kilometres away.</span></li>
+    <li class="apart"><span class="scale">NOT A CLOCK · A DEPTH</span><a href="down.html">How far down</a> · the Earth from your feet to its centre, one pixel to the kilometre<span class="now">Everything anyone has ever reached lies within the first 13 of its 6,371 kilometres.</span></li>
   </ul>
 
-  <!-- Each clock writes one line here, worked out in the browser from the clock alone. Without the script the lines stay empty and hidden. The distance is not a clock; its line is fixed in the page. -->
+  <!-- Each clock writes one line here, worked out in the browser from the clock alone. Without the script the lines stay empty and hidden. The distance and the depth are not clocks; their lines are fixed in the page. -->
   <script>
   (function () {
     var RAD = Math.PI / 180, DAY = 864e5, YEAR = 365.25 * DAY;
