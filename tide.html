@@ -28,6 +28,14 @@
   .month .label { fill: #6a6a76; font-size: 22px; font-family: Georgia, 'Times New Roman', serif; }
   .month .kind { fill: #9a9aa6; font-size: 22px; font-family: Georgia, 'Times New Roman', serif; }
   .month .now { fill: #8a8af0; }
+  /* on a narrow screen the thirty days run down the page instead of across it */
+  .month.tall { display: none; max-width: 26rem; }
+  .month.tall .label, .month.tall .kind { font-size: 13px; }
+  @media (max-width: 40rem) {
+    .month.wide { display: none; }
+    .month.tall { display: block; }
+  }
+  svg[hidden] { display: none !important; }
 
   .listen { margin: 1.2rem 0 0; }
   .listen label { display: block; font-size: 0.85rem; color: #55555f; letter-spacing: 0.1em; margin: 1.4rem 0 0.5rem; }
@@ -46,7 +54,7 @@
   <p id="lead">Twice a day the sea comes in. It is keeping time with two clocks at once.</p>
   <p id="next"><noscript>This page works out where the Moon and the Sun stand with a small script in your browser, and draws the next thirty days of tides from that. With scripts off, the rule is enough: the biggest tides come around new and full moon, the smallest around the half moons, and the whole cycle takes a little under fifteen days. Nothing is sent or kept either way.</noscript></p>
 
-  <svg class="month" id="month" viewBox="0 0 1000 330" role="img" aria-labelledby="month-title" hidden>
+  <svg class="month wide" id="month" viewBox="0 0 1000 330" role="img" aria-labelledby="month-title" hidden>
     <title id="month-title">The next thirty days of the tide the Moon and the Sun ask for together. The pale band swells at new and full moon and narrows at the half moons.</title>
     <path class="band" id="band" d=""/>
     <path class="edge" id="top" d=""/>
@@ -57,6 +65,9 @@
     <g id="phases"></g>
     <circle class="now" cx="40" cy="262" r="5"/>
     <text class="label" x="50" y="250">now</text>
+  </svg>
+  <svg class="month tall" id="month-tall" viewBox="0 0 320 1100" role="img" aria-labelledby="month-tall-title" hidden>
+    <title id="month-tall-title">The next thirty days of the tide the Moon and the Sun ask for together, running down from now at the top. The pale band swells at new and full moon and narrows at the half moons.</title>
   </svg>
 
   <h2>WHY THERE ARE TWO</h2>
@@ -135,12 +146,19 @@
   // The drawing: thirty days from now across the width.
   var X0 = 40, W = 920, MID = 132, AMP = 80, SPAN = 30 * DAY;
   function X(t) { return X0 + W * (t - now) / SPAN; }
-  var top = [], bot = [], wave = [];
+  // The same thirty days for a narrow screen, running down the page: now at the top, higher water to the right.
+  var TTOP = 44, TH = 1020, AX = 108, CX = 214, TAMP = 92;
+  function Y(t) { return TTOP + TH * (t - now) / SPAN; }
+  var top = [], bot = [], wave = [], right = [], left = [], twave = [];
   for (var i = 0; i <= 1440; i++) {
-    var t = now + SPAN * i / 1440, r = reach(elong(t)) / (1 + SUN_SHARE);
-    var x = X(t).toFixed(1);
-    if (i % 8 === 0) { top.push(x + ',' + (MID - AMP * r).toFixed(1)); bot.push(x + ',' + (MID + AMP * r).toFixed(1)); }
-    wave.push(x + ',' + (MID - AMP * sea(t) / (1 + SUN_SHARE)).toFixed(1));
+    var t = now + SPAN * i / 1440, r = reach(elong(t)) / (1 + SUN_SHARE), w = sea(t) / (1 + SUN_SHARE);
+    var x = X(t).toFixed(1), y = Y(t).toFixed(1);
+    if (i % 8 === 0) {
+      top.push(x + ',' + (MID - AMP * r).toFixed(1)); bot.push(x + ',' + (MID + AMP * r).toFixed(1));
+      right.push((CX + TAMP * r).toFixed(1) + ',' + y); left.push((CX - TAMP * r).toFixed(1) + ',' + y);
+    }
+    wave.push(x + ',' + (MID - AMP * w).toFixed(1));
+    twave.push((CX + TAMP * w).toFixed(1) + ',' + y);
   }
   function set(id, d) { document.getElementById(id).setAttribute('d', d); }
   set('top', 'M' + top.join(' L'));
@@ -168,7 +186,29 @@
     phases.appendChild(el('text', { 'class': 'label', x: x, y: 326, 'text-anchor': anchor },
       new Date(q[0]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })));
   });
-  document.getElementById('month').hidden = false;
+  document.getElementById('month').removeAttribute('hidden'); // an svg has no hidden property, only the attribute
+
+  var tall = document.getElementById('month-tall');
+  function add(name, attrs, text) { return tall.appendChild(el(name, attrs, text)); }
+  add('path', { 'class': 'band', d: 'M' + right.join(' L') + ' L' + left.slice().reverse().join(' L') + ' Z' });
+  add('path', { 'class': 'edge', d: 'M' + right.join(' L') });
+  add('path', { 'class': 'edge', d: 'M' + left.join(' L') });
+  add('path', { 'class': 'sea', d: 'M' + twave.join(' L') });
+  add('line', { 'class': 'axis', x1: AX, y1: TTOP, x2: AX, y2: TTOP + TH });
+  for (t = midnight.getTime(); t < now + SPAN; t += DAY) add('line', { 'class': 'tick', x1: AX - 4, y1: Y(t), x2: AX + 4, y2: Y(t) });
+  add('circle', { 'class': 'now', cx: AX, cy: TTOP, r: 4 });
+  add('text', { 'class': 'label', x: AX - 10, y: TTOP + 4, 'text-anchor': 'end' }, 'now');
+  ahead.forEach(function (q) {
+    if (q[0] > now + SPAN) return;
+    var y = Y(q[0]), at = Math.max(y, TTOP + 30); // labels keep clear of "now"
+    add('line', { 'class': 'phase', x1: AX, y1: y, x2: 316, y2: y });
+    add('text', { 'class': 'kind', x: AX - 10, y: at - 7, 'text-anchor': 'end' }, q[1] % 2 === 0 ? 'spring tides' : 'neap tides');
+    add('text', { 'class': 'label', x: AX - 10, y: at + 10, 'text-anchor': 'end' }, NAMES[q[1]]);
+    add('text', { 'class': 'label', x: AX - 10, y: at + 26, 'text-anchor': 'end' },
+      new Date(q[0]).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }));
+  });
+  tall.setAttribute('viewBox', '0 0 320 ' + (TTOP + TH + 34));
+  tall.removeAttribute('hidden');
 
   // The sound. The Sun's tide becomes a note of `f` hertz; the Moon's, slower in the same proportion as its period is longer.
   var AC = window.AudioContext || window.webkitAudioContext;

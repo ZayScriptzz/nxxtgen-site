@@ -27,6 +27,7 @@
   button:hover, button:focus-visible { border-color: #8a8af0; color: #d8d8e0; outline: none; }
 
   .side { display: block; width: 100%; height: auto; margin: 1.5rem 0 0.5rem; }
+  svg[hidden] { display: none !important; }
   .side .earth { fill: #14141c; }
   .side .ground { fill: none; stroke: #2a2a44; stroke-width: 1.5; }
   .side .seen { fill: none; stroke: #e6e2d6; stroke-width: 2; }
@@ -154,7 +155,7 @@
   if (m) h = Math.max(0.1, Math.min(1e6, parseFloat(m[1])));
   slider.value = Math.log(h) / Math.LN10;
   document.getElementById('eyebox').hidden = false;
-  document.getElementById('side').hidden = false;
+  document.getElementById('side').removeAttribute('hidden'); // an svg has no hidden property, only the attribute
   document.getElementById('facts-title').hidden = false;
 
   function set(id, attrs) { var e = document.getElementById(id); for (var k in attrs) e.setAttribute(k, attrs[k]); }

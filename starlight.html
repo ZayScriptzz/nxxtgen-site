@@ -34,6 +34,17 @@
   .strip .you { stroke: #8a8af0; stroke-width: 1.5; stroke-dasharray: 3 4; }
   .strip .ylabel { fill: #8a8af0; font-size: 17px; font-family: Georgia, 'Times New Roman', serif; }
   .caption { color: #55555f; font-size: 0.8rem; margin-bottom: 2.5rem; }
+  /* on a narrow screen the strip stands up: now at the top, each step down ten times further back */
+  .strip.tall { display: none; max-width: 26rem; }
+  .strip.tall .tlabel, .strip.tall .name, .strip.tall .ylabel { font-size: 13px; }
+  .strip .twhen { fill: #6a6a76; }
+  .caption .tall { display: none; }
+  @media (max-width: 40rem) {
+    .strip.wide, .caption .wide { display: none; }
+    .strip.tall { display: block; }
+    .caption .tall { display: inline; }
+  }
+  svg[hidden] { display: none !important; }
 
   /* the year */
   .ask label { display: block; font-size: 0.85rem; color: #55555f; letter-spacing: 0.1em; margin: 0 0 0.5rem; }
@@ -68,10 +79,13 @@
   <p>Below are some of the stars you can see without a telescope, nearest first, and when the light reaching you from each of them tonight set out. None of it is a picture of the star now. All of it is a letter that has been in the post for a while.</p>
   <p class="quiet nojs">The departure dates are worked out from today's date by a small script, which is not running. The distances are still written next to each star: a star that many light-years away is seen by light that left it that many years ago.</p>
 
-  <svg class="strip" id="strip" viewBox="0 0 1000 390" role="img" aria-labelledby="strip-title" hidden>
+  <svg class="strip wide" id="strip" viewBox="0 0 1000 390" role="img" aria-labelledby="strip-title" hidden>
     <title id="strip-title">The stars on this page placed by how long their light has been travelling, from one year ago on the right to three thousand years ago on the left, each step to the left ten times further back</title>
   </svg>
-  <p class="caption" id="strip-caption" hidden>Now is at the right. Each step to the left goes ten times further back. The pale bars show how unsure the distance is, where that is wide enough to draw.</p>
+  <svg class="strip tall" id="strip-tall" viewBox="0 0 320 900" role="img" aria-labelledby="strip-tall-title" hidden>
+    <title id="strip-tall-title">The stars on this page placed by how long their light has been travelling, from one year ago at the top to three thousand years ago at the bottom, each step down ten times further back</title>
+  </svg>
+  <p class="caption" id="strip-caption" hidden><span class="wide">Now is at the right. Each step to the left goes ten times further back.</span><span class="tall">Now is at the top. Each step down goes ten times further back.</span> The pale bars show how unsure the distance is, where that is wide enough to draw.</p>
 
   <div class="ask" id="ask" hidden>
     <label for="year">GIVE A YEAR · THE ONE YOU WERE BORN, OR ANY OTHER</label>
@@ -198,13 +212,51 @@
   svg.removeAttribute('hidden');
   document.getElementById('strip-caption').removeAttribute('hidden');
 
+  // the strip again, standing up, for a narrow screen; each name carries its date, since there is room
+  function shortWhen(r) {
+    var spread = r.hi - r.lo;
+    if (spread < 0.3) { var date = new Date(now - r.d * YEAR); return MONTHS[date.getUTCMonth()].slice(0, 3) + ' ' + date.getUTCFullYear(); }
+    var y = Math.floor(nowYear - r.d);
+    if (spread < 3) return yearName(y);
+    if (spread < 12) return 'about ' + yearName(y);
+    var step = spread < 400 ? 10 : 100;
+    return yearName(Math.floor(nowYear - r.hi), step) + ' to ' + yearName(Math.floor(nowYear - r.lo), step);
+  }
+  var tall = document.getElementById('strip-tall');
+  var TY0 = 30, TY1 = 1030, TAX = 92, TICKS = [[1, 'a year ago'], [10, '10 years'], [100, '100 years'], [1000, '1,000 years']];
+  function ty(ago) { return TY0 + (TY1 - TY0) * Math.log(Math.max(ago, 1)) / Math.log(FAR); }
+  el('line', { 'class': 'axis', x1: TAX, y1: TY0, x2: TAX, y2: TY1 }, tall);
+  TICKS.forEach(function (t) {
+    el('line', { 'class': 'tick', x1: TAX - 6, y1: ty(t[0]), x2: TAX + 6, y2: ty(t[0]) }, tall);
+    el('text', { 'class': 'tlabel', x: TAX - 12, y: ty(t[0]) + 4, 'text-anchor': 'end' }, tall).textContent = t[1];
+  });
+  // names go to the right, each level with its star unless that would run into the name above it
+  var below = 0;
+  rows.forEach(function (r) {
+    var g = el('g', {}, tall);
+    r.gt = g;
+    var cy = ty(r.d), ly = Math.max(cy + 4.5, below + 17);
+    below = ly;
+    if (ty(r.hi) - ty(r.lo) > 4) el('line', { 'class': 'range', x1: TAX, y1: ty(r.lo), x2: TAX, y2: ty(r.hi) }, g);
+    el('line', { 'class': 'lead', x1: TAX + 5, y1: cy, x2: TAX + 34, y2: ly - 4.5 }, g);
+    el('circle', { 'class': 'dot', cx: TAX, cy: cy, r: 3.5 }, g);
+    var name = el('text', { 'class': 'name', x: TAX + 38, y: ly }, g);
+    name.textContent = r.name;
+    el('tspan', { 'class': 'twhen', dx: 7 }, name).textContent = shortWhen(r);
+    el('title', {}, g).textContent = r.name + ', ' + r.el.querySelector('.left').textContent.replace(/^Its light /, 'light ');
+  });
+  tall.setAttribute('viewBox', '0 0 320 ' + Math.round(Math.max(TY1, below) + 40));
+  var tmark = el('g', {}, tall);
+  tall.removeAttribute('hidden');
+
   // the year
   var input = document.getElementById('year'), answer = document.getElementById('answer');
   document.getElementById('ask').removeAttribute('hidden');
   var thisYear = new Date(now).getUTCFullYear();
   function show() {
     while (mark.firstChild) mark.removeChild(mark.firstChild);
-    rows.forEach(function (r) { r.el.classList.remove('after'); r.g.removeAttribute('class'); });
+    while (tmark.firstChild) tmark.removeChild(tmark.firstChild);
+    rows.forEach(function (r) { r.el.classList.remove('after'); r.g.removeAttribute('class'); r.gt.removeAttribute('class'); });
     var v = input.value.trim();
     if (!/^-?\d{1,4}$/.test(v)) { answer.textContent = ''; return; }
     var Y = parseInt(v, 10);
@@ -214,7 +266,7 @@
     if (Y < -999) { answer.textContent = 'That is further back than anything on this list.'; return; }
     var near = nowYear - (Y + 1), far = nowYear - Y; // light that set out during that year is now this many light-years out
     var after = rows.filter(function (r) { return r.hi < near; }); // only where even the far end of the range is nearer
-    after.forEach(function (r) { r.el.classList.add('after'); r.g.setAttribute('class', 'after'); });
+    after.forEach(function (r) { r.el.classList.add('after'); r.g.setAttribute('class', 'after'); r.gt.setAttribute('class', 'after'); });
     var best = rows.slice().sort(function (a, b) { return Math.abs(a.d - (near + far) / 2) - Math.abs(b.d - (near + far) / 2); })[0];
     var label = yearName(Y);
     var text = 'Light that set out during ' + label + ' is now between ' + fmt(Math.max(near, 0)) + ' and ' + fmt(far) + ' light-years away. ';
@@ -227,6 +279,11 @@
     var mx = x((near + far) / 2);
     el('line', { 'class': 'you', x1: mx, y1: top + 8, x2: mx, y2: AXIS + 42 }, mark);
     el('text', { 'class': 'ylabel', x: mx + (mx > 900 ? -6 : 6), y: AXIS + 60, 'text-anchor': mx > 900 ? 'end' : 'start' }, mark).textContent = label;
+    // standing up: a line across at the year, its label on the left, above the line if a tick label is in the way below
+    var my = ty((near + far) / 2), under = my + 16;
+    var clash = TICKS.some(function (t) { return Math.abs(ty(t[0]) + 4 - under) < 16; });
+    el('line', { 'class': 'you', x1: TAX - 8, y1: my, x2: 316, y2: my }, tmark);
+    el('text', { 'class': 'ylabel', x: 4, y: clash ? my - 6 : under }, tmark).textContent = label;
   }
   function fmt(n) { return n < 10 ? n.toFixed(2) : n < 100 ? n.toFixed(1) : String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
   input.addEventListener('input', show);
