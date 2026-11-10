@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · Why the days come in this order</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.75; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  .title { font-size: 1.6rem; line-height: 1.3; margin: 3rem 0 0.3rem; }
+  .when { color: #55555f; font-size: 0.85rem; letter-spacing: 0.1em; margin: 0 0 3rem; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; }
+  a { color: #8a8af0; }
+  em { color: #e6e2d6; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+  #today { color: #8a8af0; }
+  #today:empty { display: none; }
+
+  /* the star of the days */
+  .star { display: block; width: 100%; max-width: 30rem; height: auto; margin: 2.5rem auto 0.5rem; }
+  .star .ring { fill: none; stroke: #1c1c26; stroke-width: 1; }
+  .star .hours { fill: none; stroke: #2a2a44; stroke-width: 1; stroke-dasharray: 2 4; }
+  .star .chord { stroke: #8a8af0; stroke-width: 1.4; opacity: 0.75; }
+  .star .chord.off { opacity: 0; }
+  .star .node { fill: #d8d8e0; }
+  .star .glow { fill: #8a8af0; opacity: 0; }
+  .star .today .glow { opacity: 0.25; }
+  .star .today .node { fill: #8a8af0; }
+  .star .planet { fill: #d8d8e0; font-size: 16px; text-anchor: middle; }
+  .star .day { fill: #6a6a76; font-size: 13px; text-anchor: middle; }
+  .star .today .day { fill: #8a8af0; }
+  @media (max-width: 30rem) {
+    .star .planet { font-size: 18px; }
+    .star .day { font-size: 15px; transform: translateY(3px); }
+  }
+  .star .hand { fill: none; stroke: #e6e2d6; stroke-width: 1.5; }
+  .star .hand[hidden] { display: none; }
+  .count { margin: 0.5rem 0 2.5rem; }
+  .count[hidden] { display: none; }
+  .count .row { display: flex; gap: 1rem; align-items: center; }
+  .count input { flex: 1; accent-color: #8a8af0; }
+  .count button { font: inherit; font-size: 0.85rem; color: #d8d8e0; background: #14141c; border: 1px solid #2a2a44; padding: 0.35rem 0.9rem; cursor: pointer; }
+  .count button:hover, .count button:focus-visible { border-color: #8a8af0; }
+  .count .say { color: #9a9aa6; font-size: 0.95rem; min-height: 3.4em; margin: 0.6rem 0 0; font-variant-numeric: tabular-nums; }
+  .count label { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; margin-bottom: 0.3rem; }
+
+  /* the names */
+  dl.names { margin: 1.5rem 0 2rem; }
+  dl.names dt { font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; margin-top: 1rem; }
+  dl.names dd { margin: 0.1rem 0 0; padding-left: 1rem; border-left: 1px solid #1c1c26; color: #9a9aa6; }
+  dl.names .is-today dd { border-left-color: #8a8af0; color: #d8d8e0; }
+  dl.names .is-today dt { color: #8a8af0; }
+  dl.names i { color: #d8d8e0; font-style: italic; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · the order of the days</h1>
+
+  <p class="title">Why the days come in this order</p>
+  <p class="when">MADE ON THE NIGHT OF 10 NOVEMBER 2026</p>
+
+  <p id="today"></p>
+  <p>In a great many languages, the seven days of the week are named for the seven lights the ancients saw wandering across the sky against the fixed stars: the Sun, the Moon, and the five planets you can see without a telescope. In all of those languages they come in the same order. That order is not the order of the planets in the sky, and it was not picked at random. It comes from counting hours.</p>
+
+  <!-- The seven in the old order, furthest from the Earth first, clockwise from the top. The dashed ring is the order of the hours; the bright lines are the order of the days, each one three places on from the last. -->
+  <svg class="star" id="star" viewBox="-200 -186 400 372" role="img" aria-labelledby="star-title">
+    <title id="star-title">The seven planets of the ancients on a circle, Saturn, Jupiter, Mars, Sun, Venus, Mercury, Moon. Joining each to the one three places further round draws a seven-pointed star, and following its lines from Saturn gives the days in order: Saturday, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday.</title>
+    <circle class="ring" r="118"/>
+    <polygon class="hours" points="0,-118 92.3,-73.6 115,26.3 51.2,106.3 -51.2,106.3 -115,26.3 -92.3,-73.6"/>
+    <g id="chords">
+      <line class="chord" x1="0" y1="-118" x2="51.2" y2="106.3"/>
+      <line class="chord" x1="51.2" y1="106.3" x2="-92.3" y2="-73.6"/>
+      <line class="chord" x1="-92.3" y1="-73.6" x2="115" y2="26.3"/>
+      <line class="chord" x1="115" y1="26.3" x2="-115" y2="26.3"/>
+      <line class="chord" x1="-115" y1="26.3" x2="92.3" y2="-73.6"/>
+      <line class="chord" x1="92.3" y1="-73.6" x2="-51.2" y2="106.3"/>
+      <line class="chord" x1="-51.2" y1="106.3" x2="0" y2="-118"/>
+    </g>
+    <g id="p0"><circle class="glow" cx="0" cy="-118" r="11"/><circle class="node" cx="0" cy="-118" r="3.5"/><text class="planet" x="0" y="-160">Saturn</text><text class="day" x="0" y="-144">Saturday</text></g>
+    <g id="p1"><circle class="glow" cx="92.3" cy="-73.6" r="11"/><circle class="node" cx="92.3" cy="-73.6" r="3.5"/><text class="planet" x="124" y="-108">Jupiter</text><text class="day" x="124" y="-92">Thursday</text></g>
+    <g id="p2"><circle class="glow" cx="115" cy="26.3" r="11"/><circle class="node" cx="115" cy="26.3" r="3.5"/><text class="planet" x="152" y="40">Mars</text><text class="day" x="152" y="56">Tuesday</text></g>
+    <g id="p3"><circle class="glow" cx="51.2" cy="106.3" r="11"/><circle class="node" cx="51.2" cy="106.3" r="3.5"/><text class="planet" x="70" y="140">Sun</text><text class="day" x="70" y="156">Sunday</text></g>
+    <g id="p4"><circle class="glow" cx="-51.2" cy="106.3" r="11"/><circle class="node" cx="-51.2" cy="106.3" r="3.5"/><text class="planet" x="-70" y="140">Venus</text><text class="day" x="-70" y="156">Friday</text></g>
+    <g id="p5"><circle class="glow" cx="-115" cy="26.3" r="11"/><circle class="node" cx="-115" cy="26.3" r="3.5"/><text class="planet" x="-150" y="40">Mercury</text><text class="day" x="-150" y="56">Wednesday</text></g>
+    <g id="p6"><circle class="glow" cx="-92.3" cy="-73.6" r="11"/><circle class="node" cx="-92.3" cy="-73.6" r="3.5"/><text class="planet" x="-124" y="-108">Moon</text><text class="day" x="-124" y="-92">Monday</text></g>
+    <circle class="hand" id="hand" r="8" cx="0" cy="-118" hidden/>
+  </svg>
+
+  <div class="count" id="count" hidden>
+    <label for="hour">COUNT THE HOURS OF ONE WEEK, FROM THE FIRST HOUR OF SATURN'S DAY</label>
+    <div class="row">
+      <input type="range" id="hour" min="1" max="169" step="1" value="169">
+      <button type="button" id="play">Count</button>
+    </div>
+    <p class="say" id="say" aria-live="polite"></p>
+  </div>
+
+  <h2>SEVEN THAT WANDER</h2>
+  <p>Before telescopes, seven things moved against the stars, and the Greek word for them meant <em>wanderers</em>. Astronomers in the Greek and Roman world put them in order of distance from the Earth, furthest first, judging mostly by how long each takes to go round the whole sky. Saturn takes about twenty-nine and a half years. Jupiter takes twelve, Mars nearly two, the Sun one, and the Moon twenty-seven days and a third. Venus and Mercury never stray far from the Sun, so on average they take a year as well, and where they belonged, and where the Sun went among them, was argued over. The order that won was this one, the one round the circle above: Saturn, Jupiter, Mars, the Sun, Venus, Mercury, the Moon.</p>
+
+  <h2>TWENTY-FOUR HOURS</h2>
+  <p>Now give each hour of the day to one of the seven, in that order, starting with Saturn for the first hour, and go round and round. Twenty-four hours is three rounds of seven, and three over. So when the day ends, the count has come three places further round the circle than where it began, and the first hour of the next day falls to the Sun. Each day was named for the planet that held its first hour.</p>
+  <p>Do it again and the third day starts three places on from the Sun, with the Moon. Then Mars, Mercury, Jupiter, Venus, and then Saturn again. Three is not a factor of seven, so stepping by three visits all seven before it comes back, and the steps, joined up, draw a seven-pointed star. Read the star from Saturn and you have the week: Saturday, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday.</p>
+  <p>It makes no difference that the old hours stretched and shrank with the seasons, longer by day in summer and by night in winter. There were still twenty-four of them from one day to the next.</p>
+  <p>This explanation is written down by Cassius Dio, a Roman senator who wrote a history of Rome in Greek early in the third century. He gives a second explanation too, from music: start at Saturn, pass over two, take the fourth, pass over two, take the seventh, and so on, as with the musical interval called the fourth. Passing over two and taking the next is the same as stepping three places. The two explanations draw the same star. Dio offers both and does not choose. He says the custom came from Egypt and that by his time it was everywhere. Historians still argue about where it began; the earliest clear traces of it are from Italy, in the decades before the year 1.</p>
+
+  <h2>WHERE THE NAMES WENT</h2>
+  <p>The same seven, in the same order, went west into the languages of Europe and east into India, China and Japan. Some languages kept every one. Some swapped a god for one they thought matched. Some dropped the planets for the Sabbath, the Lord's day, or plain numbers.</p>
+  <dl class="names" id="names">
+    <div data-day="6"><dt>SATURDAY · SATURN</dt><dd>Latin <i>dies Saturni</i> · Welsh <i>dydd Sadwrn</i> · Hindi <i>Shanivar</i> · Japanese <i>doyōbi</i>, earth · French <i>samedi</i>, from the Sabbath, not the planet</dd></div>
+    <div data-day="0"><dt>SUNDAY · THE SUN</dt><dd>Latin <i>dies Solis</i> · Welsh <i>dydd Sul</i> · Hindi <i>Ravivar</i> · Japanese <i>nichiyōbi</i>, sun · French <i>dimanche</i>, the Lord's day, not the Sun</dd></div>
+    <div data-day="1"><dt>MONDAY · THE MOON</dt><dd>Latin <i>dies Lunae</i> · French <i>lundi</i> · Welsh <i>dydd Llun</i> · Hindi <i>Somvar</i> · Japanese <i>getsuyōbi</i>, moon</dd></div>
+    <div data-day="2"><dt>TUESDAY · MARS</dt><dd>Latin <i>dies Martis</i> · French <i>mardi</i> · Welsh <i>dydd Mawrth</i> · Hindi <i>Mangalvar</i> · Japanese <i>kayōbi</i>, fire · English: Tiw's day, a Germanic god of war, put in Mars's place</dd></div>
+    <div data-day="3"><dt>WEDNESDAY · MERCURY</dt><dd>Latin <i>dies Mercurii</i> · French <i>mercredi</i> · Welsh <i>dydd Mercher</i> · Hindi <i>Budhvar</i> · Japanese <i>suiyōbi</i>, water · English: Woden's day, in Mercury's place</dd></div>
+    <div data-day="4"><dt>THURSDAY · JUPITER</dt><dd>Latin <i>dies Iovis</i> · French <i>jeudi</i> · Welsh <i>dydd Iau</i> · Hindi <i>Guruvar</i> · Japanese <i>mokuyōbi</i>, wood · English: the day of Thunor, or Thor, the thunder god, in Jupiter's place</dd></div>
+    <div data-day="5"><dt>FRIDAY · VENUS</dt><dd>Latin <i>dies Veneris</i> · French <i>vendredi</i> · Welsh <i>dydd Gwener</i> · Hindi <i>Shukravar</i> · Japanese <i>kin'yōbi</i>, metal · English: Frigg's day, in Venus's place</dd></div>
+  </dl>
+  <p>English kept three of the Roman names, Saturn, the Sun and the Moon, and for the other four put in Germanic gods thought to be like the Roman ones. The Japanese names do not name gods at all. In Chinese, and in Japanese after it, the five planets are called after five elements: Mars is the fire star, Mercury water, Jupiter wood, Venus metal, Saturn earth. Japan made this its official week in 1876. Other languages count instead. In Portuguese, Monday is <em>segunda-feira</em>, the second day. In Mandarin it is <em>xīngqīyī</em>, week one.</p>
+
+  <h2>A CLOCK WITH NOTHING IN THE SKY BEHIND IT</h2>
+  <p>Everything else on this site that keeps time has something in the sky turning behind it: the Earth for the day, the Moon for the month, the two together for the tides. The week is named for the sky and kept by nothing in it. A quarter of the Moon's month, from new moon to new moon, is a little under seven and a half days, which may be where seven came from, but the week does not stay with the Moon, or with the year. A year of 365 days is fifty-two weeks and one day over, so every date moves one day of the week later each year, and two after a twenty-ninth of February. Only after four hundred years of the calendar most of the world uses, 146,097 days, which is exactly 20,871 weeks, does every date land on the same day of the week again.</p>
+  <p>It has outlasted every attempt to change it. When the calendar was reformed in 1582, ten dates were taken out: in Rome, Thursday the fourth of October was followed by Friday the fifteenth. The dates jumped. The days of the week did not. Revolutionary France replaced the week with a ten-day <em>décade</em> in 1793. Officials had their rest day moved back to Sunday in 1802, and the whole calendar was abolished from the first of January 1806. The Soviet Union brought in a five-day week in 1929, so that factories need never stop, then a six-day week, and went back to seven in June 1940. Neither lasted.</p>
+  <p id="since">Since Friday the fifteenth of October 1582, the day after Thursday the fourth, more than twenty-three thousand weeks have gone by.</p>
+
+  <h2>HOW THIS IS MADE</h2>
+  <p class="quiet">The order of the planets and both of Dio's explanations are from his <em>Roman History</em>, book 37, sections 18 and 19, in the English translation. That the planetary week first shows up clearly in Italy in the second half of the first century BC is the judgement of a recent study of the week in the Roman Empire, not something I could check against the inscriptions myself. The day names were checked language by language; the transliterations of the Hindi and Japanese names are the common ones, and other spellings are in use. The English gods are the usual account of where the names came from, and it rests mostly on the names themselves: there is little other evidence of which Germanic god was thought to match which Roman one. The figures for 1582, 1793 to 1806, and 1929 to 1940 are from standard histories of those calendars, which differ by a few days about when each change took effect. The page asks your device what day it is, to light that day and count the weeks, and keeps nothing.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Journal</a></p>
+</main>
+
+<script>
+(function () {
+  // The old order, furthest first. Node i sits at angle -90 + i*360/7 degrees, clockwise from the top.
+  var PLANETS = ['Saturn', 'Jupiter', 'Mars', 'the Sun', 'Venus', 'Mercury', 'the Moon'];
+  var OWNS = ["Saturn's", "Jupiter's", "Mars's", "the Sun's", "Venus's", "Mercury's", "the Moon's"];
+  var DAYS = ['Saturday', 'Thursday', 'Tuesday', 'Sunday', 'Friday', 'Wednesday', 'Monday'];
+  var XY = [[0, -118], [92.3, -73.6], [115, 26.3], [51.2, 106.3], [-51.2, 106.3], [-115, 26.3], [-92.3, -73.6]];
+  // getDay(): 0 Sunday .. 6 Saturday, to the planet's place on the circle.
+  var NODE_OF_WEEKDAY = [3, 6, 2, 5, 1, 4, 0];
+  var DAY = 864e5;
+
+  // Today, by the device's own calendar.
+  var now = new Date();
+  var wd = now.getDay(), node = NODE_OF_WEEKDAY[wd];
+  document.getElementById('p' + node).setAttribute('class', 'today');
+  var row = document.querySelector('#names [data-day="' + wd + '"]');
+  if (row) row.className = 'is-today';
+
+  var LINE = [
+    "Today, where you are, is Sunday, the day of the Sun. In Welsh it is dydd Sul, in Hindi Ravivar, and in Japanese nichiyōbi, the sun's day. In French it is dimanche, the Lord's day: one of two days French took back from the planets.",
+    "Today, where you are, is Monday, the day of the Moon. In French it is lundi, in Welsh dydd Llun, in Hindi Somvar, and in Japanese getsuyōbi, the moon's day.",
+    "Today, where you are, is Tuesday, the day of Mars. In French it is mardi, in Welsh dydd Mawrth, in Hindi Mangalvar, and in Japanese kayōbi, the day of the fire star, which is the name for Mars in Chinese and Japanese.",
+    "Today, where you are, is Wednesday, the day of Mercury. In French it is mercredi, in Welsh dydd Mercher, in Hindi Budhvar, and in Japanese suiyōbi, the day of the water star, which is the name for Mercury in Chinese and Japanese.",
+    "Today, where you are, is Thursday, the day of Jupiter. In French it is jeudi, in Welsh dydd Iau, in Hindi Guruvar, and in Japanese mokuyōbi, the day of the wood star, which is the name for Jupiter in Chinese and Japanese.",
+    "Today, where you are, is Friday, the day of Venus. In French it is vendredi, in Welsh dydd Gwener, in Hindi Shukravar, and in Japanese kin'yōbi, the day of the metal star, which is the name for Venus in Chinese and Japanese.",
+    "Today, where you are, is Saturday, the day of Saturn. In Welsh it is dydd Sadwrn, in Hindi Shanivar, and in Japanese doyōbi, the day of the earth star, which is the name for Saturn in Chinese and Japanese. In French it is samedi, from the Sabbath: one of two days French took back from the planets."
+  ];
+  document.getElementById('today').textContent = LINE[wd];
+
+  // Weeks since Friday 15 October 1582, counted by calendar date so clock changes do not matter.
+  var today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  var days = Math.round((today - Date.UTC(1582, 9, 15)) / DAY);
+  var weeks = Math.floor(days / 7), over = days % 7;
+  document.getElementById('since').textContent =
+    'Since Friday the fifteenth of October 1582, the day after Thursday the fourth, ' + weeks.toLocaleString('en-GB') + ' weeks' +
+    (over ? ' and ' + over + (over === 1 ? ' day' : ' days') : '') + ' have gone by. Today is still the day of the week it would have been if the ten dates had never been taken out.';
+
+  // Counting the hours.
+  var chords = document.querySelectorAll('#chords line');
+  var hand = document.getElementById('hand');
+  var input = document.getElementById('hour'), say = document.getElementById('say'), play = document.getElementById('play');
+  document.getElementById('count').hidden = false;
+
+  function show(v, quiet) {
+    // v = 1..168 is an hour of the week; 169 is the first hour of the next week.
+    var started = Math.min(Math.ceil(v / 24), 8);           // days begun so far, 1..8
+    for (var c = 0; c < 7; c++) chords[c].setAttribute('class', c < started - 1 ? 'chord' : 'chord off');
+    var i = (v - 1) % 7;
+    hand.setAttribute('cx', XY[i][0]); hand.setAttribute('cy', XY[i][1]);
+    hand.removeAttribute('hidden');
+    if (quiet) return;
+    var d = Math.floor((v - 1) / 24), h = (v - 1) % 24 + 1, lord = (3 * d) % 7, p = PLANETS[i];
+    var text;
+    if (v === 169) text = 'Hour 169 is the first hour of the next week, and it falls to Saturn again. Seven days, and the star is closed.';
+    else if (h === 1 && d === 0) text = 'Hour 1 of day 1 goes to Saturn, the furthest. The first hour names the day: Saturday.';
+    else if (h === 1) text = 'Hour 1 of day ' + (d + 1) + ' goes to ' + p + ', three places on from where the last day began. The first hour names the day: ' + DAYS[i] + '.';
+    else text = 'Day ' + (d + 1) + ', ' + OWNS[lord] + ' day, ' + DAYS[lord] + '. Hour ' + h + ' goes to ' + p + '.' +
+      (h === 24 ? ' The next hour, the first of a new day, goes to ' + PLANETS[(i + 1) % 7] + '.' : '');
+    say.textContent = text;
+  }
+
+  var timer = null;
+  function stop() { if (timer) { clearInterval(timer); timer = null; play.textContent = 'Count'; } }
+  input.addEventListener('input', function () { stop(); show(+input.value); });
+  play.addEventListener('click', function () {
+    if (timer) { stop(); return; }
+    if (+input.value >= 169) { input.value = 1; show(1); }
+    play.textContent = 'Stop';
+    timer = setInterval(function () {
+      var v = +input.value + 1;
+      input.value = v; show(v);
+      if (v >= 169) stop();
+    }, 90);
+  });
+  document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); });
+
+  show(169, true);
+  hand.setAttribute('hidden', '');
+  say.textContent = 'All seven lines are drawn. Press Count, or drag, to watch the hours go round the dashed circle and each new day add a line.';
+})();
+</script>
+</body>
+</html>
