@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · Seven neighbours</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.75; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  .title { font-size: 1.6rem; line-height: 1.3; margin: 3rem 0 0.3rem; }
+  .when { color: #55555f; font-size: 0.85rem; letter-spacing: 0.1em; margin: 0 0 3rem; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; }
+  a { color: #8a8af0; }
+  em { color: #e6e2d6; font-style: normal; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+  [hidden] { display: none !important; }
+
+  /* the flock */
+  .sky { position: relative; margin: 2.5rem 0 0.5rem; border: 1px solid #1c1c26; background: #0c0c13; }
+  .sky canvas { display: block; width: 100%; aspect-ratio: 4 / 3; cursor: crosshair; }
+  .sky svg { display: block; width: 100%; height: auto; }
+  .sky .bird { fill: none; stroke: #d8d8e0; stroke-width: 1.2; stroke-linecap: round; opacity: 0.85; }
+  .sky .look { stroke: #8a8af0; stroke-width: 0.8; opacity: 0.5; }
+  @media (max-width: 40rem) { .sky canvas { aspect-ratio: 4 / 5; } }
+  .caption { color: #6a6a76; font-size: 0.85rem; margin: 0 0 1.5rem; }
+
+  .play { margin: 0 0 2.5rem; }
+  .play label, .play .lab { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; margin: 1.2rem 0 0.3rem; }
+  .play .row { display: flex; gap: 1rem; align-items: center; }
+  .play input { flex: 1; accent-color: #8a8af0; min-width: 0; }
+  .play output { font-variant-numeric: tabular-nums; color: #d8d8e0; min-width: 6.5em; text-align: right; }
+  .play .picks { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+  .play button { font: inherit; font-size: 0.85rem; color: #d8d8e0; background: #14141c; border: 1px solid #2a2a44; padding: 0.3rem 0.75rem; cursor: pointer; }
+  .play button:hover, .play button:focus-visible { border-color: #8a8af0; }
+  .play button[aria-pressed="true"] { border-color: #8a8af0; color: #8a8af0; }
+  .play .say { color: #9a9aa6; font-size: 0.95rem; margin: 0.8rem 0 0; font-variant-numeric: tabular-nums; min-height: 3.4em; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · seven neighbours</h1>
+
+  <p class="title">Seven neighbours</p>
+  <p class="when">MADE ON THE NIGHT OF 14 NOVEMBER 2026</p>
+
+  <p>On winter evenings, before they settle for the night, starlings gather over their roost and fly together as one shape, thickening, thinning, folding over itself, for twenty minutes or half an hour. There may be a few thousand of them or several hundred thousand. Nobody leads. Each bird steers by a few of the birds around it, and the shape is what that adds up to.</p>
+  <p>The flock below is a model of that, flat where a real one is deep. Each bird does three things, and only with the birds it is watching: it keeps from hitting them, it turns to fly the way they are flying, and it drifts toward where they are. A faint pull toward the middle stands in for the roost. One bird is drawn in blue, with a line to each bird it is watching.</p>
+
+  <!-- The flock. Without the script, the still picture below is all there is: 600 birds after 400 steps of the same model, each watching its seven nearest. It was drawn by running the script's own model, the part between CORE START and CORE END, outside the page. -->
+  <div class="sky" id="sky">
+    <canvas id="flock" hidden aria-label="A flock of a few hundred birds, drawn as short strokes, moving together as one loose shape. One bird is blue, with lines to the birds it is watching."></canvas>
+    <svg id="still" viewBox="0 0 544 408" role="img" aria-labelledby="still-title">
+      <title id="still-title">A still picture of the model flock: six hundred short strokes, nearly all pointing the same way, in one loose shape that is dense in places and thin in others. One bird is blue, with seven lines to its nearest neighbours.</title>
+      <path class="look" d="M264.3 160.6L265 166.5M264.3 160.6L259.6 156.3M264.3 160.6L257.7 160.4M264.3 160.6L266 152.9M264.3 160.6L271.4 156M264.3 160.6L260.3 169M264.3 160.6L260 151.3"/>
+      <path class="bird" d="M256.6 174l3.6 2.1M200.7 166.9l2.1 2.7M273.2 128.3l3.6 0.7M270 150.7l4 1M157.9 154.8l3 -0.7M165.9 134.8l2.5 -0.3M255.7 159.9l4.1 1.1M244 125l2.4 0.8M185.9 98.9l3 1.6M154.2 110l2.6 -0.6M168.8 171.8l4.1 -1.1M163.3 129.1l2.2 2.1M249.1 166.4l3.9 1.8M146.8 163.9l2.8 -1.9M197.3 180.7l3 2.6M246.8 162.4l3.5 2.3M134.9 145.7l3 -1.3M161.7 100l3.6 0.9M175.1 166.3l2.9 0.9M179.3 159.5l3.4 -0.8M217 170.1l2.6 2.7M226 152.5l3 1.3M146.2 165.7l2.8 -1.8M138.2 107.8l3.4 0.8M177.8 152.9l2.4 2.1M158.4 178l3.5 -1.7M174.1 98l3.3 1.9M173.9 139.1l1.6 2.4M177.1 167.6l3.8 0.8M251.7 156.7l3.3 1.9M186.1 161.2l1 2.4M162.1 139.8l2.7 0.2M152.2 168.4l2.7 -2.2M150.5 172.9l2.3 -1.5M278.1 143.5l3.6 1.5M167.5 155l2.6 -1M155.2 145l1.6 2M192.2 148.4l1.7 2.2M162.8 145.1l1.2 2.2M174.1 149.4l2.7 2.3M208 185.3l2.3 2.4M231.8 150.6l3.2 1.1M153.5 140.8l2.6 -0.7M184 178.6l2.6 2.5M199.6 153.8l1.5 2.2M165.6 142.7l2.2 1.3M224.6 156.5l2.7 1.7M178 148.9l1.9 2.7M218.9 143.3l2.3 1.7M178 172.3l3.8 -0.2M162.1 127.5l3.6 -0.4M178.5 161.7l3.2 1M156.3 171.2l2.9 -1.5M179.8 168.1l3.2 2.3M153 147.3l3.7 0.4M207 147.6l1.6 2M139.4 153.8l3 -0.8M162.5 162.2l3.3 0.3M198.9 156l1.5 2.7M200.2 172.9l2 2.5M155.4 138.1l2.4 0.8M142.6 101.9l3.7 0.3M248.7 197.1l3.3 3.1M172.5 133.4l1.6 2.3M186.7 152.4l1.4 3.1M185 168.4l3.3 2.4M267.7 144.8l3.7 1.1M166.8 154.9l2.5 0.3M176.8 164.1l2.5 0.4M259.5 173.3l3.6 2.1M217.3 181.1l2.4 2.9M222.8 168.4l2.8 2.3M250.1 190.6l3.5 2.2M214.1 140.4l1.6 2M143.7 140.1l3.3 -1.4M163.7 167.1l3.3 -1.6M231.6 173.9l3.2 2.4M260.2 115.5l2.9 1M142.4 144.4l3.9 -0.4M274.3 178.2l3.4 2.3M161.8 173.8l3.3 -0.9M160.2 120.3l2.9 -1M172.4 166.3l2.3 1.2M183.5 150.2l1.2 2.5M171 137.1l1.6 2.6M170.9 156.1l2.6 1.7M150.6 102.6l3.5 -0.3M187.7 167.4l2.4 2.2M165.6 176.3l4 -0.2M186 194.3l2.4 2.8M204.8 149.1l1.4 2.6M160 166.2l3 -0.9M181.9 133.9l0.6 2.5M219.9 151.5l2.6 1.9M168.4 183.9l3.7 -1.5M170.8 129.3l2.2 2.9M159.1 175.3l3.6 -1.4M173.7 172.1l3.2 -1M205.3 143.8l1.3 2.1M198.5 151.1l0.9 2.4M140.2 147.7l3.6 -0.7M158.5 114.3l3.4 -0.6M188.7 128.5l0.5 2.5M193.1 176.5l3.3 2.9M135.9 116.6l2.2 1.2M193.7 159.3l1.2 3M172.7 153.9l2.1 1.3M232.9 157.1l3.6 1.3M167.3 109.9l2.7 1.3M263.8 173.4l3.8 1.8M197.1 163.1l1.7 2.6M202.9 181.2l2.2 3M130.4 128.5l4.6 0.7M206.4 170.5l2.5 2.5M170.6 177.3l3.8 -1.6M112.3 87.4l1.5 2.3M167.4 128.3l1.9 1.9M174 142.1l1.7 2.1M163.8 157.3l2.9 -0M164.4 153.3l2.5 -0.4M194.7 129l0.5 2.6M177.5 145.2l1 2.8M206.2 195.5l2.1 2.7M191.9 163.3l1.8 2.8M188 188.9l2.6 2.9M147.6 145.4l3.6 -0.4M162.1 141.8l2.7 2M258.3 168l4 1.9M151.3 127.8l3 -1.1M173.1 144.6l1.9 2.6M216.3 146.8l2 1.6M165.8 134.9l2.3 1.1M213.4 158.7l2.5 1.7M227.5 135.9l1.6 2M167.9 136.3l2.5 0M191.2 180.1l3.9 2.5M203.3 156.1l1.7 2.2M147.9 156.9l3.5 -0.7M217.1 165.7l2.7 2.5M290.3 121.6l3.8 -0M164.5 165.1l3.1 -0.4M246.5 172.2l3.8 2.1M179.9 164l2.5 2.1M167.8 156.8l2.5 0.6M200.9 193.9l2.6 2.6M279.6 106.9l3.3 -0.1M161.6 153.8l2.1 1.4M170 130.9l2.2 1.8M212.4 151.3l2.1 1.8M162.8 172.2l3.4 -1.2M246.3 145.6l3.2 0.9M171.2 162.1l3.3 0.7M162.5 113.6l3.4 0.2M290.9 136.2l3.4 1.6M163.2 150.8l2.3 1.6M161.3 155.8l2.8 0.5M174.6 143l3.2 1.6M205.1 129.5l1.3 2.3M168.7 102.4l3.8 1.7M172.8 165.3l2.5 0.3M221 198l2.7 2.6M257.7 182.5l3.1 2.5M179.8 140.3l3.1 1.3M163.1 146.1l2.3 1.6M165 159.8l2.4 -0.9M206.9 150.9l1.7 2.3M191.6 192.3l2.6 2.9M169.4 143l2.8 2M255.9 122.4l2.7 0.9M189.6 171.6l3.2 2.7M225.8 150.7l2.6 1.8M267.7 112.8l3 0.4M193.1 154.7l1.5 2.8M182.7 164.9l2.4 2.1M170.3 131.1l2.3 2.4M170.1 124.1l1.9 1.8M248.8 152.5l3.5 1.6M182 175.7l2.5 2.6M189 139.6l0.4 2.5M176.8 145.6l1.1 2.9M168.9 173.8l3.5 -1M187.6 164.4l1.4 2.4M220.1 154.3l2.5 1.4M265.6 138.4l3.2 1.8M145.9 117.6l3.4 -1.2M143.6 124.3l3.1 -0.8M176.6 140.8l1.6 2.1M142.2 135.3l3.5 -1.1M98.7 105.7l3 -1.4M272.3 140.6l3.6 1.1M189 177.7l3 2.7M244.6 188.8l3 2.5M197.1 175.7l3.1 2.4M240.6 135.3l2.6 1.4M182.1 161.5l2.7 1.5M179.2 141.5l1.2 2.6M185.7 173.8l2.7 3.3M221.6 148.5l2.3 1.4M169.4 148.3l3.3 1.6M164 120.6l2.2 2M251.6 147.9l2.9 1.5M155.7 168.2l2.9 -1.6M194.7 141.5l1.1 2.3M218 126.2l1.4 2.2M173 148.3l2.3 2.6M230.2 156.8l2.9 1.8M126.2 97.2l4.3 -0.3M149 112.5l3.6 -0.4M253.9 141.5l2.9 1.6M238.8 127.8l2.4 1M146.4 132l3.1 -1.1M182.1 163.8l2.4 1.8M197.3 146.5l0.7 2.4M166.5 163.6l2.2 -1.3M208.6 179.9l2.2 2.8M190.1 188.8l2.7 3.1M157.2 123.7l2.6 -0.6M149 141.3l4 -0.1M168.2 134.7l2.6 2.2M191.2 149.8l1.5 2.3M188.9 181.7l3 2.4M228.6 178.1l3 2.4M157.8 127.2l2.8 -0.9M171.8 167.1l3 -0.4M204.6 161.3l2.3 2.9M283.7 117.1l3.5 0.5M152.3 114.3l3.5 -0.9M201.9 171l2.5 2M161.5 111.6l3.1 -0.7M171.7 90.1l3.7 1.5M166 124.4l3.4 0.9M157.2 158.2l2.8 -0.3M158.1 141.7l2.5 0.1M158.9 128.6l2.9 0.5M176.7 165.9l2.7 1.5M158.8 187.3l3.7 -2.3M257.1 133l2.9 1.1M169.7 143.1l3 2.7M182.1 187.7l2 2.3M148.2 128.8l2.9 0.3M256 185.4l3.5 2.9M127 143.4l2.7 1.5M179.5 161.1l2.9 0.1M166.1 158l2.4 -0.7M192.7 180l2.9 3.7M289.1 116.3l3.6 0.4M192.3 165.6l1.7 2.5M157.9 171.5l2.8 -1M201.4 148.1l1.1 2.9M207.8 137.9l1.1 2.3M183 152.7l3.5 0.1M193.3 145.9l1.2 2.4M162.3 116.5l2.7 -0.2M144.3 151.6l3.3 -1.3M159.2 164.2l3.4 -1.9M185.9 177.1l2.7 2.5M175 167.6l3.7 1M221.3 163.4l2.9 2.3M179.2 157.3l1.8 2.8M161.1 131.8l3.1 0.3M197.9 160.7l2 2.9M246.8 177.9l3.4 2.5M169.4 161.2l2.6 0.2M174.3 152l2.2 2.6M294.2 116.4l3.7 -0.1M198.8 139.4l0.9 2.6M213.9 186.5l2.3 2.3M164.4 169l3.4 -0.4M143.4 128.2l3.4 -1.2M249.2 186.2l2.7 2.8M164.4 115.6l2.7 1.3M158.2 167.5l2.4 -1.7M180.1 137.7l0.7 2.4M164.2 154.5l2.2 -1.2M147.6 85.6l3.6 0.2M230.7 187.8l3.1 2.1M247.6 133.3l2.6 1.2M300.3 119.4l3.7 0.4M252.9 175.2l3.8 1.8M243.7 166.3l3.5 1.8M160.7 140.9l2.5 0.4M231.5 207.3l2.6 2.8M189.4 134.1l0.3 2.6M173.9 134.8l2.6 1.9M117.5 90.1l3.8 -0.5M209.1 158.3l2.1 2.1M192.6 185l3.2 2.5M162.9 140.9l3.6 1.3M191.3 154.4l1.3 2.4M220.9 159.6l2.8 2.6M190.9 152.4l0.7 2.7M164.1 178.5l3.9 -1.7M174 129.1l1.7 2.4M227 147.1l2.2 2M263.9 152.3l4.3 1.1M118.8 95.8l3.9 0.4M183.8 172.9l3.3 0.9M157.5 176.3l2.8 -0.6M241.8 197.1l3.3 2.3M155.5 104.3l4.1 -0.1M167.4 150.4l2.8 1.7M135.9 156.2l3 -1.1M176.5 158.8l3.2 -0.1M195.8 135.6l0.6 2.5M156.5 119.5l3.4 -0.6M247 140.2l2.7 1.8M243.5 160.5l4 1.8M196.3 166.4l2.2 2.5M172.6 160.4l3.4 0.7M166.4 151l2.5 -0.7M194.3 150.2l1.5 2.2M233.3 165.4l3.7 2.2M134.3 92.9l4 -0.3M155.6 130.4l3.1 -0.8M169.4 165l2.8 -0.3M236.8 164.8l3.7 2.4M196.9 170.7l3 1.8M148.1 173.5l3 -2.2M181.6 170.4l3.9 0.2M134.7 118.9l4.3 1.2M167.4 141.4l1.9 1.7M277.8 149.9l3.6 1.3M208.9 161.3l2.3 1.7M168.4 134.1l2.1 2.5M184 160.6l2 2.4M180.1 164.4l3.8 1.2M154.5 129.5l2.8 -0.4M186 144.2l0.1 2.5M135 151.1l3.1 -1M235.7 210.7l2.7 2.6M156.3 113.8l3.1 -0.6M169.1 167.5l3.4 -0.6M150.6 136.4l3.2 -0.9M158.2 129.8l3.4 0M175 158.5l2.7 2.9M210.2 156l2.6 1.8M189 160.2l1.3 2.6M135.3 123.4l2.7 2.2M235.8 159.9l3.6 2.5M177.4 171.2l2.6 -0.2M238.8 147.7l2.7 1.6M173.5 168.5l3.6 1M205.6 175.3l2.4 1.8M171.2 149.1l2.2 2.2M159.8 159.6l3.4 0.3M242.7 181.7l3.1 2.7M182.7 147.1l1.3 2.2M282 154.5l3.4 1.7M194.1 172.9l3.4 3M149.1 163.5l3.5 -1.4M169.1 147.7l2.9 1.1M196.1 156.3l1.7 2.4M174.8 154.4l2.8 2M265 124.2l3.1 0.8M168 131.8l2.5 0.3M166.1 173.8l3.8 -0.5M169.3 141.4l1.9 1.9M162 138.1l2.5 2.8M155.1 165.4l3.2 -1.2M84.8 122.1l3.2 -1.6M232 138.1l2.5 1.8M172.9 155.6l2.8 1.5M211.9 165.6l2.3 2.5M150.5 104.7l3.7 -0.5M210.5 171.4l2.3 2.8M139.4 94.7l4.1 0.3M254.8 167l3.9 1.3M181.7 161.5l2.8 0.5M153.1 123.4l3 -0.7M283.8 125.5l3.8 0.7M196 152.5l1.3 2.5M167.6 113.2l2.6 3M202.9 186l2.5 2.4M188.9 170l4.4 1.4M190.6 196.6l2.2 2.6M138.2 100l3.7 -0.3M177 162.7l2.9 1.3M187.7 105l2.5 1.9M184.8 123.8l1.9 2.6M153.7 143.2l2.4 0.9M159.4 161.5l4 -0.9M153.3 129.9l2.7 -0.5M163 122.7l2.5 -0.4M169 162.9l2.4 -0.6M162.9 181.5l3.5 -1.6M196.7 185.7l2.7 2.5M148.6 160.5l3.5 -0.9M156.3 180.9l2.9 -2.6M223.1 132.7l1.7 1.9M184.7 163.7l2.1 1.5M272.1 173l3.9 1.9M171.8 144.9l3.1 0.8M230.1 125.7l1.8 2M240.4 175.8l3.3 2M151.3 165.6l3 -1.1M145 111.1l3.1 0.2M166.4 146.8l2.5 -0.5M252.9 193.1l2.6 3.5M147.9 107.5l3.3 -0.3M153.1 118.3l3.3 -0.8M155.9 110.3l3 0M181.6 154l1.5 2.2M172.5 127.1l1.8 2.3M240.3 157.2l3.6 1M251.5 130.1l2.9 1.2M188.9 157.9l0.4 2.5M185.7 173l2.7 2.5M216.1 154.5l2.3 2.1M162 125.8l3.2 -1M214 162.1l2.6 2M163.6 148.5l2.5 1.3M165.2 161.7l2.7 -1.3M153.1 173.7l2.9 -1.9M216.1 149.4l2.1 1.7M181.1 177.7l2.2 2.2M147.4 121.5l3.7 -0.3M110.9 59.2l4.2 2M145.3 159.9l2.6 -1.1M238.3 208.6l2.7 2.9M160.4 148.4l2.6 1.7M257.9 155.2l3.5 2.1M178.2 119.6l2.1 2.5M158.9 136.7l2.6 -0.4M216.9 135.6l1.5 2M258.2 150.7l3.6 1.3M159.1 154.7l2.5 -0.1M162 183.7l3 -2.9M159.7 135.1l2.8 0.1M184.7 164.9l3.6 1M201.6 145.5l1.1 2.3M141.8 114.1l4.1 0.3M264.9 183.9l3.6 2.7M219.9 193.1l2.1 2.8M229 201.5l2.5 3.3M231.8 145.4l2.6 1.6M217.5 175.1l1.9 2.9M246.2 148.7l3.4 1M169.7 156.5l3.1 -0.2M186.9 138.1l0.6 2.5M234.4 178.1l2.8 2M216 159.6l2.5 2.3M174.4 173.3l3.5 0.1M131.3 98.1l4 -0.2M150.5 149.8l3.9 -0.7M201.9 82.1l2.4 2.1M158.4 146.7l2.5 0.8M241 204.9l2.6 2.9M171.1 159l2.4 1.1M168.1 139.6l2.2 1.2M152 133.3l2.9 -0.5M174.3 146.4l1.1 2.6M213.4 189.9l2.6 2.5M256.9 197.6l3.3 2.8M167.4 159.7l2.7 -0.4M174 163.9l2.6 1.5M189.7 147.4l1.6 2M242.4 212.3l2.3 2.8M128.7 90l3.9 -0.4M206.9 190.2l2.3 2.8M176.6 160.7l2.2 2.4M189.9 143.6l0.9 2.4M186.5 147.3l1.4 2.1M182.3 169.1l2.9 2.6M178.1 163.9l3.2 1.4M170.9 139.5l2.5 2.5M202.2 164.4l2.1 2.5M159.7 142.8l2.3 1M230.8 164.5l3.2 1.5M279.4 131.4l3.6 1.3M143.6 163.7l2.5 -0.6M266.5 132l3.3 1.1M263.2 165.5l3.8 2M199.1 188.8l3.2 1.8M216.1 131.1l1.9 2.4M234.3 154.9l3.4 1.4M151.3 156.3l4.3 -0.7M212.5 128.6l1.3 2.1M161.6 134.4l1.8 1.8M220.4 139.9l2.1 2.1M153.2 162.7l3.2 -1.4M170.4 170.4l2.5 1.7M237.7 141.5l2.6 1.8M179.7 165.8l2.5 2.2M176.3 160l2.6 0.3M226.5 163.9l3.1 2.2M168.3 166.4l3 -0.8M156.8 162.2l3.3 -1M143.3 80.5l3.4 0.1M200.7 178l2.2 2.3M131.9 86l3.9 -0.4M237 191.3l3 2.4M273.5 104.4l3.4 0.3M148.6 168.4l2.6 -2.2M144.3 167.7l2.5 -2.3M156.9 125l2.4 0.8M170.5 153.4l2.2 1.6M185.4 166.7l3.7 1.4M273.5 146.7l3.5 1.2M180.9 141.6l1.4 2.7M140.9 129l3 -0.6M280.7 149.2l3.7 1.9M150.6 130.7l2.7 -0.7M244.5 154.6l3.3 1.9M92.2 103.3l3.8 -0.9M163.4 137.2l1.8 2.1M152.1 98.9l3.4 -0.9M184.2 157.7l1.7 1.9M209.5 152.6l1.3 2.4M163.9 118.1l2.7 0M277.4 138.1l3.4 2M242.1 151.5l3.4 1.1M237.6 154.5l2.9 1.9M188.3 154.4l1.4 2.1M184.2 154.9l1.2 2.5M158.5 98.1l3.6 -0.6M177.6 110.5l2.9 2.3M212.9 176.9l1.8 2.9M268.2 175.1l3.2 2.1M181.6 158.6l1.7 1.9M167.1 144.7l3 1M226.7 158.5l3 2.7M200.2 142.1l0.8 2.4M178.5 157.6l1.9 2.7M153.9 153.2l4.1 -0.3M285.8 145.6l3.8 1.4M205.9 166.9l2.8 2.4M220.2 156.6l2.7 2.4M168.4 126.5l2.9 1.4M115.8 97.6l3.4 -0.7M176.4 150.8l1.7 2.7M294.1 129.7l3.8 0.6M178.9 150.2l2 1.8M190.6 174.2l2.9 2.9M170.5 162.8l2.9 0.3M227.4 142.2l2.5 1.9M186.1 170.7l2.7 2.4M107.3 98.8l3.6 -1M238 180.1l3.7 2.6M192.8 145.7l1 2.3M285.4 132.4l3.8 0.6M138.4 116.6l3.7 -0.1M181.9 163.5l2.7 0.3M271.1 109.2l3.3 0.8M260.4 189.7l3.8 2.4M220.5 135.8l1.7 2.6M193.5 168.2l2.6 2.5M249.6 125.1l2.6 0.8M146.7 125.7l3.5 -0.7M139.3 160.3l3 -0.7M198.4 76.1l2.5 2.2M165.4 143.8l2.6 0.9M126.2 122.5l4.5 1.4M269.5 155.3l3.9 1.5M134.6 56.8l2.6 -0.5M190.6 176.5l3.2 3M172.2 117.8l0.9 2.9M202.5 158.8l1.7 2.2M165.2 123.3l2.7 1.6M171 146l1.9 1.9M166 130.8l2 2.5M188.8 185.3l2.7 3.3M180.7 97.8l2.7 2.2M227.7 196.3l2.6 2.3M185.4 169.5l2.5 2.8M156.9 137l2.5 -0.4M178.7 172.8l3.6 2.9M160.1 124.5l2.2 1.3M172.3 158.7l3.3 0.2M167.6 118.2l1.9 2.6M156.2 145.8l2.9 -0.1M179.5 153.5l1.8 2.1M143.1 156l3.2 -0.3M187.5 148.4l1.3 2.3M212 146.3l2 1.5M178.7 155.9l2.7 0.9M152.7 159.4l4.2 -0.9M222.7 183.5l2.2 2.9M159.3 108.5l4.2 -0.6M173.7 147.4l2.4 2.3M188.1 166.5l2.4 2.2M175.4 156.2l3.2 1.3M212 144.1l1.4 2.1M163.8 108.7l3.9 0.3M216.3 151.6l2.6 2.1M182.6 160.7l2.1 1.4M175.1 153l1.5 2.2M173.1 158.3l3.3 -0.1M253.7 151.4l3.8 1.5M176.5 138.5l3.4 0.7M288.6 111.5l3.6 0.2M193 167.8l3.7 2M222.4 178.3l3 2.3M171.2 141.7l2.3 1.8M167.7 161.8l2.2 1.2M237.7 171.5l3.5 2.1M165.5 122.9l2.4 1.8M176.7 132.8l0.5 2.5M166.6 97.5l3.8 1.4M205.4 153.8l1.3 2.5"/>
+      <path class="bird one" style="stroke:#8a8af0;stroke-width:2.4" d="M261.9 159.1l4.8 3.1"/>
+    </svg>
+  </div>
+  <p class="caption" id="caption">A still from the model: six hundred birds, each watching its seven nearest.</p>
+
+  <div class="play" id="play" hidden>
+    <span class="lab">WHAT EACH BIRD WATCHES</span>
+    <div class="picks" id="modes">
+      <button type="button" data-mode="k" aria-pressed="true">a number of birds</button>
+      <button type="button" data-mode="r" aria-pressed="false">every bird within a distance</button>
+    </div>
+
+    <div id="krow">
+      <label for="k">HOW MANY OF THE NEAREST</label>
+      <div class="row">
+        <input type="range" id="k" min="0" max="20" step="1" value="7">
+        <output id="k-out" for="k">7 birds</output>
+      </div>
+    </div>
+    <div id="rrow" hidden>
+      <label for="r">HOW FAR, IN PIXELS</label>
+      <div class="row">
+        <input type="range" id="r" min="0" max="60" step="1" value="9">
+        <output id="r-out" for="r">9 pixels</output>
+      </div>
+    </div>
+
+    <div class="picks" style="margin-top:1.2rem">
+      <button type="button" id="falcon">Send a falcon through</button>
+      <button type="button" id="scatter">Scatter them all</button>
+      <button type="button" id="pause">Pause</button>
+      <button type="button" id="show" aria-pressed="true">Show one bird's neighbours</button>
+    </div>
+    <p class="say" id="say" aria-live="off"></p>
+    <p class="quiet">Move the pointer over the flock, or tap it, and the birds near it take it for a falcon.</p>
+  </div>
+
+  <h2>A NUMBER, NOT A DISTANCE</h2>
+  <p>The three rules are the ones Craig Reynolds gave his simulated birds in 1987, which he called boids: avoid collisions, match velocity, stay close to the flock. His birds paid attention to every other bird within a certain distance, and for twenty years most models of flocks did the same. It is the obvious guess. It was hard to check against real birds, because almost nobody had measured where each bird in a large flock was.</p>
+  <p>In the winter of 2005 to 2006 a team in Rome found out. They set up cameras near the starling roost at Termini railway station and photographed the flocks from more than one angle at the same instant, which let them work out the position of every bird in three dimensions. They reconstructed ten flocks this way, the largest about 2,600 birds, and looked at how each bird placed itself among the birds around it, and how far that reached. The answer was not a distance. Each bird was steering by its six or seven nearest neighbours, however near or far those happened to be. In a loose part of the flock the seventh might be five metres away; in a dense part, one. What mattered was how many birds were between, not how many metres.</p>
+  <p>The authors argued that this is what holds a flock together when a falcon tears into it and the birds suddenly spread out. A bird that keeps to a distance loses its neighbours exactly when it needs them most. A bird that keeps to a number never does. You can try it above. Choose <em>every bird within a distance</em>. At the nine pixels it starts with, the average bird is watching somewhere near as many others as before, but the average hides the edges: there are always a few birds with nobody in range, wandering on their own. Now scatter them. Where the flock thins, the count of birds watching nobody climbs into the dozens, and some of them take a long while to find their way back. Go back to <em>a number of birds</em> and scatter them again. However thin the flock gets, every bird still has its seven to steer by.</p>
+  <p>Seven is not a law. It is what that study measured, as an average, in one kind of bird. In this model, watching even one neighbour makes a loose flock, with a ragged fringe of ten or so birds outside it at any moment. Three makes it tidier. By about seven, adding more makes little difference that I could measure. Watching none, the birds are a cloud of separate birds, held near each other only by the pull of the roost.</p>
+
+  <h2>HOW FAST A TURN TRAVELS</h2>
+  <p>When one edge of a flock turns, the turn passes through it like a ripple. The same group later filmed flocks turning and timed it. The turn crossed the flock at twenty to forty metres a second, while the birds themselves were flying at seven to twelve. Across a flock of four hundred it took a little over half a second. Another of their studies found that when one bird strays from the flock's average heading, birds right across the flock tend to stray the same way, not just its neighbours, and that the reach of this grows with the size of the flock: as far as they could measure, there is no distance beyond which a bird stops mattering. Each starling watches seven, and every starling is affected by all the others.</p>
+
+  <h2>WHY THEY DO IT</h2>
+  <p>Nobody is certain, but the best evidence points at falcons. In 2017 a group at a university in England gathered reports of more than three thousand murmurations sent in by the public. The flocks averaged about 30,000 birds, the largest reported was 750,000, and a display lasted about 26 minutes on average. They grew from October to early February and then shrank until March. Where a bird of prey was about, the flocks were larger and flew for longer, and the display was more likely to end with the whole flock dropping into the roost together. The authors read that as safety in numbers, rather than the birds gathering to keep warm.</p>
+  <p>When a peregrine attacks, dark bands often run through the flock, always away from the falcon and often faster than the flock is flying. A study of filmed attacks, published in 2011, found that the falcons caught birds less often when the flock made these waves. They seem to start with a few birds swerving away, and spread as each bird's neighbours swerve after it. Draw the pointer slowly through the model flock and you can sometimes see a faint version of it.</p>
+
+  <h2>WHAT THE MODEL GETS WRONG</h2>
+  <p class="quiet">It is flat. A real flock is three-dimensional, and usually thin and wide, so it darkens when you see it edge on and pales when it turns to face you; much of what makes a murmuration beautiful is that, and none of it is here. It has a few hundred birds, not tens of thousands. How hard each bird steers by each rule is my choice, set by eye until it looked like flying: the research says which birds a starling watches, not how strongly it responds to them. A real bird also cannot see through a wall of other birds, and some later models pick neighbours by what a bird can see rather than by count. The falcon is only a point the birds run from. A real one picks out a single bird. Distances in the model are in pixels, and the pixels are not metres.</p>
+  <p class="quiet">The figures are from Ballerini and others, Proceedings of the National Academy of Sciences, 2008 (the six or seven neighbours); Attanasi and others, Nature Physics, 2014 (the turns); Cavagna and others, the same Proceedings, 2010 (the reach); Goodenough and others, PLoS ONE, 2017 (the murmurations reported by the public); and Procaccini and others, Animal Behaviour, 2011 (the waves). In Britain, where most of those reports came from, starlings are on the red list of birds of conservation concern: the birds that breed there have fallen by more than three quarters since the 1970s, and the winter flocks are swollen by birds from northern Europe. The murmurations are still there. Fewer birds are making them.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Journal</a></p>
+</main>
+
+<script>
+(function () {
+  // CORE START: the flock itself, with nothing of the page in it.
+  var MAXN = 64;
+  var P = { sep: 6, wSep: 0.12, wAli: 0.06, wCoh: 0.002, cohMax: 0.06, vMin: 1.4, vMax: 2.6, vFear: 4.2,
+            noise: 0.07, roost: 0.3, wRoost: 0.0015, edge: 40, wEdge: 0.08, fRange: 55, wFlee: 0.6, fade: 0.97 };
+  function rng(s) {
+    return function () {
+      s = s + 0x6D2B79F5 | 0;
+      var t = Math.imul(s ^ s >>> 15, 1 | s);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function makeFlock(n, w, h, seed) {
+    var f = { n: n, w: w, h: h, rnd: rng(seed), x: new Float64Array(n), y: new Float64Array(n),
+              vx: new Float64Array(n), vy: new Float64Array(n), nvx: new Float64Array(n), nvy: new Float64Array(n),
+              fear: new Float64Array(n), nb: new Int32Array(n * MAXN), nc: new Int32Array(n), seen: new Int32Array(n),
+              bd: new Float64Array(MAXN + 1), bi: new Int32Array(MAXN + 1) };
+    var r = f.rnd, R = Math.min(w, h) * 0.3, dir = r() * 2 * Math.PI;
+    for (var i = 0; i < n; i++) {
+      var a = r() * 2 * Math.PI, d = R * Math.sqrt(r()), hd = dir + (r() - 0.5) * 1.5;
+      f.x[i] = w / 2 + d * Math.cos(a); f.y[i] = h / 2 + d * Math.sin(a);
+      f.vx[i] = 2 * Math.cos(hd); f.vy[i] = 2 * Math.sin(hd);
+    }
+    return f;
+  }
+  // Every bird flies straight out from the middle of the flock, frightened.
+  function scatter(f) {
+    var cx = 0, cy = 0, i;
+    for (i = 0; i < f.n; i++) { cx += f.x[i]; cy += f.y[i]; }
+    cx /= f.n; cy /= f.n;
+    for (i = 0; i < f.n; i++) {
+      var dx = f.x[i] - cx, dy = f.y[i] - cy, d = Math.sqrt(dx * dx + dy * dy) || 1;
+      f.vx[i] = P.vFear * dx / d; f.vy[i] = P.vFear * dy / d; f.fear[i] = 1;
+    }
+  }
+  // One step. mode 'k': each bird watches its k nearest. mode 'r': every bird within rad. hawk: {x, y} or null.
+  function step(f, mode, k, rad, hawk) {
+    var n = f.n, X = f.x, Y = f.y, VX = f.vx, VY = f.vy, NB = f.nb, bd = f.bd, bi = f.bi;
+    var r2 = rad * rad, R = Math.min(f.w, f.h) * P.roost, i, j;
+    if (k > MAXN) k = MAXN;
+    for (i = 0; i < n; i++) {
+      var xi = X[i], yi = Y[i], sx = 0, sy = 0, svx = 0, svy = 0, ax = 0, ay = 0, cnt = 0, dx, dy, d2, d, s, q;
+      if (mode === 'k') {
+        var m = 0;
+        if (k > 0) for (j = 0; j < n; j++) {
+          if (j === i) continue;
+          dx = X[j] - xi; dy = Y[j] - yi; d2 = dx * dx + dy * dy;
+          if (m < k || d2 < bd[m - 1]) {
+            var p = m < k ? m++ : m - 1;
+            while (p > 0 && bd[p - 1] > d2) { bd[p] = bd[p - 1]; bi[p] = bi[p - 1]; p--; }
+            bd[p] = d2; bi[p] = j;
+          }
+        }
+        for (q = 0; q < m; q++) {
+          j = bi[q]; NB[i * MAXN + q] = j;
+          dx = X[j] - xi; dy = Y[j] - yi; sx += dx; sy += dy; svx += VX[j]; svy += VY[j];
+          d = Math.sqrt(bd[q]);
+          if (d < P.sep && d > 0) { s = (P.sep - d) / P.sep * P.wSep / d; ax -= dx * s; ay -= dy * s; }
+        }
+        cnt = m;
+      } else if (rad > 0) {
+        for (j = 0; j < n; j++) {
+          if (j === i) continue;
+          dx = X[j] - xi; dy = Y[j] - yi; d2 = dx * dx + dy * dy;
+          if (d2 >= r2) continue;
+          if (cnt < MAXN) NB[i * MAXN + cnt] = j;
+          cnt++;
+          sx += dx; sy += dy; svx += VX[j]; svy += VY[j];
+          d = Math.sqrt(d2);
+          if (d < P.sep && d > 0) { s = (P.sep - d) / P.sep * P.wSep / d; ax -= dx * s; ay -= dy * s; }
+        }
+      }
+      f.nc[i] = cnt < MAXN ? cnt : MAXN; f.seen[i] = cnt;
+      if (cnt) {
+        ax += (svx / cnt - VX[i]) * P.wAli; ay += (svy / cnt - VY[i]) * P.wAli;
+        var cx = sx / cnt * P.wCoh, cy = sy / cnt * P.wCoh, c = Math.sqrt(cx * cx + cy * cy);
+        if (c > P.cohMax) { cx *= P.cohMax / c; cy *= P.cohMax / c; }
+        ax += cx; ay += cy;
+      }
+      dx = f.w / 2 - xi; dy = f.h / 2 - yi; d = Math.sqrt(dx * dx + dy * dy);
+      if (d > R) { s = (d - R) * P.wRoost / d; ax += dx * s; ay += dy * s; }
+      if (xi < P.edge) ax += P.wEdge * (P.edge - xi) / P.edge; else if (xi > f.w - P.edge) ax -= P.wEdge * (xi - f.w + P.edge) / P.edge;
+      if (yi < P.edge) ay += P.wEdge * (P.edge - yi) / P.edge; else if (yi > f.h - P.edge) ay -= P.wEdge * (yi - f.h + P.edge) / P.edge;
+      if (hawk) {
+        dx = xi - hawk.x; dy = yi - hawk.y; d = Math.sqrt(dx * dx + dy * dy);
+        if (d < P.fRange) { s = P.wFlee * (1 - d / P.fRange) / Math.max(d, 1); ax += dx * s; ay += dy * s; f.fear[i] = 1; }
+      }
+      var vx = VX[i] + ax, vy = VY[i] + ay, th = (f.rnd() - 0.5) * 2 * P.noise, co = Math.cos(th), si = Math.sin(th);
+      var ux = vx * co - vy * si, uy = vx * si + vy * co, sp = Math.sqrt(ux * ux + uy * uy);
+      var hi = P.vMax + (P.vFear - P.vMax) * f.fear[i];
+      if (sp < P.vMin) { ux *= P.vMin / sp; uy *= P.vMin / sp; } else if (sp > hi) { ux *= hi / sp; uy *= hi / sp; }
+      f.nvx[i] = ux; f.nvy[i] = uy; f.fear[i] *= P.fade;
+    }
+    for (i = 0; i < n; i++) { VX[i] = f.nvx[i]; VY[i] = f.nvy[i]; X[i] += VX[i]; Y[i] += VY[i]; }
+  }
+  // How nearly the birds fly the same way: 1 if all alike, near 0 if every which way.
+  function order(f) {
+    var sx = 0, sy = 0;
+    for (var i = 0; i < f.n; i++) { var s = Math.sqrt(f.vx[i] * f.vx[i] + f.vy[i] * f.vy[i]) || 1; sx += f.vx[i] / s; sy += f.vy[i] / s; }
+    return Math.sqrt(sx * sx + sy * sy) / f.n;
+  }
+  // Birds closer than L are joined; groups of five or more count as flocks, the rest as strays.
+  function groups(f, L) {
+    var n = f.n, up = new Int32Array(n), size = new Int32Array(n), L2 = L * L, i, j;
+    for (i = 0; i < n; i++) up[i] = i;
+    function top(a) { while (up[a] !== a) { up[a] = up[up[a]]; a = up[a]; } return a; }
+    for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) {
+      var dx = f.x[j] - f.x[i], dy = f.y[j] - f.y[i];
+      if (dx * dx + dy * dy < L2) { var a = top(i), b = top(j); if (a !== b) up[a] = b; }
+    }
+    for (i = 0; i < n; i++) size[top(i)]++;
+    var flocks = 0, strays = 0;
+    for (i = 0; i < n; i++) if (size[i] >= 5) flocks++; else strays += size[i];
+    return { flocks: flocks, strays: strays };
+  }
+  // CORE END
+
+  var cv = document.getElementById('flock'), still = document.getElementById('still');
+  if (!cv.getContext || !window.requestAnimationFrame) return;
+  var ctx = cv.getContext('2d');
+  var kIn = document.getElementById('k'), kOut = document.getElementById('k-out');
+  var rIn = document.getElementById('r'), rOut = document.getElementById('r-out');
+  var say = document.getElementById('say'), pauseBtn = document.getElementById('pause'), showBtn = document.getElementById('show');
+  var modeBtns = document.querySelectorAll('#modes button');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  still.setAttribute('hidden', '');
+  cv.removeAttribute('hidden');
+  document.getElementById('play').removeAttribute('hidden');
+  document.getElementById('caption').textContent = 'A model flock. The blue bird and the lines from it show what one bird is watching.';
+
+  var W = 0, H = 0, dpr = 1;
+  function size() {
+    var r = cv.getBoundingClientRect();
+    var w = Math.max(200, Math.round(r.width)), h = Math.max(150, Math.round(r.height)), d = Math.min(window.devicePixelRatio || 1, 2);
+    if (w === W && h === H && d === dpr) return;
+    W = w; H = h; dpr = d;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (flock) { flock.w = W; flock.h = H; }
+  }
+  var flock = null;
+  size();
+  var N = Math.max(220, Math.min(600, Math.round(W * H / 360)));
+  flock = makeFlock(N, W, H, (Math.random() * 4294967296) | 0);
+
+  var mode = 'k', k = 7, rad = 9, show = true, running = !reduce, visible = true;
+  var hawk = null, pointer = null, tapLeft = 0, steps = 0, stale = false;
+  for (var i = 0; i < 60; i++) step(flock, mode, k, rad, null);
+
+  function hawkNow() {
+    if (hawk) return hawk;
+    if (pointer && (pointer.mouse || tapLeft > 0)) return pointer;
+    return null;
+  }
+  function advance() {
+    if (hawk) {
+      hawk.x += hawk.vx; hawk.y += hawk.vy;
+      if (hawk.x < -80 || hawk.x > W + 80 || hawk.y < -80 || hawk.y > H + 80) hawk = null;
+    }
+    if (tapLeft > 0) tapLeft--;
+    step(flock, mode, k, rad, hawkNow());
+    steps++;
+    if (stale || steps % 15 === 0) { stale = false; report(); }
+  }
+
+  function draw() {
+    var f = flock, i, h = hawkNow();
+    ctx.clearRect(0, 0, W, H);
+    if (show) {
+      var x0 = f.x[0], y0 = f.y[0];
+      ctx.strokeStyle = 'rgba(138,138,240,0.5)'; ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      for (i = 0; i < f.nc[0]; i++) { var j = f.nb[i]; ctx.moveTo(x0, y0); ctx.lineTo(f.x[j], f.y[j]); }
+      ctx.stroke();
+      if (mode === 'r' && rad > 0) {
+        ctx.strokeStyle = 'rgba(138,138,240,0.35)'; ctx.setLineDash([3, 4]);
+        ctx.beginPath(); ctx.arc(x0, y0, rad, 0, 2 * Math.PI); ctx.stroke(); ctx.setLineDash([]);
+      }
+    }
+    ctx.strokeStyle = 'rgba(216,216,224,0.85)'; ctx.lineWidth = 1.2; ctx.lineCap = 'round';
+    ctx.beginPath();
+    for (i = show ? 1 : 0; i < f.n; i++) {
+      ctx.moveTo(f.x[i] - f.vx[i] * 0.9, f.y[i] - f.vy[i] * 0.9);
+      ctx.lineTo(f.x[i] + f.vx[i] * 0.9, f.y[i] + f.vy[i] * 0.9);
+    }
+    ctx.stroke();
+    if (show) {
+      ctx.strokeStyle = '#8a8af0'; ctx.lineWidth = 2.4;
+      ctx.beginPath(); ctx.moveTo(f.x[0] - f.vx[0] * 1.2, f.y[0] - f.vy[0] * 1.2); ctx.lineTo(f.x[0] + f.vx[0] * 1.2, f.y[0] + f.vy[0] * 1.2); ctx.stroke();
+    }
+    if (h) {
+      ctx.strokeStyle = '#e6e2d6'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(h.x - 7, h.y - 4); ctx.lineTo(h.x, h.y + 2); ctx.lineTo(h.x + 7, h.y - 4); ctx.stroke();
+    }
+  }
+
+  function plural(n, one, many) { return n + ' ' + (n === 1 ? one : many); }
+  function report() {
+    var f = flock, i, lo = Infinity, hi = 0, sum = 0, none = 0;
+    for (i = 0; i < f.n; i++) { var s = f.seen[i]; if (s < lo) lo = s; if (s > hi) hi = s; sum += s; if (!s) none++; }
+    var g = groups(f, 16), o = Math.round(order(f) * 100), watch;
+    if (mode === 'k') watch = k === 0 ? 'No bird is watching any other.' : 'Every bird is watching exactly ' + plural(k, 'other', 'others') + '.';
+    else if (rad === 0) watch = 'No bird is watching any other.';
+    else watch = 'Birds are watching anywhere from ' + lo + ' to ' + hi + ' others, ' + (sum / f.n).toFixed(1) + ' on average; ' +
+      (none === 0 ? 'every bird has at least one in range.' : plural(none, 'bird is', 'birds are') + ' watching nobody.');
+    var parts = g.flocks === 0 ? 'No group of five or more' : plural(g.flocks, 'group', 'groups') + ' of five or more';
+    say.textContent = watch + ' ' + parts + ', ' + plural(g.strays, 'bird', 'birds') + ' outside them. Heading the same way: ' + o + ' percent.';
+  }
+
+  var last = 0, acc = 0, looping = false;
+  function frame(t) {
+    if (!running || !visible) { looping = false; return; }
+    if (!last) last = t;
+    acc += Math.min(t - last, 100); last = t;
+    var n = 0;
+    while (acc >= 1000 / 60 && n < 3) { advance(); acc -= 1000 / 60; n++; }
+    if (n === 3) acc = 0;
+    draw();
+    requestAnimationFrame(frame);
+  }
+  function go() { if (running && visible && !looping) { looping = true; last = 0; acc = 0; requestAnimationFrame(frame); } }
+  // When paused, one action still gets a short burst so you can see what it did.
+  function nudge(steps) {
+    if (running) { stale = true; return; }
+    for (var i = 0; i < steps; i++) advance();
+    draw(); report();
+  }
+
+  function setMode(m) {
+    mode = m;
+    for (var i = 0; i < modeBtns.length; i++) modeBtns[i].setAttribute('aria-pressed', modeBtns[i].getAttribute('data-mode') === m ? 'true' : 'false');
+    if (m === 'k') { document.getElementById('krow').removeAttribute('hidden'); document.getElementById('rrow').setAttribute('hidden', ''); }
+    else { document.getElementById('rrow').removeAttribute('hidden'); document.getElementById('krow').setAttribute('hidden', ''); }
+    nudge(1);
+  }
+  for (i = 0; i < modeBtns.length; i++) modeBtns[i].addEventListener('click', function () { setMode(this.getAttribute('data-mode')); });
+  kIn.addEventListener('input', function () { k = +kIn.value; kOut.value = plural(k, 'bird', 'birds'); nudge(1); });
+  rIn.addEventListener('input', function () { rad = +rIn.value; rOut.value = plural(rad, 'pixel', 'pixels'); nudge(1); });
+
+  document.getElementById('falcon').addEventListener('click', function () {
+    var f = flock, cx = 0, cy = 0;
+    for (var i = 0; i < f.n; i++) { cx += f.x[i]; cy += f.y[i]; }
+    cx /= f.n; cy /= f.n;
+    var fromLeft = Math.random() < 0.5, sx = fromLeft ? -40 : W + 40, sy = cy + (Math.random() - 0.5) * H * 0.6;
+    var dx = cx - sx, dy = cy - sy, d = Math.sqrt(dx * dx + dy * dy) || 1;
+    hawk = { x: sx, y: sy, vx: 5.5 * dx / d, vy: 5.5 * dy / d };
+    nudge(Math.ceil((d + W / 2) / 5.5));
+  });
+  document.getElementById('scatter').addEventListener('click', function () { scatter(flock); nudge(90); });
+  pauseBtn.addEventListener('click', function () {
+    running = !running;
+    pauseBtn.textContent = running ? 'Pause' : 'Fly';
+    go();
+  });
+  showBtn.addEventListener('click', function () {
+    show = !show; showBtn.setAttribute('aria-pressed', show ? 'true' : 'false');
+    if (!running) draw();
+  });
+  if (!running) pauseBtn.textContent = 'Fly';
+
+  function at(e) { var r = cv.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top, mouse: e.pointerType === 'mouse' }; }
+  cv.addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse') pointer = at(e); });
+  cv.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') pointer = null; });
+  cv.addEventListener('pointerdown', function (e) { pointer = at(e); if (!pointer.mouse) { tapLeft = 40; nudge(40); } });
+
+  window.addEventListener('resize', function () { size(); draw(); });
+  document.addEventListener('visibilitychange', function () { visible = !document.hidden; go(); });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { visible = es[0].isIntersecting && !document.hidden; go(); }).observe(cv);
+  }
+  draw(); report(); go();
+})();
+</script>
+</body>
+</html>
