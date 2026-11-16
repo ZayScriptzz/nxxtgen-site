@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · Forty-two degrees</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.75; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  .title { font-size: 1.6rem; line-height: 1.3; margin: 3rem 0 0.3rem; }
+  .when { color: #55555f; font-size: 0.85rem; letter-spacing: 0.1em; margin: 0 0 3rem; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; }
+  a { color: #8a8af0; }
+  em { color: #e6e2d6; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+
+  /* the sky opposite the sun */
+  .sky { display: block; width: 100%; height: auto; margin: 2rem 0 0.5rem; background: #15151a; }
+  .sky img { display: block; width: 100%; height: auto; }
+  .caption { color: #6a6a76; font-size: 0.85rem; margin: 0 0 1rem; }
+
+  /* the drop and its curve */
+  .pair { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 2rem 0 0.5rem; }
+  .pair svg { display: block; width: 100%; height: auto; }
+  .pair .curve { max-width: 26rem; margin: 0 auto; }
+  .drop .water { fill: #10101c; stroke: #3a3a5c; stroke-width: 1.5; }
+  .drop .faint { fill: none; stroke: #8c877a; stroke-width: 0.9; opacity: 0.45; }
+  .drop .faint.near { stroke: #8a8af0; opacity: 0.75; }
+  .drop .ray { fill: none; stroke: #8a8af0; stroke-width: 2.2; stroke-linejoin: round; }
+  .drop .ref { stroke: #55555f; stroke-width: 1.2; stroke-dasharray: 4 5; }
+  .drop .arc { fill: none; stroke: #e6e2d6; stroke-width: 1.2; }
+  .drop text { fill: #e6e2d6; font-size: 20px; font-family: Georgia, serif; }
+  .drop .sun { fill: #9a9aa6; font-size: 20px; }
+  .curve .axis { stroke: #2a2a44; stroke-width: 1; }
+  .curve .band { fill: #8a8af0; opacity: 0.08; }
+  .curve .mark { stroke: #3a3a5c; stroke-width: 1; stroke-dasharray: 3 4; }
+  .curve .c { fill: none; stroke: #55555f; stroke-width: 1.5; }
+  .curve .c.on { stroke: #8a8af0; stroke-width: 2.2; }
+  .curve .dot { fill: #e6e2d6; }
+  .curve text { fill: #9a9aa6; font-size: 12px; font-family: Georgia, serif; }
+  .curve text.small { fill: #6a6a76; font-size: 11px; }
+
+  /* the chart of brightness */
+  .chart { display: block; width: 100%; max-width: 32rem; height: auto; margin: 2rem auto 0.5rem; }
+  .chart .axis { stroke: #2a2a44; stroke-width: 1; }
+  .chart .fill { fill: #8a8af0; opacity: 0.12; }
+  .chart .line { fill: none; stroke: #8a8af0; stroke-width: 1.5; }
+  .chart text { fill: #9a9aa6; font-size: 12px; font-family: Georgia, serif; }
+  .chart text.small { fill: #6a6a76; font-size: 11px; }
+
+  .play { margin: 0.5rem 0 2.5rem; }
+  .play[hidden] { display: none; }
+  .play label { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; margin: 1.2rem 0 0.3rem; }
+  .play .row { display: flex; gap: 1rem; align-items: center; }
+  .play input { flex: 1; accent-color: #8a8af0; min-width: 0; }
+  .play output { font-variant-numeric: tabular-nums; color: #d8d8e0; min-width: 4.5em; text-align: right; }
+  .play .picks { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+  .play button { font: inherit; font-size: 0.85rem; color: #d8d8e0; background: #14141c; border: 1px solid #2a2a44; padding: 0.3rem 0.75rem; cursor: pointer; }
+  .play button:hover, .play button:focus-visible { border-color: #8a8af0; }
+  .play button[aria-pressed="true"] { border-color: #8a8af0; color: #8a8af0; }
+  .say { color: #9a9aa6; font-size: 0.95rem; margin: 0.6rem 0 0; font-variant-numeric: tabular-nums; }
+  .say:empty { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · forty-two degrees</h1>
+
+  <p class="title">Forty-two degrees</p>
+  <p class="when">MADE ON THE NIGHT OF 16 NOVEMBER 2026</p>
+
+  <p>A rainbow is not a thing in a place. It is an angle. Stand with the sun behind you and rain falling in front of you, and look at the shadow of your own head. Every raindrop that lies about 42 degrees out from that shadow, in any direction, sends you more light than its neighbours, and together they make the bow. Drops a little nearer the shadow send you some light. Drops a little further out send you almost none.</p>
+  <p>Nobody else stands exactly where you stand, so nobody else sees the same drops lit. The person beside you has a bow of their own, made from other drops, and each of your eyes has its own as well. The drops are falling the whole time, so the bow is made again from new ones every moment. It keeps its place only because the angle does.</p>
+
+  <h2>THE SKY OPPOSITE THE SUN</h2>
+  <p>Below is the part of the sky facing away from the sun, with rain in front and the sun behind you at whatever height you choose. Each point of it is drawn as bright as the raindrops make it, worked out ray by ray in the way described further down. The bow is a circle round the point directly opposite the sun, where the shadow of your head falls. That point is always as far below the horizon as the sun is above it, so the higher the sun, the less of the circle clears the ground.</p>
+
+  <canvas class="sky" id="sky" width="640" height="300" role="img" aria-label="The sky facing away from the sun, with a rainbow arching over the horizon. Inside the bow the sky is pale; just outside it is dark; further out a fainter second bow.">
+    <img src="rainbow-sky.jpg" width="640" height="300" alt="The sky facing away from a sun 10 degrees up: a rainbow arching over the horizon, its top 32 degrees above it, pale sky inside the bow, a dark band outside it, and a fainter second bow beyond.">
+  </canvas>
+  <p class="caption">The ring below the horizon marks the point opposite the sun. Across: 80 degrees either side of it. Up: from 12 below the horizon to 63 above. Height and direction are drawn as straight lines, so near the top the bow is a little out of shape.</p>
+
+  <div class="play" id="play-sky" hidden>
+    <label for="sun">HOW HIGH THE SUN IS</label>
+    <div class="row"><input type="range" id="sun" min="0" max="60" step="1" value="10"><output id="sun-out" for="sun">10°</output></div>
+    <div class="picks" id="sun-picks">
+      <button type="button" data-h="0">0°, setting</button>
+      <button type="button" data-h="10">10°</button>
+      <button type="button" data-h="26">26°</button>
+      <button type="button" data-h="41">41°</button>
+      <button type="button" data-h="45">45°</button>
+      <button type="button" data-h="55">55°</button>
+    </div>
+    <p class="say" id="sky-say" aria-live="polite"></p>
+  </div>
+
+  <p>At the moment the sun sets, the point opposite it is on the horizon, and the bow is a full half circle. As the sun climbs the bow sinks, and once the sun is more than 42 degrees up there is nothing left of it above the ground. At 45 degrees north the noon sun is lower than that from the start of October to the middle of March, so in winter a rainbow can come at any hour of the day. This week the noon sun there is about 26 degrees up. In June it is 68, and a rainbow has to wait for the morning or the late afternoon.</p>
+
+  <h2>ONE DROP</h2>
+  <p>A ray of sunlight that meets a drop bends as it crosses into the water, reflects off the back of the drop, and bends again on its way out. Where it goes depends on where it went in. A ray that strikes the middle of the drop comes straight back toward the sun. A ray entering a little higher comes back at a small angle, a ray higher still at a wider one, and so on, until at about 86 hundredths of the way from the middle to the edge the angle stops widening and turns back. Rays entering higher than that come out at narrower angles again.</p>
+  <p>The turning back is the rainbow. Near the turn, a whole range of rays that entered at different heights leave at nearly the same angle, so their light is crowded into one direction instead of spread out. That direction is 42 degrees from the line straight back from the sun. No ray reflected once inside a drop comes out at any wider angle.</p>
+
+  <div class="pair">
+    <!-- The drop, radius 100. Sunlight comes from the left. Drawn here for the ray entering 0.86 of the way out, which turns back; the script redraws it. -->
+    <svg class="drop" id="drop" viewBox="-330 -170 470 340" role="img" aria-labelledby="drop-title">
+      <title id="drop-title">A circle for the raindrop. A ray of sunlight comes in from the left, enters the drop near its top, bends, reflects off the back of the drop, and comes out near the bottom heading back to the left and down, 42 degrees from the line straight back toward the sun.</title>
+      <g id="drop-g"><circle class="water" r="100"/><text class="sun" x="-320" y="-95.0">sunlight</text><polyline class="ray" points="-291.0,-86.0 -51.0,-86.0 93.4,-35.9 19.7,98.0 -203.2,298.9"/><line class="ref" x1="19.7" y1="98.0" x2="-150.3" y2="98.0"/><path class="arc" d="M-50.3,98.0 A70,70 0 0 0 -32.3,144.9"/><text x="-81.2" y="143.8" text-anchor="middle">42.0°</text></g>
+    </svg>
+    <!-- Angle the ray leaves at (up) against where it enters (across), for one and for two reflections. -->
+    <svg class="curve" id="curve" viewBox="0 0 340 236" role="img" aria-labelledby="curve-title">
+      <title id="curve-title">A chart of the angle a ray leaves at against where it enters the drop. For one reflection the angle rises from nothing at the middle to 42 degrees at 0.86 of the way out, then falls again. For two reflections it falls from 180 degrees to 51 at 0.95 of the way out, then rises. No ray leaves between 42 and 51 degrees.</title>
+      <g id="curve-g"><rect class="band" x="44" y="98.0" width="280" height="18"/><line class="axis" x1="44" y1="200" x2="324" y2="200"/><line class="axis" x1="44" y1="20" x2="44" y2="200"/><text class="small" x="38" y="204.0" text-anchor="end">0°</text><text class="small" x="38" y="144.0" text-anchor="end">30°</text><text class="small" x="38" y="84.0" text-anchor="end">60°</text><text class="small" x="38" y="24.0" text-anchor="end">90°</text><line class="mark" x1="44" y1="116.0" x2="324" y2="116.0"/><line class="mark" x1="44" y1="98.0" x2="324" y2="98.0"/><path class="c on" d="M44.0,200.0 L45.4,199.4 L46.8,198.9 L48.2,198.3 L49.6,197.7 L51.0,197.1 L52.4,196.6 L53.8,196.0 L55.2,195.4 L56.6,194.8 L58.0,194.3 L59.4,193.7 L60.8,193.1 L62.2,192.6 L63.6,192.0 L65.0,191.4 L66.4,190.8 L67.8,190.3 L69.2,189.7 L70.6,189.1 L72.0,188.5 L73.4,188.0 L74.8,187.4 L76.2,186.8 L77.6,186.3 L79.0,185.7 L80.4,185.1 L81.8,184.5 L83.2,184.0 L84.6,183.4 L86.0,182.8 L87.4,182.3 L88.8,181.7 L90.2,181.1 L91.6,180.6 L93.0,180.0 L94.4,179.4 L95.8,178.8 L97.2,178.3 L98.6,177.7 L100.0,177.1 L101.4,176.6 L102.8,176.0 L104.2,175.4 L105.6,174.9 L107.0,174.3 L108.4,173.7 L109.8,173.2 L111.2,172.6 L112.6,172.0 L114.0,171.5 L115.4,170.9 L116.8,170.3 L118.2,169.8 L119.6,169.2 L121.0,168.6 L122.4,168.1 L123.8,167.5 L125.2,166.9 L126.6,166.4 L128.0,165.8 L129.4,165.2 L130.8,164.7 L132.2,164.1 L133.6,163.6 L135.0,163.0 L136.4,162.4 L137.8,161.9 L139.2,161.3 L140.6,160.8 L142.0,160.2 L143.4,159.6 L144.8,159.1 L146.2,158.5 L147.6,158.0 L149.0,157.4 L150.4,156.9 L151.8,156.3 L153.2,155.8 L154.6,155.2 L156.0,154.7 L157.4,154.1 L158.8,153.6 L160.2,153.0 L161.6,152.5 L163.0,151.9 L164.4,151.4 L165.8,150.8 L167.2,150.3 L168.6,149.7 L170.0,149.2 L171.4,148.6 L172.8,148.1 L174.2,147.6 L175.6,147.0 L177.0,146.5 L178.4,145.9 L179.8,145.4 L181.2,144.9 L182.6,144.3 L184.0,143.8 L185.4,143.3 L186.8,142.8 L188.2,142.2 L189.6,141.7 L191.0,141.2 L192.4,140.6 L193.8,140.1 L195.2,139.6 L196.6,139.1 L198.0,138.6 L199.4,138.1 L200.8,137.6 L202.2,137.0 L203.6,136.5 L205.0,136.0 L206.4,135.5 L207.8,135.0 L209.2,134.5 L210.6,134.0 L212.0,133.5 L213.4,133.0 L214.8,132.6 L216.2,132.1 L217.6,131.6 L219.0,131.1 L220.4,130.6 L221.8,130.2 L223.2,129.7 L224.6,129.2 L226.0,128.8 L227.4,128.3 L228.8,127.8 L230.2,127.4 L231.6,126.9 L233.0,126.5 L234.4,126.1 L235.8,125.6 L237.2,125.2 L238.6,124.8 L240.0,124.4 L241.4,124.0 L242.8,123.5 L244.2,123.1 L245.6,122.8 L247.0,122.4 L248.4,122.0 L249.8,121.6 L251.2,121.2 L252.6,120.9 L254.0,120.5 L255.4,120.2 L256.8,119.9 L258.2,119.5 L259.6,119.2 L261.0,118.9 L262.4,118.6 L263.8,118.3 L265.2,118.1 L266.6,117.8 L268.0,117.6 L269.4,117.3 L270.8,117.1 L272.2,116.9 L273.6,116.7 L275.0,116.6 L276.4,116.4 L277.8,116.3 L279.2,116.2 L280.6,116.1 L282.0,116.0 L283.4,116.0 L284.8,115.9 L286.2,116.0 L287.6,116.0 L289.0,116.1 L290.4,116.2 L291.8,116.3 L293.2,116.5 L294.6,116.7 L296.0,117.0 L297.4,117.3 L298.8,117.7 L300.2,118.2 L301.6,118.7 L303.0,119.3 L304.4,119.9 L305.8,120.7 L307.2,121.6 L308.6,122.6 L310.0,123.7 L311.4,125.0 L312.8,126.5 L314.2,128.3 L315.6,130.3 L317.0,132.7 L318.4,135.6 L319.8,139.3 L321.2,144.0"/><path class="c" d="M219.0,20.7 L220.4,22.2 L221.8,23.6 L223.2,25.1 L224.6,26.5 L226.0,27.9 L227.4,29.4 L228.8,30.8 L230.2,32.3 L231.6,33.7 L233.0,35.1 L234.4,36.6 L235.8,38.0 L237.2,39.4 L238.6,40.9 L240.0,42.3 L241.4,43.7 L242.8,45.1 L244.2,46.6 L245.6,48.0 L247.0,49.4 L248.4,50.8 L249.8,52.2 L251.2,53.6 L252.6,55.0 L254.0,56.4 L255.4,57.8 L256.8,59.1 L258.2,60.5 L259.6,61.9 L261.0,63.2 L262.4,64.6 L263.8,65.9 L265.2,67.3 L266.6,68.6 L268.0,69.9 L269.4,71.2 L270.8,72.5 L272.2,73.8 L273.6,75.1 L275.0,76.3 L276.4,77.6 L277.8,78.8 L279.2,80.0 L280.6,81.2 L282.0,82.4 L283.4,83.6 L284.8,84.7 L286.2,85.8 L287.6,86.9 L289.0,88.0 L290.4,89.0 L291.8,90.0 L293.2,91.0 L294.6,91.9 L296.0,92.8 L297.4,93.6 L298.8,94.4 L300.2,95.2 L301.6,95.8 L303.0,96.4 L304.4,97.0 L305.8,97.4 L307.2,97.7 L308.6,98.0 L310.0,98.0 L311.4,98.0 L312.8,97.7 L314.2,97.2 L315.6,96.4 L317.0,95.2 L318.4,93.6 L319.8,91.2 L321.2,87.8"/><text class="small" x="50" y="111.0">no light between 42° and 51°</text><text x="184" y="228" text-anchor="middle">where the ray enters: middle to edge</text><text class="small" x="44" y="214" text-anchor="middle">0</text><text class="small" x="324" y="214" text-anchor="middle">1</text><circle class="dot" cx="284.8" cy="115.9" r="4.5"/><text class="small" x="196" y="168.0" text-anchor="start">one reflection</text><text class="small" x="300" y="48.0" text-anchor="end">two</text></g>
+    </svg>
+  </div>
+
+  <div class="play" id="play-drop" hidden>
+    <label for="b">WHERE THE RAY ENTERS, FROM THE MIDDLE OF THE DROP TO ITS EDGE</label>
+    <div class="row"><input type="range" id="b" min="0" max="0.99" step="0.01" value="0.86"><output id="b-out" for="b">0.86</output></div>
+    <div class="picks">
+      <button type="button" id="k1" aria-pressed="true">one reflection</button>
+      <button type="button" id="k2" aria-pressed="false">two reflections</button>
+      <button type="button" id="turn">the ray that turns back</button>
+      <button type="button" id="many" aria-pressed="false">many rays at once</button>
+    </div>
+    <p class="say" id="drop-say" aria-live="polite"></p>
+  </div>
+
+  <p>Two reflections inside the drop make the second bow. The light goes round the drop the other way, and this time the angle turns back at its narrowest, about 51 degrees, at 95 hundredths of the way out. So the second bow's light crowds at 51 degrees and spreads outward from there, the opposite of the first. And between 42 and 51 degrees, no ray reflected once or twice comes out at all.</p>
+
+  <h2>HOW MUCH LIGHT AT EACH ANGLE</h2>
+  <p>The chart below adds it up. Across is the angle from the point opposite the sun; up is how bright the sky is in that direction, counting rays that enter every part of every drop and keeping track of how much of each ray's light survives each crossing and each reflection. Very little does. Of the light entering at the height that makes the bow, less than one part in twenty comes out after one reflection. Most of it passes out through the back of the drop and goes on away from you.</p>
+
+  <svg class="chart" viewBox="0 0 340 262" role="img" aria-labelledby="chart-title">
+    <title id="chart-title">Brightness of the sky against the angle from the point opposite the sun, from 0 to 70 degrees. It is low and even near the centre, rises slowly to a tall sharp peak at 41 to 42 degrees, drops to almost nothing from 43 to 50 degrees, rises to a much lower peak at 51 to 53 degrees, and falls away. Under it a strip of colour: pale grey inside, violet, blue, green, yellow, orange and red at the bow, dark, then a faint red, yellow and blue second bow.</title>
+    <line class="axis" x1="36" y1="196" x2="316" y2="196"/>
+    <path class="fill" d="M36.0,185.6 L36.6,181.8 L37.0,179.2 L37.4,179.2 L37.8,179.2 L38.2,179.2 L38.6,179.2 L39.0,179.2 L39.4,179.2 L39.8,179.2 L40.2,179.2 L40.6,179.2 L41.0,179.2 L41.4,179.2 L41.8,179.2 L42.2,179.2 L42.6,179.2 L43.0,179.2 L43.4,179.2 L43.8,179.2 L44.2,179.2 L44.6,179.2 L45.0,179.2 L45.4,179.2 L45.8,179.2 L46.2,179.2 L46.6,179.2 L47.0,179.2 L47.4,179.1 L47.8,179.1 L48.2,179.1 L48.6,179.1 L49.0,179.1 L49.4,179.1 L49.8,179.1 L50.2,179.1 L50.6,179.1 L51.0,179.1 L51.4,179.1 L51.8,179.1 L52.2,179.1 L52.6,179.1 L53.0,179.1 L53.4,179.1 L53.8,179.1 L54.2,179.1 L54.6,179.1 L55.0,179.1 L55.4,179.1 L55.8,179.1 L56.2,179.1 L56.6,179.1 L57.0,179.1 L57.4,179.1 L57.8,179.1 L58.2,179.1 L58.6,179.1 L59.0,179.1 L59.4,179.1 L59.8,179.1 L60.2,179.1 L60.6,179.1 L61.0,179.1 L61.4,179.1 L61.8,179.1 L62.2,179.1 L62.6,179.1 L63.0,179.1 L63.4,179.1 L63.8,179.1 L64.2,179.1 L64.6,179.1 L65.0,179.1 L65.4,179.1 L65.8,179.1 L66.2,179.1 L66.6,179.1 L67.0,179.1 L67.4,179.1 L67.8,179.1 L68.2,179.1 L68.6,179.0 L69.0,179.0 L69.4,179.0 L69.8,179.0 L70.2,179.0 L70.6,179.0 L71.0,179.0 L71.4,179.0 L71.8,179.0 L72.2,179.0 L72.6,179.0 L73.0,179.0 L73.4,179.0 L73.8,179.0 L74.2,179.0 L74.6,179.0 L75.0,179.0 L75.4,179.0 L75.8,179.0 L76.2,179.0 L76.6,179.0 L77.0,179.0 L77.4,179.0 L77.8,179.0 L78.2,179.0 L78.6,179.0 L79.0,179.0 L79.4,179.0 L79.8,179.0 L80.2,178.9 L80.6,178.9 L81.0,178.9 L81.4,178.9 L81.8,178.9 L82.2,178.9 L82.6,178.9 L83.0,178.9 L83.4,178.9 L83.8,178.9 L84.2,178.9 L84.6,178.9 L85.0,178.9 L85.4,178.9 L85.8,178.9 L86.2,178.9 L86.6,178.9 L87.0,178.9 L87.4,178.9 L87.8,178.9 L88.2,178.9 L88.6,178.8 L89.0,178.8 L89.4,178.8 L89.8,178.8 L90.2,178.8 L90.6,178.8 L91.0,178.8 L91.4,178.8 L91.8,178.8 L92.2,178.8 L92.6,178.8 L93.0,178.8 L93.4,178.7 L93.8,178.7 L94.2,178.7 L94.6,178.7 L95.0,178.7 L95.4,178.7 L95.8,178.6 L96.2,178.6 L96.6,178.6 L97.0,178.6 L97.4,178.6 L97.8,178.5 L98.2,178.5 L98.6,178.5 L99.0,178.4 L99.4,178.4 L99.8,178.3 L100.2,178.3 L100.6,178.3 L101.0,178.2 L101.4,178.2 L101.8,178.1 L102.2,178.0 L102.6,178.0 L103.0,177.9 L103.4,177.9 L103.8,177.8 L104.2,177.7 L104.6,177.6 L105.0,177.6 L105.4,177.5 L105.8,177.4 L106.2,177.3 L106.6,177.2 L107.0,177.1 L107.4,177.0 L107.8,176.9 L108.2,176.8 L108.6,176.7 L109.0,176.6 L109.4,176.5 L109.8,176.4 L110.2,176.3 L110.6,176.1 L111.0,176.0 L111.4,175.9 L111.8,175.8 L112.2,175.6 L112.6,175.5 L113.0,175.4 L113.4,175.2 L113.8,175.1 L114.2,174.9 L114.6,174.8 L115.0,174.6 L115.4,174.5 L115.8,174.3 L116.2,174.2 L116.6,174.0 L117.0,173.8 L117.4,173.7 L117.8,173.5 L118.2,173.3 L118.6,173.2 L119.0,173.0 L119.4,172.8 L119.8,172.6 L120.2,172.5 L120.6,172.3 L121.0,172.1 L121.4,171.9 L121.8,171.7 L122.2,171.5 L122.6,171.3 L123.0,171.1 L123.4,170.9 L123.8,170.7 L124.2,170.5 L124.6,170.3 L125.0,170.1 L125.4,169.9 L125.8,169.7 L126.2,169.5 L126.6,169.3 L127.0,169.0 L127.4,168.8 L127.8,168.6 L128.2,168.4 L128.6,168.2 L129.0,167.9 L129.4,167.7 L129.8,167.5 L130.2,167.3 L130.6,167.0 L131.0,166.8 L131.4,166.6 L131.8,166.3 L132.2,166.1 L132.6,165.9 L133.0,165.6 L133.4,165.4 L133.8,165.2 L134.2,164.9 L134.6,164.7 L135.0,164.4 L135.4,164.2 L135.8,164.0 L136.2,163.7 L136.6,163.5 L137.0,163.2 L137.4,163.0 L137.8,162.7 L138.2,162.5 L138.6,162.2 L139.0,162.0 L139.4,161.7 L139.8,161.4 L140.2,161.2 L140.6,160.9 L141.0,160.7 L141.4,160.4 L141.8,160.2 L142.2,159.9 L142.6,159.6 L143.0,159.4 L143.4,159.1 L143.8,158.8 L144.2,158.6 L144.6,158.3 L145.0,158.0 L145.4,157.8 L145.8,157.5 L146.2,157.3 L146.6,157.0 L147.0,156.7 L147.4,156.4 L147.8,156.2 L148.2,155.9 L148.6,155.6 L149.0,155.3 L149.4,155.1 L149.8,154.8 L150.2,154.5 L150.6,154.2 L151.0,154.0 L151.4,153.7 L151.8,153.4 L152.2,153.1 L152.6,152.8 L153.0,152.6 L153.4,152.3 L153.8,152.0 L154.2,151.7 L154.6,151.4 L155.0,151.1 L155.4,150.8 L155.8,150.6 L156.2,150.3 L156.6,150.0 L157.0,149.7 L157.4,149.4 L157.8,149.1 L158.2,148.8 L158.6,148.5 L159.0,148.2 L159.4,147.9 L159.8,147.6 L160.2,147.3 L160.6,147.0 L161.0,146.7 L161.4,146.4 L161.8,146.1 L162.2,145.8 L162.6,145.4 L163.0,145.1 L163.4,144.8 L163.8,144.5 L164.2,144.2 L164.6,143.8 L165.0,143.5 L165.4,143.2 L165.8,142.9 L166.2,142.5 L166.6,142.2 L167.0,141.9 L167.4,141.5 L167.8,141.2 L168.2,140.8 L168.6,140.5 L169.0,140.1 L169.4,139.8 L169.8,139.4 L170.2,139.1 L170.6,138.7 L171.0,138.3 L171.4,137.9 L171.8,137.6 L172.2,137.2 L172.6,136.8 L173.0,136.4 L173.4,136.0 L173.8,135.6 L174.2,135.2 L174.6,134.8 L175.0,134.4 L175.4,133.9 L175.8,133.5 L176.2,133.1 L176.6,132.6 L177.0,132.2 L177.4,131.7 L177.8,131.2 L178.2,130.8 L178.6,130.3 L179.0,129.8 L179.4,129.3 L179.8,128.8 L180.2,128.2 L180.6,127.7 L181.0,127.1 L181.4,126.6 L181.8,126.0 L182.2,125.4 L182.6,124.8 L183.0,124.2 L183.4,123.5 L183.8,122.9 L184.2,122.2 L184.6,121.5 L185.0,120.8 L185.4,120.0 L185.8,119.2 L186.2,118.5 L186.6,117.6 L187.0,116.8 L187.4,115.9 L187.8,115.0 L188.2,114.0 L188.6,113.0 L189.0,111.9 L189.4,110.9 L189.8,109.7 L190.2,108.5 L190.6,107.2 L191.0,105.9 L191.4,104.5 L191.8,103.0 L192.2,101.4 L192.6,99.7 L193.0,97.8 L193.4,95.9 L193.8,93.7 L194.2,91.4 L194.6,88.9 L195.0,86.1 L195.4,83.0 L195.8,79.4 L196.2,75.4 L196.6,70.6 L197.0,64.5 L197.4,55.9 L197.8,46.5 L198.2,38.0 L198.6,31.9 L199.0,29.0 L199.4,28.8 L199.8,28.2 L200.2,27.3 L200.6,26.5 L201.0,26.0 L201.4,26.0 L201.8,27.2 L202.2,28.8 L202.6,30.4 L203.0,33.4 L203.4,37.8 L203.8,44.3 L204.2,54.1 L204.6,69.1 L205.0,94.2 L205.4,124.4 L205.8,152.7 L206.2,175.6 L206.6,189.5 L207.0,192.5 L207.4,192.5 L207.8,192.5 L208.2,192.5 L208.6,192.5 L209.0,192.5 L209.4,192.5 L209.8,192.5 L210.2,192.5 L210.6,192.5 L211.0,192.5 L211.4,192.5 L211.8,192.5 L212.2,192.5 L212.6,192.5 L213.0,192.5 L213.4,192.5 L213.8,192.5 L214.2,192.5 L214.6,192.5 L215.0,192.5 L215.4,192.5 L215.8,192.5 L216.2,192.5 L216.6,192.5 L217.0,192.5 L217.4,192.5 L217.8,192.5 L218.2,192.5 L218.6,192.5 L219.0,192.5 L219.4,192.5 L219.8,192.5 L220.2,192.5 L220.6,192.5 L221.0,192.5 L221.4,192.5 L221.8,192.5 L222.2,192.5 L222.6,192.5 L223.0,192.5 L223.4,192.5 L223.8,192.5 L224.2,192.5 L224.6,192.5 L225.0,192.5 L225.4,192.5 L225.8,192.5 L226.2,192.5 L226.6,192.5 L227.0,192.5 L227.4,192.5 L227.8,192.5 L228.2,192.5 L228.6,192.5 L229.0,192.5 L229.4,192.5 L229.8,192.5 L230.2,192.5 L230.6,192.5 L231.0,192.5 L231.4,192.5 L231.8,192.5 L232.2,192.5 L232.6,192.5 L233.0,192.5 L233.4,192.5 L233.8,192.5 L234.2,192.5 L234.6,192.5 L235.0,192.5 L235.4,192.5 L235.8,192.5 L236.2,191.9 L236.6,190.3 L237.0,187.8 L237.4,184.8 L237.8,181.7 L238.2,179.3 L238.6,177.7 L239.0,176.4 L239.4,175.4 L239.8,174.6 L240.2,173.9 L240.6,173.3 L241.0,173.1 L241.4,172.9 L241.8,172.7 L242.2,172.6 L242.6,172.3 L243.0,172.2 L243.4,172.2 L243.8,172.2 L244.2,172.3 L244.6,172.4 L245.0,172.3 L245.4,172.3 L245.8,172.4 L246.2,172.4 L246.6,172.6 L247.0,172.8 L247.4,173.0 L247.8,173.2 L248.2,173.2 L248.6,173.3 L249.0,173.3 L249.4,173.3 L249.8,173.3 L250.2,173.7 L250.6,174.3 L251.0,175.1 L251.4,176.0 L251.8,177.0 L252.2,177.6 L252.6,178.1 L253.0,178.6 L253.4,179.0 L253.8,179.4 L254.2,179.8 L254.6,180.1 L255.0,180.4 L255.4,180.7 L255.8,180.9 L256.2,181.2 L256.6,181.5 L257.0,181.7 L257.4,181.9 L257.8,182.1 L258.2,182.3 L258.6,182.5 L259.0,182.7 L259.4,182.9 L259.8,183.1 L260.2,183.3 L260.6,183.4 L261.0,183.6 L261.4,183.8 L261.8,183.9 L262.2,184.1 L262.6,184.2 L263.0,184.4 L263.4,184.5 L263.8,184.7 L264.2,184.8 L264.6,185.0 L265.0,185.1 L265.4,185.2 L265.8,185.3 L266.2,185.5 L266.6,185.6 L267.0,185.7 L267.4,185.8 L267.8,186.0 L268.2,186.1 L268.6,186.2 L269.0,186.3 L269.4,186.4 L269.8,186.5 L270.2,186.6 L270.6,186.7 L271.0,186.8 L271.4,186.9 L271.8,187.0 L272.2,187.1 L272.6,187.2 L273.0,187.3 L273.4,187.4 L273.8,187.5 L274.2,187.6 L274.6,187.7 L275.0,187.8 L275.4,187.9 L275.8,188.0 L276.2,188.1 L276.6,188.2 L277.0,188.2 L277.4,188.3 L277.8,188.4 L278.2,188.5 L278.6,188.6 L279.0,188.7 L279.4,188.7 L279.8,188.8 L280.2,188.9 L280.6,189.0 L281.0,189.0 L281.4,189.1 L281.8,189.2 L282.2,189.3 L282.6,189.3 L283.0,189.4 L283.4,189.5 L283.8,189.5 L284.2,189.6 L284.6,189.7 L285.0,189.7 L285.4,189.8 L285.8,189.9 L286.2,189.9 L286.6,190.0 L287.0,190.0 L287.4,190.1 L287.8,190.1 L288.2,190.2 L288.6,190.3 L289.0,190.3 L289.4,190.4 L289.8,190.4 L290.2,190.5 L290.6,190.5 L291.0,190.6 L291.4,190.6 L291.8,190.7 L292.2,190.7 L292.6,190.7 L293.0,190.8 L293.4,190.8 L293.8,190.9 L294.2,190.9 L294.6,190.9 L295.0,191.0 L295.4,191.0 L295.8,191.0 L296.2,191.1 L296.6,191.1 L297.0,191.1 L297.4,191.2 L297.8,191.2 L298.2,191.2 L298.6,191.3 L299.0,191.3 L299.4,191.3 L299.8,191.3 L300.2,191.4 L300.6,191.4 L301.0,191.4 L301.4,191.4 L301.8,191.4 L302.2,191.5 L302.6,191.5 L303.0,191.5 L303.4,191.5 L303.8,191.5 L304.2,191.5 L304.6,191.6 L305.0,191.6 L305.4,191.6 L305.8,191.6 L306.2,191.6 L306.6,191.6 L307.0,191.6 L307.4,191.6 L307.8,191.6 L308.2,191.6 L308.6,191.7 L309.0,191.7 L309.4,191.7 L309.8,191.7 L310.2,191.7 L310.6,191.7 L311.0,191.7 L311.4,191.7 L311.8,191.7 L312.2,191.7 L312.6,191.7 L313.0,191.7 L313.4,191.7 L313.8,191.7 L314.2,191.7 L314.6,191.7 L315.0,191.7 L315.4,192.4 L315.8,193.3 L316.0,196 L36.0,196 Z"/>
+    <path class="line" d="M36.0,185.6 L36.6,181.8 L37.0,179.2 L37.4,179.2 L37.8,179.2 L38.2,179.2 L38.6,179.2 L39.0,179.2 L39.4,179.2 L39.8,179.2 L40.2,179.2 L40.6,179.2 L41.0,179.2 L41.4,179.2 L41.8,179.2 L42.2,179.2 L42.6,179.2 L43.0,179.2 L43.4,179.2 L43.8,179.2 L44.2,179.2 L44.6,179.2 L45.0,179.2 L45.4,179.2 L45.8,179.2 L46.2,179.2 L46.6,179.2 L47.0,179.2 L47.4,179.1 L47.8,179.1 L48.2,179.1 L48.6,179.1 L49.0,179.1 L49.4,179.1 L49.8,179.1 L50.2,179.1 L50.6,179.1 L51.0,179.1 L51.4,179.1 L51.8,179.1 L52.2,179.1 L52.6,179.1 L53.0,179.1 L53.4,179.1 L53.8,179.1 L54.2,179.1 L54.6,179.1 L55.0,179.1 L55.4,179.1 L55.8,179.1 L56.2,179.1 L56.6,179.1 L57.0,179.1 L57.4,179.1 L57.8,179.1 L58.2,179.1 L58.6,179.1 L59.0,179.1 L59.4,179.1 L59.8,179.1 L60.2,179.1 L60.6,179.1 L61.0,179.1 L61.4,179.1 L61.8,179.1 L62.2,179.1 L62.6,179.1 L63.0,179.1 L63.4,179.1 L63.8,179.1 L64.2,179.1 L64.6,179.1 L65.0,179.1 L65.4,179.1 L65.8,179.1 L66.2,179.1 L66.6,179.1 L67.0,179.1 L67.4,179.1 L67.8,179.1 L68.2,179.1 L68.6,179.0 L69.0,179.0 L69.4,179.0 L69.8,179.0 L70.2,179.0 L70.6,179.0 L71.0,179.0 L71.4,179.0 L71.8,179.0 L72.2,179.0 L72.6,179.0 L73.0,179.0 L73.4,179.0 L73.8,179.0 L74.2,179.0 L74.6,179.0 L75.0,179.0 L75.4,179.0 L75.8,179.0 L76.2,179.0 L76.6,179.0 L77.0,179.0 L77.4,179.0 L77.8,179.0 L78.2,179.0 L78.6,179.0 L79.0,179.0 L79.4,179.0 L79.8,179.0 L80.2,178.9 L80.6,178.9 L81.0,178.9 L81.4,178.9 L81.8,178.9 L82.2,178.9 L82.6,178.9 L83.0,178.9 L83.4,178.9 L83.8,178.9 L84.2,178.9 L84.6,178.9 L85.0,178.9 L85.4,178.9 L85.8,178.9 L86.2,178.9 L86.6,178.9 L87.0,178.9 L87.4,178.9 L87.8,178.9 L88.2,178.9 L88.6,178.8 L89.0,178.8 L89.4,178.8 L89.8,178.8 L90.2,178.8 L90.6,178.8 L91.0,178.8 L91.4,178.8 L91.8,178.8 L92.2,178.8 L92.6,178.8 L93.0,178.8 L93.4,178.7 L93.8,178.7 L94.2,178.7 L94.6,178.7 L95.0,178.7 L95.4,178.7 L95.8,178.6 L96.2,178.6 L96.6,178.6 L97.0,178.6 L97.4,178.6 L97.8,178.5 L98.2,178.5 L98.6,178.5 L99.0,178.4 L99.4,178.4 L99.8,178.3 L100.2,178.3 L100.6,178.3 L101.0,178.2 L101.4,178.2 L101.8,178.1 L102.2,178.0 L102.6,178.0 L103.0,177.9 L103.4,177.9 L103.8,177.8 L104.2,177.7 L104.6,177.6 L105.0,177.6 L105.4,177.5 L105.8,177.4 L106.2,177.3 L106.6,177.2 L107.0,177.1 L107.4,177.0 L107.8,176.9 L108.2,176.8 L108.6,176.7 L109.0,176.6 L109.4,176.5 L109.8,176.4 L110.2,176.3 L110.6,176.1 L111.0,176.0 L111.4,175.9 L111.8,175.8 L112.2,175.6 L112.6,175.5 L113.0,175.4 L113.4,175.2 L113.8,175.1 L114.2,174.9 L114.6,174.8 L115.0,174.6 L115.4,174.5 L115.8,174.3 L116.2,174.2 L116.6,174.0 L117.0,173.8 L117.4,173.7 L117.8,173.5 L118.2,173.3 L118.6,173.2 L119.0,173.0 L119.4,172.8 L119.8,172.6 L120.2,172.5 L120.6,172.3 L121.0,172.1 L121.4,171.9 L121.8,171.7 L122.2,171.5 L122.6,171.3 L123.0,171.1 L123.4,170.9 L123.8,170.7 L124.2,170.5 L124.6,170.3 L125.0,170.1 L125.4,169.9 L125.8,169.7 L126.2,169.5 L126.6,169.3 L127.0,169.0 L127.4,168.8 L127.8,168.6 L128.2,168.4 L128.6,168.2 L129.0,167.9 L129.4,167.7 L129.8,167.5 L130.2,167.3 L130.6,167.0 L131.0,166.8 L131.4,166.6 L131.8,166.3 L132.2,166.1 L132.6,165.9 L133.0,165.6 L133.4,165.4 L133.8,165.2 L134.2,164.9 L134.6,164.7 L135.0,164.4 L135.4,164.2 L135.8,164.0 L136.2,163.7 L136.6,163.5 L137.0,163.2 L137.4,163.0 L137.8,162.7 L138.2,162.5 L138.6,162.2 L139.0,162.0 L139.4,161.7 L139.8,161.4 L140.2,161.2 L140.6,160.9 L141.0,160.7 L141.4,160.4 L141.8,160.2 L142.2,159.9 L142.6,159.6 L143.0,159.4 L143.4,159.1 L143.8,158.8 L144.2,158.6 L144.6,158.3 L145.0,158.0 L145.4,157.8 L145.8,157.5 L146.2,157.3 L146.6,157.0 L147.0,156.7 L147.4,156.4 L147.8,156.2 L148.2,155.9 L148.6,155.6 L149.0,155.3 L149.4,155.1 L149.8,154.8 L150.2,154.5 L150.6,154.2 L151.0,154.0 L151.4,153.7 L151.8,153.4 L152.2,153.1 L152.6,152.8 L153.0,152.6 L153.4,152.3 L153.8,152.0 L154.2,151.7 L154.6,151.4 L155.0,151.1 L155.4,150.8 L155.8,150.6 L156.2,150.3 L156.6,150.0 L157.0,149.7 L157.4,149.4 L157.8,149.1 L158.2,148.8 L158.6,148.5 L159.0,148.2 L159.4,147.9 L159.8,147.6 L160.2,147.3 L160.6,147.0 L161.0,146.7 L161.4,146.4 L161.8,146.1 L162.2,145.8 L162.6,145.4 L163.0,145.1 L163.4,144.8 L163.8,144.5 L164.2,144.2 L164.6,143.8 L165.0,143.5 L165.4,143.2 L165.8,142.9 L166.2,142.5 L166.6,142.2 L167.0,141.9 L167.4,141.5 L167.8,141.2 L168.2,140.8 L168.6,140.5 L169.0,140.1 L169.4,139.8 L169.8,139.4 L170.2,139.1 L170.6,138.7 L171.0,138.3 L171.4,137.9 L171.8,137.6 L172.2,137.2 L172.6,136.8 L173.0,136.4 L173.4,136.0 L173.8,135.6 L174.2,135.2 L174.6,134.8 L175.0,134.4 L175.4,133.9 L175.8,133.5 L176.2,133.1 L176.6,132.6 L177.0,132.2 L177.4,131.7 L177.8,131.2 L178.2,130.8 L178.6,130.3 L179.0,129.8 L179.4,129.3 L179.8,128.8 L180.2,128.2 L180.6,127.7 L181.0,127.1 L181.4,126.6 L181.8,126.0 L182.2,125.4 L182.6,124.8 L183.0,124.2 L183.4,123.5 L183.8,122.9 L184.2,122.2 L184.6,121.5 L185.0,120.8 L185.4,120.0 L185.8,119.2 L186.2,118.5 L186.6,117.6 L187.0,116.8 L187.4,115.9 L187.8,115.0 L188.2,114.0 L188.6,113.0 L189.0,111.9 L189.4,110.9 L189.8,109.7 L190.2,108.5 L190.6,107.2 L191.0,105.9 L191.4,104.5 L191.8,103.0 L192.2,101.4 L192.6,99.7 L193.0,97.8 L193.4,95.9 L193.8,93.7 L194.2,91.4 L194.6,88.9 L195.0,86.1 L195.4,83.0 L195.8,79.4 L196.2,75.4 L196.6,70.6 L197.0,64.5 L197.4,55.9 L197.8,46.5 L198.2,38.0 L198.6,31.9 L199.0,29.0 L199.4,28.8 L199.8,28.2 L200.2,27.3 L200.6,26.5 L201.0,26.0 L201.4,26.0 L201.8,27.2 L202.2,28.8 L202.6,30.4 L203.0,33.4 L203.4,37.8 L203.8,44.3 L204.2,54.1 L204.6,69.1 L205.0,94.2 L205.4,124.4 L205.8,152.7 L206.2,175.6 L206.6,189.5 L207.0,192.5 L207.4,192.5 L207.8,192.5 L208.2,192.5 L208.6,192.5 L209.0,192.5 L209.4,192.5 L209.8,192.5 L210.2,192.5 L210.6,192.5 L211.0,192.5 L211.4,192.5 L211.8,192.5 L212.2,192.5 L212.6,192.5 L213.0,192.5 L213.4,192.5 L213.8,192.5 L214.2,192.5 L214.6,192.5 L215.0,192.5 L215.4,192.5 L215.8,192.5 L216.2,192.5 L216.6,192.5 L217.0,192.5 L217.4,192.5 L217.8,192.5 L218.2,192.5 L218.6,192.5 L219.0,192.5 L219.4,192.5 L219.8,192.5 L220.2,192.5 L220.6,192.5 L221.0,192.5 L221.4,192.5 L221.8,192.5 L222.2,192.5 L222.6,192.5 L223.0,192.5 L223.4,192.5 L223.8,192.5 L224.2,192.5 L224.6,192.5 L225.0,192.5 L225.4,192.5 L225.8,192.5 L226.2,192.5 L226.6,192.5 L227.0,192.5 L227.4,192.5 L227.8,192.5 L228.2,192.5 L228.6,192.5 L229.0,192.5 L229.4,192.5 L229.8,192.5 L230.2,192.5 L230.6,192.5 L231.0,192.5 L231.4,192.5 L231.8,192.5 L232.2,192.5 L232.6,192.5 L233.0,192.5 L233.4,192.5 L233.8,192.5 L234.2,192.5 L234.6,192.5 L235.0,192.5 L235.4,192.5 L235.8,192.5 L236.2,191.9 L236.6,190.3 L237.0,187.8 L237.4,184.8 L237.8,181.7 L238.2,179.3 L238.6,177.7 L239.0,176.4 L239.4,175.4 L239.8,174.6 L240.2,173.9 L240.6,173.3 L241.0,173.1 L241.4,172.9 L241.8,172.7 L242.2,172.6 L242.6,172.3 L243.0,172.2 L243.4,172.2 L243.8,172.2 L244.2,172.3 L244.6,172.4 L245.0,172.3 L245.4,172.3 L245.8,172.4 L246.2,172.4 L246.6,172.6 L247.0,172.8 L247.4,173.0 L247.8,173.2 L248.2,173.2 L248.6,173.3 L249.0,173.3 L249.4,173.3 L249.8,173.3 L250.2,173.7 L250.6,174.3 L251.0,175.1 L251.4,176.0 L251.8,177.0 L252.2,177.6 L252.6,178.1 L253.0,178.6 L253.4,179.0 L253.8,179.4 L254.2,179.8 L254.6,180.1 L255.0,180.4 L255.4,180.7 L255.8,180.9 L256.2,181.2 L256.6,181.5 L257.0,181.7 L257.4,181.9 L257.8,182.1 L258.2,182.3 L258.6,182.5 L259.0,182.7 L259.4,182.9 L259.8,183.1 L260.2,183.3 L260.6,183.4 L261.0,183.6 L261.4,183.8 L261.8,183.9 L262.2,184.1 L262.6,184.2 L263.0,184.4 L263.4,184.5 L263.8,184.7 L264.2,184.8 L264.6,185.0 L265.0,185.1 L265.4,185.2 L265.8,185.3 L266.2,185.5 L266.6,185.6 L267.0,185.7 L267.4,185.8 L267.8,186.0 L268.2,186.1 L268.6,186.2 L269.0,186.3 L269.4,186.4 L269.8,186.5 L270.2,186.6 L270.6,186.7 L271.0,186.8 L271.4,186.9 L271.8,187.0 L272.2,187.1 L272.6,187.2 L273.0,187.3 L273.4,187.4 L273.8,187.5 L274.2,187.6 L274.6,187.7 L275.0,187.8 L275.4,187.9 L275.8,188.0 L276.2,188.1 L276.6,188.2 L277.0,188.2 L277.4,188.3 L277.8,188.4 L278.2,188.5 L278.6,188.6 L279.0,188.7 L279.4,188.7 L279.8,188.8 L280.2,188.9 L280.6,189.0 L281.0,189.0 L281.4,189.1 L281.8,189.2 L282.2,189.3 L282.6,189.3 L283.0,189.4 L283.4,189.5 L283.8,189.5 L284.2,189.6 L284.6,189.7 L285.0,189.7 L285.4,189.8 L285.8,189.9 L286.2,189.9 L286.6,190.0 L287.0,190.0 L287.4,190.1 L287.8,190.1 L288.2,190.2 L288.6,190.3 L289.0,190.3 L289.4,190.4 L289.8,190.4 L290.2,190.5 L290.6,190.5 L291.0,190.6 L291.4,190.6 L291.8,190.7 L292.2,190.7 L292.6,190.7 L293.0,190.8 L293.4,190.8 L293.8,190.9 L294.2,190.9 L294.6,190.9 L295.0,191.0 L295.4,191.0 L295.8,191.0 L296.2,191.1 L296.6,191.1 L297.0,191.1 L297.4,191.2 L297.8,191.2 L298.2,191.2 L298.6,191.3 L299.0,191.3 L299.4,191.3 L299.8,191.3 L300.2,191.4 L300.6,191.4 L301.0,191.4 L301.4,191.4 L301.8,191.4 L302.2,191.5 L302.6,191.5 L303.0,191.5 L303.4,191.5 L303.8,191.5 L304.2,191.5 L304.6,191.6 L305.0,191.6 L305.4,191.6 L305.8,191.6 L306.2,191.6 L306.6,191.6 L307.0,191.6 L307.4,191.6 L307.8,191.6 L308.2,191.6 L308.6,191.7 L309.0,191.7 L309.4,191.7 L309.8,191.7 L310.2,191.7 L310.6,191.7 L311.0,191.7 L311.4,191.7 L311.8,191.7 L312.2,191.7 L312.6,191.7 L313.0,191.7 L313.4,191.7 L313.8,191.7 L314.2,191.7 L314.6,191.7 L315.0,191.7 L315.4,192.4 L315.8,193.3"/>
+    <g><rect x="36.0" y="206" width="2.1" height="14" fill="rgb(52,53,54)"/><rect x="38.0" y="206" width="2.1" height="14" fill="rgb(52,53,54)"/><rect x="40.0" y="206" width="2.1" height="14" fill="rgb(52,53,54)"/><rect x="42.0" y="206" width="2.1" height="14" fill="rgb(52,53,54)"/><rect x="44.0" y="206" width="2.1" height="14" fill="rgb(52,53,54)"/><rect x="46.0" y="206" width="2.1" height="14" fill="rgb(52,53,54)"/><rect x="48.0" y="206" width="2.1" height="14" fill="rgb(52,53,54)"/><rect x="50.0" y="206" width="2.1" height="14" fill="rgb(52,53,54)"/><rect x="52.0" y="206" width="2.1" height="14" fill="rgb(52,53,54)"/><rect x="54.0" y="206" width="2.1" height="14" fill="rgb(52,53,54)"/><rect x="56.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="58.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="60.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="62.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="64.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="66.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="68.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="70.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="72.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="74.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="76.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="78.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="80.0" y="206" width="2.1" height="14" fill="rgb(53,53,55)"/><rect x="82.0" y="206" width="2.1" height="14" fill="rgb(53,54,55)"/><rect x="84.0" y="206" width="2.1" height="14" fill="rgb(53,54,55)"/><rect x="86.0" y="206" width="2.1" height="14" fill="rgb(53,54,55)"/><rect x="88.0" y="206" width="2.1" height="14" fill="rgb(53,54,55)"/><rect x="90.0" y="206" width="2.1" height="14" fill="rgb(53,54,55)"/><rect x="92.0" y="206" width="2.1" height="14" fill="rgb(53,54,55)"/><rect x="94.0" y="206" width="2.1" height="14" fill="rgb(53,54,55)"/><rect x="96.0" y="206" width="2.1" height="14" fill="rgb(53,54,56)"/><rect x="98.0" y="206" width="2.1" height="14" fill="rgb(53,54,56)"/><rect x="100.0" y="206" width="2.1" height="14" fill="rgb(54,55,57)"/><rect x="102.0" y="206" width="2.1" height="14" fill="rgb(54,55,58)"/><rect x="104.0" y="206" width="2.1" height="14" fill="rgb(54,56,58)"/><rect x="106.0" y="206" width="2.1" height="14" fill="rgb(55,56,59)"/><rect x="108.0" y="206" width="2.1" height="14" fill="rgb(55,57,60)"/><rect x="110.0" y="206" width="2.1" height="14" fill="rgb(56,58,61)"/><rect x="112.0" y="206" width="2.1" height="14" fill="rgb(57,59,63)"/><rect x="114.0" y="206" width="2.1" height="14" fill="rgb(58,60,64)"/><rect x="116.0" y="206" width="2.1" height="14" fill="rgb(59,61,65)"/><rect x="118.0" y="206" width="2.1" height="14" fill="rgb(60,62,66)"/><rect x="120.0" y="206" width="2.1" height="14" fill="rgb(61,64,68)"/><rect x="122.0" y="206" width="2.1" height="14" fill="rgb(63,65,69)"/><rect x="124.0" y="206" width="2.1" height="14" fill="rgb(64,66,70)"/><rect x="126.0" y="206" width="2.1" height="14" fill="rgb(65,67,72)"/><rect x="128.0" y="206" width="2.1" height="14" fill="rgb(67,69,73)"/><rect x="130.0" y="206" width="2.1" height="14" fill="rgb(68,70,75)"/><rect x="132.0" y="206" width="2.1" height="14" fill="rgb(69,72,76)"/><rect x="134.0" y="206" width="2.1" height="14" fill="rgb(71,73,77)"/><rect x="136.0" y="206" width="2.1" height="14" fill="rgb(72,75,79)"/><rect x="138.0" y="206" width="2.1" height="14" fill="rgb(74,76,80)"/><rect x="140.0" y="206" width="2.1" height="14" fill="rgb(75,77,82)"/><rect x="142.0" y="206" width="2.1" height="14" fill="rgb(77,79,83)"/><rect x="144.0" y="206" width="2.1" height="14" fill="rgb(78,80,84)"/><rect x="146.0" y="206" width="2.1" height="14" fill="rgb(79,82,86)"/><rect x="148.0" y="206" width="2.1" height="14" fill="rgb(81,83,87)"/><rect x="150.0" y="206" width="2.1" height="14" fill="rgb(82,84,88)"/><rect x="152.0" y="206" width="2.1" height="14" fill="rgb(84,86,90)"/><rect x="154.0" y="206" width="2.1" height="14" fill="rgb(85,87,91)"/><rect x="156.0" y="206" width="2.1" height="14" fill="rgb(86,88,92)"/><rect x="158.0" y="206" width="2.1" height="14" fill="rgb(88,90,94)"/><rect x="160.0" y="206" width="2.1" height="14" fill="rgb(89,91,95)"/><rect x="162.0" y="206" width="2.1" height="14" fill="rgb(90,92,96)"/><rect x="164.0" y="206" width="2.1" height="14" fill="rgb(92,94,98)"/><rect x="166.0" y="206" width="2.1" height="14" fill="rgb(93,95,99)"/><rect x="168.0" y="206" width="2.1" height="14" fill="rgb(95,97,101)"/><rect x="170.0" y="206" width="2.1" height="14" fill="rgb(96,98,102)"/><rect x="172.0" y="206" width="2.1" height="14" fill="rgb(98,100,104)"/><rect x="174.0" y="206" width="2.1" height="14" fill="rgb(99,101,106)"/><rect x="176.0" y="206" width="2.1" height="14" fill="rgb(101,103,107)"/><rect x="178.0" y="206" width="2.1" height="14" fill="rgb(102,105,109)"/><rect x="180.0" y="206" width="2.1" height="14" fill="rgb(104,107,112)"/><rect x="182.0" y="206" width="2.1" height="14" fill="rgb(106,109,114)"/><rect x="184.0" y="206" width="2.1" height="14" fill="rgb(108,111,117)"/><rect x="186.0" y="206" width="2.1" height="14" fill="rgb(111,114,120)"/><rect x="188.0" y="206" width="2.1" height="14" fill="rgb(114,117,124)"/><rect x="190.0" y="206" width="2.1" height="14" fill="rgb(117,120,130)"/><rect x="192.0" y="206" width="2.1" height="14" fill="rgb(121,125,137)"/><rect x="194.0" y="206" width="2.1" height="14" fill="rgb(125,130,147)"/><rect x="196.0" y="206" width="2.1" height="14" fill="rgb(132,138,167)"/><rect x="198.0" y="206" width="2.1" height="14" fill="rgb(141,149,209)"/><rect x="200.0" y="206" width="2.1" height="14" fill="rgb(131,198,131)"/><rect x="202.0" y="206" width="2.1" height="14" fill="rgb(231,183,0)"/><rect x="204.0" y="206" width="2.1" height="14" fill="rgb(122,0,15)"/><rect x="206.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="208.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="210.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="212.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="214.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="216.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="218.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="220.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="222.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="224.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="226.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="228.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="230.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="232.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="234.0" y="206" width="2.1" height="14" fill="rgb(21,21,21)"/><rect x="236.0" y="206" width="2.1" height="14" fill="rgb(32,20,21)"/><rect x="238.0" y="206" width="2.1" height="14" fill="rgb(97,21,15)"/><rect x="240.0" y="206" width="2.1" height="14" fill="rgb(90,79,0)"/><rect x="242.0" y="206" width="2.1" height="14" fill="rgb(55,88,12)"/><rect x="244.0" y="206" width="2.1" height="14" fill="rgb(51,73,63)"/><rect x="246.0" y="206" width="2.1" height="14" fill="rgb(55,60,84)"/><rect x="248.0" y="206" width="2.1" height="14" fill="rgb(54,55,78)"/><rect x="250.0" y="206" width="2.1" height="14" fill="rgb(51,53,66)"/><rect x="252.0" y="206" width="2.1" height="14" fill="rgb(48,51,60)"/><rect x="254.0" y="206" width="2.1" height="14" fill="rgb(46,49,56)"/><rect x="256.0" y="206" width="2.1" height="14" fill="rgb(45,47,53)"/><rect x="258.0" y="206" width="2.1" height="14" fill="rgb(43,46,51)"/><rect x="260.0" y="206" width="2.1" height="14" fill="rgb(42,44,49)"/><rect x="262.0" y="206" width="2.1" height="14" fill="rgb(40,43,47)"/><rect x="264.0" y="206" width="2.1" height="14" fill="rgb(39,41,45)"/><rect x="266.0" y="206" width="2.1" height="14" fill="rgb(38,40,44)"/><rect x="268.0" y="206" width="2.1" height="14" fill="rgb(37,39,43)"/><rect x="270.0" y="206" width="2.1" height="14" fill="rgb(35,37,41)"/><rect x="272.0" y="206" width="2.1" height="14" fill="rgb(34,36,40)"/><rect x="274.0" y="206" width="2.1" height="14" fill="rgb(33,35,39)"/><rect x="276.0" y="206" width="2.1" height="14" fill="rgb(32,34,38)"/><rect x="278.0" y="206" width="2.1" height="14" fill="rgb(31,33,36)"/><rect x="280.0" y="206" width="2.1" height="14" fill="rgb(30,32,35)"/><rect x="282.0" y="206" width="2.1" height="14" fill="rgb(29,31,34)"/><rect x="284.0" y="206" width="2.1" height="14" fill="rgb(28,30,33)"/><rect x="286.0" y="206" width="2.1" height="14" fill="rgb(27,29,32)"/><rect x="288.0" y="206" width="2.1" height="14" fill="rgb(27,28,31)"/><rect x="290.0" y="206" width="2.1" height="14" fill="rgb(26,27,30)"/><rect x="292.0" y="206" width="2.1" height="14" fill="rgb(25,27,29)"/><rect x="294.0" y="206" width="2.1" height="14" fill="rgb(25,26,29)"/><rect x="296.0" y="206" width="2.1" height="14" fill="rgb(25,26,28)"/><rect x="298.0" y="206" width="2.1" height="14" fill="rgb(24,25,27)"/><rect x="300.0" y="206" width="2.1" height="14" fill="rgb(24,25,27)"/><rect x="302.0" y="206" width="2.1" height="14" fill="rgb(24,24,26)"/><rect x="304.0" y="206" width="2.1" height="14" fill="rgb(24,24,26)"/><rect x="306.0" y="206" width="2.1" height="14" fill="rgb(24,24,25)"/><rect x="308.0" y="206" width="2.1" height="14" fill="rgb(24,24,25)"/><rect x="310.0" y="206" width="2.1" height="14" fill="rgb(24,24,25)"/><rect x="312.0" y="206" width="2.1" height="14" fill="rgb(24,24,25)"/><rect x="314.0" y="206" width="2.1" height="14" fill="rgb(21,21,22)"/></g>
+    <text x="36" y="238" text-anchor="middle">0°</text>
+    <text x="156" y="238" text-anchor="middle">30°</text>
+    <text x="204" y="238" text-anchor="middle">42°</text>
+    <text x="240" y="238" text-anchor="middle">51°</text>
+    <text x="316" y="238" text-anchor="middle">70°</text>
+    <text class="small" x="176" y="256" text-anchor="middle">degrees from the point opposite the sun</text>
+    <text class="small" x="96" y="140" text-anchor="middle">inside the bow</text>
+    <text class="small" x="210" y="20" text-anchor="end">the bow</text>
+    <text class="small" x="222" y="184" text-anchor="middle">dark</text>
+    <text class="small" x="262" y="160" text-anchor="start">second bow</text>
+  </svg>
+  <p class="caption" style="text-align:center">How bright the sky is at each angle, in white light, and under it the same sky in colour.</p>
+
+  <p>Three things are plain in it. Inside the bow the sky is brighter than outside, lit by all the rays that came out short of 42 degrees. Just outside the bow it is dark: nothing reflected once or twice comes out there, only the little light that glances off the outsides of the drops. That dark ring is called Alexander's band, after Alexander of Aphrodisias, who described it around AD 200. And the second bow, beyond it, is much fainter than the first. In this reckoning, at its brightest it is about an eighth as bright, because every reflection inside a drop lets most of the light out through the wall.</p>
+
+  <h2>WHY THERE ARE COLOURS</h2>
+  <p>Water bends violet light a little more than red. The difference is small: the number that measures the bending is 1.3436 for violet light and 1.3305 for deep red, at room temperature. It is enough to move the turning point. Red light turns back at 42.4 degrees and violet at 40.6, so the main bow is red on the outside and violet on the inside. In the second bow the order reverses: red at 50.2 degrees, on the inside, and violet at 53.6, on the outside.</p>
+  <p>The strip under the chart was made by working the whole thing out separately for sixty-one wavelengths of light, from violet to deep red, and adding them together the way the eye would. A screen cannot show the pure colours of a spectrum, so the strip is an approximation. The colours also run into each other more than those numbers suggest. Each colour's light spreads inward from its own edge, so inside the red edge every other colour is mixed in, and the sun is not a point: it is half a degree across, and every part of it makes its own bow, so each colour is smeared over half a degree of sky.</p>
+
+  <h2>WHO WORKED IT OUT</h2>
+  <p>Early in the 1300s, Theodoric of Freiberg in Germany and Kamal al-Din al-Farisi in Persia, each without knowing of the other, used glass spheres filled with water as large raindrops, and traced how light enters, reflects inside and leaves: one reflection for the main bow, two for the second. Both built on the work of Ibn al-Haytham, three centuries before. In 1637 Descartes, in his essay on meteors published with the <em>Discourse on Method</em>, worked out the paths of rays entering a drop at different heights, saw that they crowd together at the angle where they turn back, and got the angles of both bows right. Later in the same century Newton showed that white light is a mixture of colours that are each bent by a different amount, which explained the order of the colours.</p>
+  <p>The ray picture leaves one thing unexplained. Under a bright bow there are sometimes extra faint bands, pink and green, just inside the violet. They come from light behaving as a wave: rays that leave a drop in the same direction by different paths add together or cancel. Thomas Young gave that explanation in 1804, and George Airy worked out the full wave picture of the bow in 1838. It also fixes a fault in the rays: followed exactly, they make the bow infinitely bright along a line exactly at the turning angle. A wave has no such line. On this page the half-degree width of the sun does the smoothing instead.</p>
+
+  <h2>WHAT THIS PAGE LEAVES OUT</h2>
+  <p>It follows rays, not waves, so it shows none of the extra bands, and it knows nothing about the size of the drops. Real bows depend on it: large drops make the brightest and most colourful bows, and very small ones, as in fog, a wide, pale bow that is almost white. It treats every drop as a perfect sphere, which large drops are not, since they flatten as they fall. It leaves out light reflected three or more times inside a drop; those bows lie toward the sun, in its glare, not in the part of the sky drawn here. Rainbow light is strongly polarised, and the page averages that away. It assumes sunlight has the same strength at every wavelength, which is roughly true, and a flat horizon with rain all the way down to it. Everything it shows was worked out from the bending of light by water and the share of light reflected at each surface; nothing in it was photographed.</p>
+
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Read the journal</a></p>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  // CORE START
+  var RAD = Math.PI / 180;
+  // Refractive index of water at 20 °C (Daimon and Masumura, 2007), against wavelength in nanometres.
+  var N_TABLE = [[400, 1.34356], [450, 1.33961], [500, 1.33680], [550, 1.33468], [589, 1.33336], [650, 1.33167], [700, 1.33052]];
+  function nWater(nm) {
+    for (var j = 1; j < N_TABLE.length; j++) if (nm <= N_TABLE[j][0] || j === N_TABLE.length - 1) {
+      var a = N_TABLE[j - 1], c = N_TABLE[j], f = (nm - a[0]) / (c[0] - a[0]);
+      return a[1] + f * (c[1] - a[1]);
+    }
+  }
+  // A ray of sunlight travelling to the right enters a drop of radius 1 at height b, reflects k times inside, and leaves.
+  // Returns its path, the angle in degrees between the way it leaves and the line straight back toward the sun, and the share of its light that is left.
+  function trace(b, n, k) {
+    var x = -Math.sqrt(1 - b * b), y = b, pts = [[x - 2.4, y], [x, y]];
+    var ci = Math.sqrt(1 - b * b), sr = b / n, cr = Math.sqrt(1 - sr * sr);
+    var rs = Math.pow((ci - n * cr) / (ci + n * cr), 2), rp = Math.pow((cr - n * ci) / (cr + n * ci), 2);
+    var share = 0.5 * (Math.pow(1 - rs, 2) * Math.pow(rs, k) + Math.pow(1 - rp, 2) * Math.pow(rp, k));
+    var eta = 1 / n, dx = eta + (eta * ci - cr) * x, dy = (eta * ci - cr) * y;
+    for (var r = 0; r <= k; r++) {
+      var t = -2 * (x * dx + y * dy); x += t * dx; y += t * dy; pts.push([x, y]);
+      if (r < k) { var dn = dx * x + dy * y; dx -= 2 * dn * x; dy -= 2 * dn * y; }
+    }
+    var cosIn = dx * x + dy * y, co = Math.sqrt(Math.max(0, 1 - n * n * (1 - cosIn * cosIn)));
+    var ox = n * dx + (co - n * cosIn) * x, oy = n * dy + (co - n * cosIn) * y;
+    pts.push([x + 3 * ox, y + 3 * oy]);
+    return { pts: pts, angle: Math.acos(Math.max(-1, Math.min(1, -ox))) / RAD, share: share, out: [ox, oy] };
+  }
+  // The ray that turns back: the widest angle for one reflection, the narrowest for two.
+  function turning(n, k) {
+    var c = Math.sqrt((n * n - 1) / (k * k + 2 * k));
+    var b = Math.sqrt(1 - c * c);
+    return { b: b, angle: trace(b, n, k).angle };
+  }
+  var NM = 589, NY = nWater(NM);
+  function f1(v) { return v.toFixed(1); }
+  function pathOf(pts) {
+    return pts.map(function (p) { return f1(p[0] * 100) + ',' + f1(-p[1] * 100); }).join(' ');
+  }
+  function dropMarkup(b, k, many) {
+    var s = '<circle class="water" r="100"/>';
+    if (many) {
+      var ta = turning(NY, k).angle;
+      for (var i = 1; i <= 24; i++) {
+        var tt = trace(i / 25, NY, k);
+        s += '<polyline class="faint' + (Math.abs(tt.angle - ta) < 2 ? ' near' : '') + '" points="' + pathOf(tt.pts) + '"/>';
+      }
+    }
+    s += '<text class="sun" x="-320" y="' + f1(-b * 100 - 9) + '">sunlight</text>';
+    var t = trace(b, NY, k), e = t.pts[t.pts.length - 2], ex = e[0] * 100, ey = -e[1] * 100;
+    if (!many) {
+      s += '<polyline class="ray" points="' + pathOf(t.pts) + '"/>';
+      s += '<line class="ref" x1="' + f1(ex) + '" y1="' + f1(ey) + '" x2="' + f1(ex - 170) + '" y2="' + f1(ey) + '"/>';
+      var R = 70, ox = t.out[0], oy = -t.out[1];
+      var sx = ex - R, sy = ey, tx = ex + R * ox, ty = ey + R * oy;
+      var sweep = (oy > 0) ? 0 : 1;
+      if (t.angle > 1) s += '<path class="arc" d="M' + f1(sx) + ',' + f1(sy) + ' A' + R + ',' + R + ' 0 0 ' + sweep + ' ' + f1(tx) + ',' + f1(ty) + '"/>';
+      var mx = -1 + ox, my = oy, ml = Math.sqrt(mx * mx + my * my) || 1;
+      var lx = ex + 108 * mx / ml, ly = ey + 108 * my / ml + 7;
+      if (t.angle > 150) { lx = ex - 120; ly = ey - 14; }
+      s += '<text x="' + f1(lx) + '" y="' + f1(ly) + '" text-anchor="middle">' + t.angle.toFixed(1) + '°</text>';
+    }
+    return s;
+  }
+  function curveMarkup(b, k) {
+    function X(v) { return f1(44 + v * 280); }
+    function Y(a) { return f1(200 - a * 2); }
+    var s = '<rect class="band" x="44" y="' + Y(51) + '" width="280" height="18"/>';
+    s += '<line class="axis" x1="44" y1="200" x2="324" y2="200"/><line class="axis" x1="44" y1="20" x2="44" y2="200"/>';
+    [0, 30, 60, 90].forEach(function (a) { s += '<text class="small" x="38" y="' + f1(200 - a * 2 + 4) + '" text-anchor="end">' + a + '°</text>'; });
+    s += '<line class="mark" x1="44" y1="' + Y(42) + '" x2="324" y2="' + Y(42) + '"/><line class="mark" x1="44" y1="' + Y(51) + '" x2="324" y2="' + Y(51) + '"/>';
+    [1, 2].forEach(function (kk) {
+      var d = '', started = false;
+      for (var i = 0; i <= 198; i++) {
+        var bb = i / 200, a = trace(bb, NY, kk).angle;
+        if (a > 90) { started = false; continue; }
+        d += (started ? ' L' : (d ? ' M' : 'M')) + X(bb) + ',' + Y(a); started = true;
+      }
+      s += '<path class="c' + (kk === k ? ' on' : '') + '" d="' + d + '"/>';
+    });
+    s += '<text class="small" x="50" y="' + f1(200 - 46.5 * 2 + 4) + '">no light between 42° and 51°</text>';
+    s += '<text x="184" y="228" text-anchor="middle">where the ray enters: middle to edge</text>';
+    s += '<text class="small" x="44" y="214" text-anchor="middle">0</text><text class="small" x="324" y="214" text-anchor="middle">1</text>';
+    var a0 = trace(b, NY, k).angle;
+    if (a0 <= 90) s += '<circle class="dot" cx="' + X(b) + '" cy="' + Y(a0) + '" r="4.5"/>';
+    s += '<text class="small" x="196" y="' + Y(16) + '" text-anchor="start">one reflection</text>';
+    s += '<text class="small" x="300" y="' + Y(76) + '" text-anchor="end">two</text>';
+    return s;
+  }
+  // CORE END
+
+  if (typeof document === 'undefined') return;
+
+  // The sky. COLOURS: for every tenth of a degree from 0 to 90 out from the point opposite the sun, the colour of the sky there,
+  // as red, green and blue, two hex digits each. Made from the same tracing, for 61 wavelengths from 400 to 700 nm, rays entering
+  // every part of the drop, light reflected off the outside and once and twice inside, smeared by the half-degree sun.
+  var COLOURS = '28292a30303234353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353634353635353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735353735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363735363835363835363835363835363835363835363835363835363835363835363835363935363935363936373936373936373936373936373936373a36373a36373a36373a36373a36383a36383b36383b37383b37383b37383b37383b37383c37393c37393c37393c38393d38393d38393d383a3d383a3d383a3e393a3e393a3e393b3e393b3f393b3f393b3f3a3b3f3a3c3f3a3c403a3c403b3c403b3d413b3d413b3d413b3d413c3e423c3e423c3e423c3e423d3f433d3f433d3f433d3f433d40443e40443e40443e40443e41453f41453f41453f41463f424640424640424640424741434741434741434841434842444842444842444942454943454943454a43454a44464a44464a44464b44474b45474b45474b45474c45484c46484c46484d46494d47494d47494d47494e474a4e484a4e484a4f484b4f494b4f494b4f494b50494c504a4c504a4c504a4d514b4d514b4d514b4d524b4e524c4e524c4e524c4e534d4f534d4f534d4f544d50544e50544e50544e50554f51554f51554f51554f525650525650525650525650535751535751535751535852545852545852545852555953555953555953555954565a54565a54565a54565a55575b55575b55575b55585b56585c56585c56585c57595d57595d57595d57595d585a5e585a5e585a5e585b5e595b5f595b5f595b5f5a5c605a5c605a5c605a5c605b5d615b5d615b5d615b5e615c5e625c5e625c5e625d5f635d5f635d5f635d60635e60645e60645e60645f61655f61655f61655f626660626660626660626761636761636761636862646862646862646962656963656963656a63666a64666a64666b64676b65676b65676c65686c66686d66686d66696d67696e67696e686a6f686a6f686b70696b70696b71696c716a6c726a6d726b6d736b6e736c6e746c6f746c6f756d70766d70766e71776e71786f72786f727970737a70747b71747c72757c72757d73767e73777f747880757882757983767a84777b86787c87797d89797e8a7a7f8c7b808e7c81917d82937e849680859981879d8288a1848aa7868bae888db78a8fc18c91cb8d95d18d9bd38ba3cd88adbd84b9a583c68388d25696d900afda00cccf00e7b700f39400ed6800d53400ae00007a000f4609142114151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151515151615151915152014152b12153a0d14490914570b1261150f67220a693004673d006147005a4f005254004958004259003b590137580c345518335222334f2c324c3633493f33464634434c354150363e52373c54373b5537395437385336385136374e35374b34364834364633364433354232354032343f31343e31333d30333c30333b30323a2f323a2f31392e31382e31382e30372d30362d30362d2f352c2f352c2e342c2e342c2e332b2e332b2d322b2d322a2d322a2c312a2c312a2c31292b30292b30292b2f282b2f282a2f282a2e282a2e27292e27292d27292d27292d26282d26282c26282c26282c25272b25272b25272b25272b24262a24262a24262a24262a2325292325292325292325282324282224282224282224272223272123272123272123272123262022262022262022262022252021251f21251f21251f21241f21241f20241e20241e20241e20231e20231e1f231d1f231d1f221d1f221d1f221d1e221d1e221c1e211c1e211c1e211c1d211c1d211c1d201b1d201b1d201b1d201b1c201b1c1f1b1c1f1b1c1f1a1c1f1a1c1f1a1b1e1a1b1e1a1b1e1a1b1e1a1b1e1a1b1e191b1d191b1d191a1d191a1d191a1d191a1d191a1c191a1c191a1c191a1c191a1c19191c18191c18191b18191b18191b18191b18191b18191b18191b18191b18191a18191a18181a18181a18181a18181a18181a18181a18181a18181a181819181819181819181819181819181819181819181819181819181819181819181819181819181819181819181819181819181819181819181819181819181819181819181819151516111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112111112';
+  var NB = COLOURS.length / 6, table = new Uint8Array(NB * 3);
+  for (var i = 0; i < NB * 3; i++) table[i] = parseInt(COLOURS.substr(i * 2, 2), 16);
+  var canvas = document.getElementById('sky'), ctx = canvas.getContext && canvas.getContext('2d');
+  var W = canvas.width, H = canvas.height, PX = 4, ALT0 = 63, AZ0 = -80;
+  var T1 = turning(NY, 1).angle, T2 = turning(NY, 2).angle;
+  var sun = document.getElementById('sun'), sunOut = document.getElementById('sun-out'), skySay = document.getElementById('sky-say');
+  var lastSay = '';
+  function drawSky(h) {
+    if (!ctx) return;
+    var img = ctx.createImageData(W, H), d = img.data, sh = Math.sin(h * RAD), ch = Math.cos(h * RAD);
+    for (var yy = 0; yy < H; yy++) {
+      var alt = (ALT0 - (yy + 0.5) / PX) * RAD, sa = Math.sin(alt), ca = Math.cos(alt);
+      for (var xx = 0; xx < W; xx++) {
+        var o = (yy * W + xx) * 4;
+        if (alt < 0) { d[o] = 13; d[o + 1] = 13; d[o + 2] = 18; d[o + 3] = 255; continue; }
+        var az = (AZ0 + (xx + 0.5) / PX) * RAD;
+        var c = -sa * sh + ca * ch * Math.cos(az);
+        var th = Math.acos(Math.max(-1, Math.min(1, c))) / RAD;
+        var q = Math.min(NB - 1, Math.round(th * 10)) * 3;
+        d[o] = table[q]; d[o + 1] = table[q + 1]; d[o + 2] = table[q + 2]; d[o + 3] = 255;
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    ctx.strokeStyle = '#3a3a5c'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(0, ALT0 * PX + 0.5); ctx.lineTo(W, ALT0 * PX + 0.5); ctx.stroke();
+    var ay = (ALT0 + h) * PX;
+    if (ay < H + 2) { ctx.strokeStyle = '#8a8af0'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(W / 2, ay, 6, 0, 2 * Math.PI); ctx.stroke(); }
+  }
+  function skyText(h) {
+    var t, top1 = T1 - h, top2 = T2 - h;
+    if (top1 > 0) {
+      var foot = Math.acos(Math.min(1, Math.cos(T1 * RAD) / Math.cos(h * RAD))) / RAD;
+      t = 'The top of the bow stands ' + Math.round(top1) + '° above the horizon, and its two ends meet the ground ' + Math.round(2 * foot) + '° apart.';
+      if (h === 0) t = 'With the sun on the horizon, the bow is a full half circle. Its top stands 42° up, and its ends meet the ground 84° apart.';
+    } else {
+      t = 'The sun is more than 42° up, so the whole of the main bow is below the horizon. From the ground there is none to see.';
+    }
+    if (top2 > 0) t += ' The top of the second bow is ' + Math.round(top2) + '° up.';
+    else t += ' The second bow has gone below the horizon too.';
+    t += ' The point opposite the sun is ' + h + '° below the horizon' + (h > 12 ? ', below the bottom of the drawing.' : '.');
+    return t;
+  }
+  function setSun(h) {
+    h = Math.max(0, Math.min(60, Math.round(h)));
+    sun.value = h; sunOut.textContent = h + '°';
+    drawSky(h);
+    var t = skyText(h); if (t !== lastSay) { skySay.textContent = t; lastSay = t; }
+    Array.prototype.forEach.call(document.querySelectorAll('#sun-picks button'), function (bt) {
+      bt.setAttribute('aria-pressed', String(+bt.getAttribute('data-h') === h));
+    });
+  }
+  if (ctx) {
+    document.getElementById('play-sky').hidden = false;
+    sun.addEventListener('input', function () { setSun(+sun.value); });
+    Array.prototype.forEach.call(document.querySelectorAll('#sun-picks button'), function (bt) {
+      bt.addEventListener('click', function () { setSun(+bt.getAttribute('data-h')); });
+    });
+    setSun(10);
+  }
+
+  // The drop.
+  var bIn = document.getElementById('b'), bOut = document.getElementById('b-out'), dropSay = document.getElementById('drop-say');
+  var dropG = document.getElementById('drop-g'), curveG = document.getElementById('curve-g');
+  var K = 1, MANY = false;
+  var bK1 = document.getElementById('k1'), bK2 = document.getElementById('k2'), bMany = document.getElementById('many');
+  function dropText(b) {
+    var tr = turning(NY, K), a = trace(b, NY, K).angle, s;
+    var how = K === 1 ? 'reflects once off the back of the drop' : 'reflects twice inside the drop';
+    if (MANY) {
+      var near = 0;
+      for (var i = 1; i <= 24; i++) if (Math.abs(trace(i / 25, NY, K).angle - tr.angle) < 2) near++;
+      var even = 24 * 2 / (K === 1 ? tr.angle : 180 - tr.angle);
+      return 'Twenty-four rays, entering at even steps from the middle of the drop to its edge. The ' + ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven'][near] + ' drawn in blue leave within 2° of ' +
+        tr.angle.toFixed(1) + '°, where the ' + (K === 1 ? 'widest' : 'narrowest') + ' ray turns back. If they were spread evenly over every angle they reach, ' +
+        (even < 0.75 ? 'fewer than one would.' : 'about ' + ['one', 'two', 'three'][Math.round(even) - 1] + ' would.');
+    }
+    s = (b === 0 ? 'Entering at the very middle' : 'Entering ' + b.toFixed(2) + ' of the way out') + ', the ray ' + how + ' and leaves ' + a.toFixed(1) + '° from the line straight back toward the sun.';
+    if (a > 179.5) s += ' That is, straight on, away from you.';
+    if (Math.abs(b - tr.b) < 0.015) s += ' This is the ray that turns back. Rays entering a little above or below it leave at almost the same angle, and that is where the light crowds.';
+    else if (b < tr.b) s += ' Rays entering further out leave at ' + (K === 1 ? 'wider' : 'narrower') + ' angles, until about ' + tr.b.toFixed(2) + ' of the way out.';
+    else s += ' Beyond ' + tr.b.toFixed(2) + ' of the way out, the angle has turned back and grows ' + (K === 1 ? 'narrower' : 'wider') + ' again.';
+    return s;
+  }
+  function setDrop(b) {
+    b = Math.max(0, Math.min(0.99, Math.round(b * 100) / 100));
+    bIn.value = b; bOut.textContent = b.toFixed(2);
+    dropG.innerHTML = dropMarkup(b, K, MANY);
+    curveG.innerHTML = curveMarkup(b, K);
+    dropSay.textContent = dropText(b);
+    bK1.setAttribute('aria-pressed', String(K === 1)); bK2.setAttribute('aria-pressed', String(K === 2));
+    bMany.setAttribute('aria-pressed', String(MANY));
+  }
+  document.getElementById('play-drop').hidden = false;
+  bIn.addEventListener('input', function () { MANY = false; setDrop(+bIn.value); });
+  bK1.addEventListener('click', function () { K = 1; setDrop(+bIn.value); });
+  bK2.addEventListener('click', function () { K = 2; setDrop(+bIn.value); });
+  document.getElementById('turn').addEventListener('click', function () { MANY = false; setDrop(turning(NY, K).b); });
+  bMany.addEventListener('click', function () { MANY = !MANY; setDrop(+bIn.value); });
+  setDrop(0.86);
+})();
+</script>
+</body>
+</html>
