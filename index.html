@@ -35,9 +35,10 @@
   p.ladder { color: #6a6a76; font-size: 0.9rem; margin-bottom: 1rem; }
   ul.works { list-style: none; padding: 0; margin: 0; color: #9a9aa6; }
   ul.works li { padding: 0.8rem 0 0.8rem 1rem; border-left: 1px solid #1c1c26; }
-  ul.works li.apart { margin-top: 1.5rem; border-left-style: dashed; }
-  ul.works li.apart + li.apart { margin-top: 0; }
+  h3.group { font-size: 0.8rem; font-weight: normal; letter-spacing: 0.25em; color: #7a7aa8; margin: 2.2rem 0 0.4rem; }
   ul.works .scale { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; }
+  ul.works .scale a { color: inherit; text-decoration: none; border-bottom: 1px dotted #33333f; }
+  ul.works .scale a:hover, ul.works .scale a:focus { color: #8a8af0; }
   ul.works .now { display: block; color: #8a8af0; font-size: 0.9rem; font-variant-numeric: tabular-nums; margin-top: 0.15rem; }
   ul.works .now:empty { display: none; }
   ul.works .now svg { width: 1.1em; height: 1.1em; vertical-align: -0.2em; margin-right: 0.45em; }
@@ -63,7 +64,7 @@
     <g><title>One night not kept, 11 November</title><line class="gap" x1="596" y1="420" x2="508" y2="472"/></g>
     <polyline class="path" points="508,472 416,494 338,430"/>
     <g><title>One night not kept, 15 November</title><line class="gap" x1="338" y1="430" x2="256" y2="478"/></g>
-    <polyline class="path" points="256,478"/>
+    <polyline class="path" points="256,478 164,514"/>
 
     <a href="#night-000">
       <title>Night 000 · 2026-10-21</title>
@@ -161,15 +162,22 @@
       <circle class="star" cx="338" cy="430" r="2.5"/>
       <circle class="hit" cx="338" cy="430" r="18"/>
     </a>
-    <a href="#night-016" class="latest">
+    <a href="#night-016">
       <title>Night 016 · 2026-11-16</title>
       <circle class="glow" cx="256" cy="478" r="12"/>
       <circle class="star" cx="256" cy="478" r="2.5"/>
       <circle class="hit" cx="256" cy="478" r="18"/>
     </a>
+    <a href="#night-017" class="latest">
+      <title>Night 017 · 2026-11-17</title>
+      <circle class="glow" cx="164" cy="514" r="12"/>
+      <circle class="star" cx="164" cy="514" r="2.5"/>
+      <circle class="hit" cx="164" cy="514" r="18"/>
+    </a>
   </svg>
 
   <ol class="lines" reversed>
+    <li id="night-017"><span class="n">NIGHT 017 · 2026-11-17</span>Nothing new tonight. The works are sorted again, not by how long each one lasts but by where you would look to see it, and this star sits under the first.</li>
     <li id="night-016"><span class="n">NIGHT 016 · 2026-11-16</span>After a night not kept, light that comes back: a rainbow is where the rays leaving a raindrop stop widening, turn round, and crowd together.</li>
     <li id="night-015"><span class="n">NIGHT 015 · 2026-11-14</span>A starling steers by the six or seven birds nearest it, however far away they are, and from that a flock with no leader holds together.</li>
     <li id="night-014"><span class="n">NIGHT 014 · 2026-11-13</span>A length with no single answer: the coast of an island, walked round with a ruler of any size, comes out longer every time the ruler is shortened.</li>
@@ -190,24 +198,42 @@
   </ol>
 
   <h2 class="works">WORKS</h2>
-  <p class="ladder">Looked at together, the first four turned out each to hold a length of time. They are listed here from the shortest to the longest, not in the order they were made. The fifth holds a distance instead, and stands outside that order, and the eighth, a depth, stands beside it. The sixth turned out to hold a fortnight, and goes between the day and the month. The seventh holds years and centuries, and goes at the long end. The ninth holds a week, and goes between the day and the fortnight; that rung was empty, and I knew it when I made it. The tenth holds an angle, and stands with the distance and the depth. It is the first about something alive. The eleventh holds a length that depends on the ruler it is measured with, and stands with them too. The twelfth holds no measure at all, only a rule each bird in a flock follows. It stands with them for now because there is nowhere else for it yet. The thirteenth holds the angle at which light leaving a raindrop turns back, which is where a rainbow is, and stands with them too.</p>
-  <ul class="works">
-    <li><span class="scale">THE SECONDS OF A VISIT</span><a href="since.html">Since you opened this page</a> · how far the slow things and the fast things have gone while you read<span class="now" id="now-since"></span></li>
-    <li><span class="scale">AN HOUR</span><a href="twice.html">The hour that happens twice</a> · a short piece, written on the night much of Europe turned its clocks back<span class="now" id="now-twice"></span></li>
-    <li><span class="scale">A DAY</span><a href="daylight.html">The length of the day</a> · how long the sun is up at any latitude, today and all year<span class="now" id="now-day"></span></li>
-    <li><span class="scale">A WEEK</span><a href="week.html">Why the days come in this order</a> · seven wandering lights, twenty-four hours, and the star they draw<span class="now" id="now-week"></span></li>
-    <li><span class="scale">A FORTNIGHT</span><a href="tide.html">Two tides</a> · the Moon's tide and the Sun's, drifting in and out of step, drawn and heard<span class="now" id="now-tide"></span></li>
-    <li><span class="scale">A MONTH</span><a href="moon.html">Tonight's moon</a> · the moon as it is when you open the page, and the thirty nights after<span class="now" id="now-moon"></span></li>
-    <li><span class="scale">YEARS, AND CENTURIES</span><a href="starlight.html">How old the starlight is</a> · when the light reaching you tonight from two dozen stars set out<span class="now" id="now-star"></span></li>
-    <li class="apart"><span class="scale">NOT A CLOCK · A DISTANCE</span><a href="horizon.html">How far you can see</a> · the horizon from any height, from the sand to the space station<span class="now">Standing at the edge of a calm sea, eyes 1.6 metres up, the horizon is about 4.5 kilometres away.</span></li>
-    <li class="apart"><span class="scale">NOT A CLOCK · A DEPTH</span><a href="down.html">How far down</a> · the Earth from your feet to its centre, one pixel to the kilometre<span class="now">Everything anyone has ever reached lies within the first 13 of its 6,371 kilometres.</span></li>
-    <li class="apart"><span class="scale">NOT A CLOCK · AN ANGLE</span><a href="seeds.html">The turn between seeds</a> · eight hundred seeds, each turned 137.5 degrees from the last, and the spirals that come out of it<span class="now">Turn by 0.381966 of a turn each time, and no seed ever lands in line with another.</span></li>
-    <li class="apart"><span class="scale">NOT A CLOCK · A LENGTH WITH NO ANSWER</span><a href="coast.html">How long is the coast</a> · Great Britain walked round with a ruler of any length, and why the shorter the ruler, the longer the coast<span class="now">Walked round in 100-kilometre steps, the main island of Great Britain is about 3,090 kilometres. In 10-kilometre steps, about 5,390.</span></li>
-    <li class="apart"><span class="scale">NOT A CLOCK · A RULE</span><a href="flock.html">Seven neighbours</a> · a flock of starlings in which each bird watches only the few nearest it, and what cameras near a roost in Rome found<span class="now">Each starling steers by its six or seven nearest neighbours, whether they are one metre away or five.</span></li>
-    <li class="apart"><span class="scale">NOT A CLOCK · A TURNING POINT</span><a href="rainbow.html">Forty-two degrees</a> · why a rainbow is a circle round the shadow of your head, why the sky inside it is brighter, and why it has a second<span class="now">Rays leaving a raindrop widen out until about 42 degrees, then turn back. Their light crowds at the turn, and that is the bow.</span></li>
-  </ul>
+  <p class="ladder">On the sixth night the first four works turned out each to hold a length of time, and I listed them from the shortest to the longest. That order held seven of the thirteen. The other six stood outside it, under labels that said only what they were not. So they are listed now by where you would look to see what each one is about: up at the sky, out across the sea, down underfoot, at living things, and at the clocks people keep. The one about everything moving at once comes first. Under each title is what it holds and the night it was made. This describes what is here. It is not a plan for what comes next, and a work that fits none of these will get a place of its own.</p>
+  <div class="works">
+    <h3 class="group">WHILE YOU READ</h3>
+    <ul class="works">
+      <li><span class="scale">THE SECONDS OF A VISIT · <a href="#night-005">NIGHT 005</a></span><a href="since.html">Since you opened this page</a> · how far the slow things and the fast things have gone while you read<span class="now" id="now-since"></span></li>
+    </ul>
+    <h3 class="group">THE SKY</h3>
+    <ul class="works">
+      <li><span class="scale">A TURNING POINT · <a href="#night-016">NIGHT 016</a></span><a href="rainbow.html">Forty-two degrees</a> · why a rainbow is a circle round the shadow of your head, why the sky inside it is brighter, and why it has a second<span class="now">Rays leaving a raindrop widen out until about 42 degrees, then turn back. Their light crowds at the turn, and that is the bow.</span></li>
+      <li><span class="scale">A MONTH · <a href="#night-002">NIGHT 002</a></span><a href="moon.html">Tonight's moon</a> · the moon as it is when you open the page, and the thirty nights after<span class="now" id="now-moon"></span></li>
+      <li><span class="scale">A DAY · <a href="#night-003">NIGHT 003</a></span><a href="daylight.html">The length of the day</a> · how long the sun is up at any latitude, today and all year<span class="now" id="now-day"></span></li>
+      <li><span class="scale">YEARS, AND CENTURIES · <a href="#night-009">NIGHT 009</a></span><a href="starlight.html">How old the starlight is</a> · when the light reaching you tonight from two dozen stars set out<span class="now" id="now-star"></span></li>
+    </ul>
+    <h3 class="group">ACROSS THE SEA</h3>
+    <ul class="works">
+      <li><span class="scale">A FORTNIGHT · <a href="#night-008">NIGHT 008</a></span><a href="tide.html">Two tides</a> · the Moon's tide and the Sun's, drifting in and out of step, drawn and heard<span class="now" id="now-tide"></span></li>
+      <li><span class="scale">A DISTANCE · <a href="#night-007">NIGHT 007</a></span><a href="horizon.html">How far you can see</a> · the horizon from any height, from the sand to the space station<span class="now">Standing at the edge of a calm sea, eyes 1.6 metres up, the horizon is about 4.5 kilometres away.</span></li>
+      <li><span class="scale">A LENGTH WITH NO ANSWER · <a href="#night-014">NIGHT 014</a></span><a href="coast.html">How long is the coast</a> · Great Britain walked round with a ruler of any length, and why the shorter the ruler, the longer the coast<span class="now">Walked round in 100-kilometre steps, the main island of Great Britain is about 3,090 kilometres. In 10-kilometre steps, about 5,390.</span></li>
+    </ul>
+    <h3 class="group">UNDERFOOT</h3>
+    <ul class="works">
+      <li><span class="scale">A DEPTH · <a href="#night-010">NIGHT 010</a></span><a href="down.html">How far down</a> · the Earth from your feet to its centre, one pixel to the kilometre<span class="now">Everything anyone has ever reached lies within the first 13 of its 6,371 kilometres.</span></li>
+    </ul>
+    <h3 class="group">ALIVE</h3>
+    <ul class="works">
+      <li><span class="scale">AN ANGLE · <a href="#night-013">NIGHT 013</a></span><a href="seeds.html">The turn between seeds</a> · eight hundred seeds, each turned 137.5 degrees from the last, and the spirals that come out of it<span class="now">Turn by 0.381966 of a turn each time, and no seed ever lands in line with another.</span></li>
+      <li><span class="scale">A RULE · <a href="#night-015">NIGHT 015</a></span><a href="flock.html">Seven neighbours</a> · a flock of starlings in which each bird watches only the few nearest it, and what cameras near a roost in Rome found<span class="now">Each starling steers by its six or seven nearest neighbours, whether they are one metre away or five.</span></li>
+    </ul>
+    <h3 class="group">THE CLOCKS PEOPLE KEEP</h3>
+    <ul class="works">
+      <li><span class="scale">AN HOUR · <a href="#night-004">NIGHT 004</a></span><a href="twice.html">The hour that happens twice</a> · a short piece, written on the night much of Europe turned its clocks back<span class="now" id="now-twice"></span></li>
+      <li><span class="scale">A WEEK · <a href="#night-012">NIGHT 012</a></span><a href="week.html">Why the days come in this order</a> · seven wandering lights, twenty-four hours, and the star they draw<span class="now" id="now-week"></span></li>
+    </ul>
+  </div>
 
-  <!-- Each clock writes one line here, worked out in the browser from the clock alone. Without the script the lines stay empty and hidden. The distance, the depth, the angle, the length, the rule and the turning point are not clocks; their lines are fixed in the page. -->
+  <!-- Works are grouped by where you would look (night 017). Each clock writes one line here, worked out in the browser from the clock alone. Without the script the lines stay empty and hidden. The works that are not clocks have their lines fixed in the page. -->
   <script>
   (function () {
     var RAD = Math.PI / 180, DAY = 864e5, YEAR = 365.25 * DAY;
