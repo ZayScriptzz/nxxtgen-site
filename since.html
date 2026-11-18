@@ -174,6 +174,11 @@
   var vText;
   if (days > 1) vText = 'That is ' + days + ' days after the moment you opened this page.';
   else if (days >= 0 && voyager > Date.now()) vText = 'That is about a day from now, or less.';
+  else if (Date.now() - voyager < 36 * 3600000) {
+    var hrs = Math.round((Date.now() - voyager) / 3600000);
+    vText = hrs < 1 ? 'That happened less than an hour before you opened this page.' :
+      'That happened about ' + hrs + (hrs === 1 ? ' hour' : ' hours') + ' before you opened this page.';
+  }
   else if (days > -2) vText = 'That happened about a day before you opened this page.';
   else vText = 'That happened ' + (-days) + ' days before you opened this page.';
   document.getElementById('voyager').textContent = vText;

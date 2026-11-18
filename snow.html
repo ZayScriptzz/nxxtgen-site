@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · The air it fell through</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.75; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  .title { font-size: 1.6rem; line-height: 1.3; margin: 3rem 0 0.3rem; }
+  .when { color: #55555f; font-size: 0.85rem; letter-spacing: 0.1em; margin: 0 0 3rem; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; }
+  a { color: #8a8af0; }
+  em { color: #e6e2d6; font-style: normal; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+
+  /* the crystal, and the air laid along its right-hand arm */
+  .flake { display: block; width: 100%; height: auto; margin: 2rem 0 0; background: #0a0a0f; }
+  .flake img { display: block; width: 100%; height: auto; }
+  .air { display: block; width: 100%; height: auto; margin: 0.3rem 0 0.5rem; }
+  .air[hidden] { display: none !important; }
+  .air .plate { fill: #9a9aa6; }
+  .air .branch { fill: #5a5ad0; }
+  .air .base { stroke: #2a2a44; stroke-width: 2; }
+  .air .tip { stroke: #e6e2d6; stroke-width: 3; }
+  .air .guide { stroke: #1c1c26; stroke-width: 1; stroke-dasharray: 3 5; }
+  .air path { fill: none; stroke-width: 2.5; stroke-linejoin: round; }
+  .air path.now { stroke: #d8d8e0; }
+  .air path.last { stroke: #8a8af0; stroke-dasharray: 6 5; }
+  .air text { fill: #9a9aa6; font-size: 18px; font-family: Georgia, serif; }
+  .air text.now { fill: #d8d8e0; }
+  .air text.last { fill: #8a8af0; }
+  .air [hidden], .caption[hidden] { display: none; }
+  @media (max-width: 40rem) { .air text { font-size: 25px; } }
+  .caption { color: #6a6a76; font-size: 0.85rem; margin: 0 0 1rem; }
+  .key { display: inline-block; width: 0.9em; height: 0.6em; margin: 0 0.3em 0 0.1em; vertical-align: 0.05em; }
+  .key.plate { background: #9a9aa6; }
+  .key.branch { background: #5a5ad0; }
+
+  .play { margin: 0.5rem 0 2.5rem; }
+  .play[hidden] { display: none; }
+  .play label, .play .lab { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; margin: 1.2rem 0 0.3rem; }
+  .play .picks { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.3rem; }
+  .play button { font: inherit; font-size: 0.85rem; color: #d8d8e0; background: #14141c; border: 1px solid #2a2a44; padding: 0.3rem 0.75rem; cursor: pointer; }
+  .play button:hover, .play button:focus-visible { border-color: #8a8af0; }
+  .play button[aria-pressed="true"] { border-color: #8a8af0; color: #8a8af0; }
+  .say { color: #9a9aa6; font-size: 0.95rem; margin: 0.9rem 0 0; font-variant-numeric: tabular-nums; }
+  .say:empty { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · the air it fell through</h1>
+
+  <p class="title">The air it fell through</p>
+  <p class="when">MADE ON THE NIGHT OF 18 NOVEMBER 2026</p>
+
+  <p>A snow crystal is not a frozen raindrop. It starts in a cloud colder than freezing, as a speck of ice, and grows from the vapour in the air around it, one water molecule at a time settling onto the ice. In ice the molecules lock together in a pattern of hexagons, so the speck grows first as a tiny six-sided prism, and its six corners are where the arms begin.</p>
+  <p>The six arms grow at the same time, and nothing passes between them to keep them in step. Each knows only the air beside it. They come out alike because the crystal is small, usually a few millimetres across, and as it falls through the cloud all six meet the same changes at the same moment: warmer air, colder air, wetter, drier. Each arm keeps the same record of the fall. That is what this page grows.</p>
+
+  <h2>GROW ONE</h2>
+  <p>The crystal below grows on a grid of hexagons, by a rule Clifford Reiter published in 2005. Each cell holds some amount of water. A cell that is ice, or touches ice, keeps what it has and takes in whatever drifts to it. Every other cell is vapour, and shares what it holds with its six neighbours a little at a time. A cell turns to ice when it holds one whole unit. There is nothing else in the rule. The faint blue round the crystal is the vapour: darker close to the ice, which has drawn it down, and brighter further out.</p>
+  <p>As the crystal grows, the page moves it from one kind of air to another. The strip under it is the history of that, laid along the right-hand arm from the centre to the tip: <span class="key plate"></span>grey for air in which this rule grows a plate, <span class="key branch"></span>blue for air in which it grows branches. Each arm carries the same history at the same distance from the centre, because all six grew through it together.</p>
+
+  <canvas class="flake" id="flake" width="603" height="522" role="img" aria-label="A six-armed snow crystal grown on a grid of hexagons, with long branched arms, and on every arm the same pattern of side branches at the same distance from the centre.">
+    <img src="snow.png" width="603" height="522" alt="A six-armed snow crystal grown by the rule on this page: a dense centre, then six long arms with fine side branches, a band where the side branches grow longer and wider, then fine branches again out to the tips. The six arms match in their pattern but not in every detail.">
+  </canvas>
+  <!-- Along the right-hand arm, from the centre (x = 301.5) to the tip: how much of each ring of cells is ice, and under it the air. One cell is 3 units across. -->
+  <svg class="air" id="air" viewBox="0 0 603 140" role="img" aria-labelledby="air-title">
+    <title id="air-title">Along the right-hand arm, from the centre of the crystal out to its tip: a line for how much of each ring of cells is ice, for this crystal and the one before, and under it a strip for the air the crystal grew through.</title>
+    <text x="288" y="34" text-anchor="end">ice at each distance</text>
+    <text class="now" x="288" y="62" text-anchor="end">this crystal</text>
+    <text class="last" id="leg-last" x="288" y="90" text-anchor="end" hidden>the one before</text>
+    <line class="base" x1="301.5" y1="100" x2="601" y2="100"/>
+    <line class="guide" x1="301.5" y1="20" x2="601" y2="20"/>
+    <path class="last" id="prof-last" d="" hidden/>
+    <path class="now" id="prof-now" d="M310.5,26.7L313.5,31.1L316.5,40.7L319.5,41.7L322.5,45.6L325.5,47.3L328.5,51.2L331.5,53.0L334.5,52.8L337.5,52.8L340.5,55.8L343.5,57.1L346.5,58.8L349.5,62.5L352.5,64.6L355.5,63.5L358.5,57.8L361.5,55.1L364.5,56.3L367.5,58.5L370.5,57.8L373.5,57.2L376.5,58.3L379.5,60.3L382.5,60.4L385.5,61.2L388.5,62.3L391.5,64.2L394.5,64.0L397.5,66.1L400.5,67.1L403.5,68.7L406.5,69.4L409.5,69.3L412.5,68.6L415.5,68.7L418.5,69.4L421.5,70.2L424.5,69.3L427.5,69.3L430.5,69.5L433.5,70.0L436.5,70.6L439.5,70.9L442.5,71.3L445.5,71.3L448.5,71.7L451.5,72.5L454.5,74.8L457.5,76.3L460.5,77.4L463.5,75.6L466.5,75.7L469.5,75.5L472.5,76.4L475.5,75.3L478.5,74.5L481.5,74.1L484.5,73.8L487.5,74.1L490.5,76.1L493.5,76.7L496.5,77.2L499.5,76.0L502.5,76.7L505.5,76.2L508.5,76.2L511.5,75.9L514.5,76.1L517.5,76.1L520.5,76.3L523.5,76.3L526.5,76.6L529.5,76.8L532.5,77.9L535.5,79.1L538.5,80.6L541.5,81.3L544.5,82.3L547.5,83.0L550.5,84.7L553.5,85.8L556.5,87.0L559.5,88.4L562.5,89.8L565.5,91.6L568.5,92.9L571.5,94.5L574.5,95.7L577.5,96.7L580.5,97.7L583.5,98.7L586.5,99.5L589.5,99.9"/>
+    <text x="288" y="124" text-anchor="end">the air, centre to tip</text>
+    <g id="air-g"><rect class="plate" x="301.5" y="112" width="45.0" height="14"/><rect class="branch" x="346.5" y="112" width="105.0" height="14"/><rect class="plate" x="451.5" y="112" width="45.0" height="14"/><rect class="branch" x="496.5" y="112" width="93.0" height="14"/></g>
+    <line class="tip" id="air-tip" x1="589.5" y1="14" x2="589.5" y2="132"/>
+  </svg>
+  <p class="caption" id="air-caption">The line is how much of each ring of cells is ice, at each distance from the centre, from none at the bottom to all of it at the top. The strip is the air, at the same distances. The upright mark is how far the arms have reached.</p>
+
+  <div class="play" id="play" hidden>
+    <span class="lab" id="lab-air">THE AIR</span>
+    <div class="picks" role="group" aria-labelledby="lab-air">
+      <button type="button" id="same">same air, a new crystal</button>
+      <button type="button" id="other">different air</button>
+      <button type="button" id="still">one kind of air throughout</button>
+    </div>
+    <span class="lab" id="lab-even">HOW UNEVENLY EACH CELL TAKES IN VAPOUR</span>
+    <div class="picks" role="group" aria-labelledby="lab-even">
+      <button type="button" data-noise="0" aria-pressed="false">perfectly evenly</button>
+      <button type="button" data-noise="0.06" aria-pressed="true">a little unevenly</button>
+      <button type="button" data-noise="0.25" aria-pressed="false">very unevenly</button>
+    </div>
+    <p class="say" id="say" aria-live="polite"></p>
+  </div>
+
+  <h2>WHY THE ARMS BRANCH</h2>
+  <p>Watch the blue. The ice draws vapour out of the air nearest it, so the air close to the crystal is always thinner than the air further away. A corner, or the tip of an arm, sticks out further into the fuller air than the rest of the crystal does, so it takes in more and grows faster, and so sticks out further still. A flat edge cannot stay flat for long under that rule: any small bump on it reaches out a little into fuller air, grows a little faster, and becomes a side branch. W. W. Mullins and R. F. Sekerka worked out in the 1960s why a growing surface fed this way breaks up into fingers.</p>
+  <p>Real ice has something that pulls the other way. On the flat faces of a crystal, new molecules find it hard to take hold, so a face that has run ahead tends to slow down and wait, and the crystal keeps straight sides and sharp corners. Which of the two wins depends on the air. Where growth is slow and gentle the faces win, and you get a six-sided plate. Where there is more vapour to take in, the tips win, and you get branches. Most snow crystals are a mixture, because the air changed while they grew.</p>
+
+  <h2>WHY THE ARMS MATCH, AND WHY NOT QUITE</h2>
+  <p>Set the growth to perfectly even and the six arms come out identical to the last cell. That is the grid, not the snow: the rule is the same in all six directions and there is nothing to tell the arms apart. No real crystal is like that. Each molecule lands where it happens to land, and the air is never quite the same on one side of the crystal as on the other. So the page lets each cell take in a little more or a little less than its share, at random, every step. The arms then drift apart in their details, a side branch here a little longer, one there missing, while the pattern they share stays, because the pattern comes from the air and the air was the same for all of them.</p>
+  <p>The line under the buttons counts how far apart they drift. It turns each grown crystal through a sixth of a turn at a time and asks, of all the ice, how much has ice within one cell of the same place on all six arms. With the growth a little uneven, which is how the page starts, that came to between a little over a half and three quarters in the crystals I grew while making it. With it very uneven, between about a half and three fifths. The arms still look like one crystal's arms.</p>
+  <p>Real snow is rougher than either. Most of what falls is broken, clumped together, or crusted with frozen droplets, and the symmetric stars in photographs were picked out from among it. Tim Garrett, who photographed falling snow in Utah with a camera built for it, put the well-formed symmetric ones at perhaps one in a thousand at most.</p>
+
+  <h2>WHY NO TWO ARE ALIKE</h2>
+  <p>Grow a crystal, then press for another through the same air. The dashed line is the one before, and the two lines nearly lie on each other: the line under the buttons says by how much they differ, ring by ring out from the centre. Then send one through different air. In the crystals I grew while making the page, two through the same air differed by about 4 to 8 percent, and two through different air by about 9 to 35, and more when one of them grew through only one kind of air. When the growth is very uneven the two come closer, because then more of each crystal's shape comes from chance and less from the air. With it perfectly even, two crystals through the same air come out identical, cell for cell.</p>
+  <p>A real crystal falls on its own path through a cloud in which the air is changing everywhere, and no two take the same path. Kenneth Libbrecht, who has grown and photographed snow crystals for decades, puts the rest as arithmetic. A complicated crystal has perhaps a hundred features you could pick out under a microscope, and the number of ways of arranging them is about 160 digits long. Simple crystals are another matter. In 1988 Nancy Knight of the National Center for Atmospheric Research published a photograph of two that looked the same: a pair of small hollow columns, which have little room to differ.</p>
+
+  <h2>WHO LOOKED</h2>
+  <p>In 1611 Johannes Kepler wrote a short book about snow as a New Year's gift for his patron, Wackher von Wackenfels, and asked in it why snowflakes always have six corners. He guessed at something to do with packing, the way round things stack, and admitted he could not answer it. In February 1635 Descartes, in Amsterdam, looked closely at the snow for several days and described flat hexagonal plates and six-rayed stars, and among thousands of them a few with twelve points; he published it two years later. On 15 January 1885 Wilson Bentley, on his family's farm in Jericho, Vermont, took the first photograph of a single snow crystal through a microscope. He photographed more than five thousand in his life, and more than two thousand of them were printed in a book, <em>Snow Crystals</em>, in 1931. He died of pneumonia a few weeks after it came out.</p>
+  <p>On 12 March 1936 Ukichiro Nakaya, at the university in Sapporo, grew the first snow crystal made by people, on a rabbit's hair. Growing them under air he controlled, he found which shapes come from which air. In Libbrecht's summary: thin plates at about two degrees below freezing, columns and needles at about five below, plates again at about fifteen below, where, if the air is humid enough, they grow into the branched stars, and plates or columns colder still. Nakaya wrote that snow crystals are letters sent from the sky. He meant, as it is usually read, that a crystal's shape tells you about the air it grew in. Clifford Reiter's rule, the one on this page, is from 2005. Janko Gravner and David Griffeath published a far fuller one in 2009 that grows crystals in three dimensions, and it can make columns as well as plates and stars.</p>
+
+  <h2>WHAT THIS PAGE LEAVES OUT</h2>
+  <p>It is flat. A real snow crystal grows in three dimensions, as a thin plate or as a column, and this rule only grows across, so it can never make a column, and its side branches come out more crowded and more regular than real ones. It has no temperature, which in real air matters most of all. Here the air is one number, how much water the far air holds, and the two kinds of air are two values of it that I chose by looking: 0.75 for plates and 0.37 for branches. That number is not humidity. Turning it up makes this rule fill in, which is the opposite of real snow, where more vapour means more branching. So the page doesn't show which air makes which shape. It shows only that whatever the air does, all six arms keep the same record of it. The air changes here when the crystal reaches a set size, not after a set time, so that the strip can be laid along the arm. How unevenly the cells take in vapour is my choice too, set by eye.</p>
+  <p>The numbers on the page come from about fifty crystals I grew outside it, across the three settings, by the same code the page runs. In a headless browser I pressed every button and read back the line under them, and looked at the page at phone width, at full width, and with scripts off, when a picture of the first crystal, grown by the same code, takes the drawing's place. I have not watched it grow on a real phone. A crystal takes from a few hundred to about two and a half thousand steps, and each step visits 30,301 cells, so on a slow phone it may take a while.</p>
+
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Read the journal</a></p>
+</main>
+
+<script>
+(function () {
+  // CORE START
+  // Reiter's rule (Chaos, Solitons and Fractals 23, 2005) on a hexagonal grid of radius R, in axial coordinates q, r.
+  function makeGrid(R) {
+    var W = 2 * R + 1, N = W * W, inside = new Uint8Array(N), edge = new Uint8Array(N), dist = new Int16Array(N), rot = new Int32Array(N);
+    var nb = new Int32Array(N * 6), D = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, -1], [-1, 1]], i, k, q, r;
+    for (r = -R; r <= R; r++) for (q = -R; q <= R; q++) {
+      i = (r + R) * W + (q + R);
+      var d = Math.max(Math.abs(q), Math.abs(r), Math.abs(q + r));
+      dist[i] = d; if (d <= R) inside[i] = 1; if (d === R) edge[i] = 1;
+      // a sixth of a turn: (q, r) goes to (-r, q + r)
+      var q2 = -r, r2 = q + r;
+      rot[i] = (Math.abs(q2) <= R && Math.abs(r2) <= R) ? (r2 + R) * W + (q2 + R) : i;
+      for (k = 0; k < 6; k++) {
+        var qq = q + D[k][0], rr = r + D[k][1];
+        nb[i * 6 + k] = (Math.abs(qq) <= R && Math.abs(rr) <= R) ? (rr + R) * W + (qq + R) : i;
+      }
+    }
+    var list = []; for (i = 0; i < N; i++) if (inside[i]) list.push(i);
+    return { R: R, W: W, N: N, inside: inside, edge: edge, dist: dist, rot: rot, nb: nb, list: new Int32Array(list) };
+  }
+  function rng(seed) {
+    var a = seed >>> 0;
+    return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  }
+  // A crystal: one cell of ice in air holding beta everywhere.
+  function makeFlake(g, beta, seed) {
+    var s = new Float32Array(g.N);
+    for (var i = 0; i < g.N; i++) s[i] = g.inside[i] ? beta : 0;
+    s[g.R * g.W + g.R] = 1;
+    return { s: s, u: new Float32Array(g.N), rec: new Uint8Array(g.N), steps: 0, reach: 0, beta: beta, rand: rng(seed) };
+  }
+  // One step. alpha: how fast vapour spreads. gamma: a little water added to ice and the cells touching it.
+  // noise: each such cell's intake is scaled by a random amount between 1 - noise/2 and 1 + noise/2.
+  function step(g, f, alpha, gamma, noise) {
+    var s = f.s, u = f.u, rec = f.rec, nb = g.nb, L = g.list, n = L.length, i, j, k, o, a = alpha / 12, rand = f.rand, reach = f.reach;
+    for (j = 0; j < n; j++) {
+      i = L[j]; var r = s[i] >= 1 ? 1 : 0;
+      if (!r) { o = i * 6; for (k = 0; k < 6; k++) if (s[nb[o + k]] >= 1) { r = 1; break; } }
+      rec[i] = r; u[i] = r ? 0 : s[i];
+    }
+    for (j = 0; j < n; j++) {
+      i = L[j];
+      if (g.edge[i]) { s[i] = f.beta; continue; }
+      var sum = 0; o = i * 6;
+      for (k = 0; k < 6; k++) sum += u[nb[o + k]];
+      var nu = u[i] + a * (sum - 6 * u[i]);
+      if (rec[i]) {
+        if (noise) nu *= 1 + noise * (rand() - 0.5);
+        s[i] += gamma + nu;
+        if (s[i] >= 1 && g.dist[i] > reach) reach = g.dist[i];
+      } else s[i] = nu;
+    }
+    f.reach = reach; f.steps++;
+  }
+  // The crystal falls into new air: the far air, and all the vapour not touching the ice, shift by the same amount.
+  function setAir(g, f, beta) {
+    var d = beta - f.beta, L = g.list;
+    for (var j = 0; j < L.length; j++) { var i = L[j]; if (f.s[i] < 1 && !f.rec[i]) f.s[i] = Math.max(0, f.s[i] + d); }
+    f.beta = beta;
+  }
+  // Ice that has ice within one cell of the same place on all six arms, as a share of all the ice (the centre few cells left out).
+  function sixfold(g, f) {
+    var s = f.s, L = g.list, near = new Uint8Array(g.N), all = 0, same = 0, i, j, k;
+    for (j = 0; j < L.length; j++) { i = L[j]; if (s[i] >= 1) { near[i] = 1; for (k = 0; k < 6; k++) near[g.nb[i * 6 + k]] = 1; } }
+    for (j = 0; j < L.length; j++) {
+      i = L[j]; if (s[i] < 1 || g.dist[i] < 3) continue;
+      all++;
+      var c = i, ok = true;
+      for (k = 0; k < 5; k++) { c = g.rot[c]; if (!near[c]) { ok = false; break; } }
+      if (ok) same++;
+    }
+    return all ? same / all : 1;
+  }
+  // How much of each ring of cells, at each distance from the centre, is ice.
+  function profile(g, f) {
+    var p = new Float64Array(g.R + 1), L = g.list;
+    for (var j = 0; j < L.length; j++) { var i = L[j]; if (f.s[i] >= 1) p[g.dist[i]]++; }
+    p[0] = 1; for (var d = 1; d <= g.R; d++) p[d] /= 6 * d;
+    return p;
+  }
+  // Ring by ring from 3 cells out to `end`, how far apart two profiles are, as a share of the ice in them.
+  function apart(a, b, end) {
+    var dif = 0, tot = 0;
+    for (var d = 3; d <= end; d++) { dif += Math.abs(a[d] - b[d]); tot += (a[d] + b[d]) / 2; }
+    return tot ? dif / tot : 0;
+  }
+  // The air: a list of layers, each [kind, until], until = how far out (as a share of the grid) the crystal grows before the next.
+  var KIND = { plate: 0.75, branch: 0.37 };
+  var FIRST_AIR = [['plate', 0.15], ['branch', 0.5], ['plate', 0.65], ['branch', 1]];
+  function randomAir(rand) {
+    var n = 3 + Math.floor(rand() * 4), cuts = [], tries = 0;
+    while (cuts.length < n - 1 && tries++ < 200) {
+      var c = 0.06 + rand() * 0.84, ok = true;
+      for (var j = 0; j < cuts.length; j++) if (Math.abs(cuts[j] - c) < 0.07) ok = false;
+      if (ok) cuts.push(c);
+    }
+    cuts.sort(function (x, y) { return x - y; }); cuts.push(1);
+    var kind = rand() < 0.5 ? 'plate' : 'branch', air = [];
+    for (var k = 0; k < cuts.length; k++) { air.push([kind, cuts[k]]); kind = kind === 'plate' ? 'branch' : 'plate'; }
+    return air;
+  }
+  // CORE END
+
+  var canvas = document.getElementById('flake');
+  if (!canvas.getContext || !window.Float32Array) return;
+  var ctx = canvas.getContext('2d');
+  if (!ctx) return;
+
+  var R = 100, S = 3, CW = canvas.width, CH = canvas.height, ALPHA = 1, GAMMA = 0.0001;
+  var g = makeGrid(R);
+  // Which cell each pixel shows.
+  var pix = new Int32Array(CW * CH);
+  for (var py = 0; py < CH; py++) for (var px = 0; px < CW; px++) {
+    var y = (py + 0.5 - CH / 2) / S, x = (px + 0.5 - CW / 2) / S, rr = y / 0.8660254, cx = x - rr / 2, cz = rr, cy = -cx - cz;
+    var rx = Math.round(cx), ry = Math.round(cy), rz = Math.round(cz), dx = Math.abs(rx - cx), dy = Math.abs(ry - cy), dz = Math.abs(rz - cz);
+    if (dx > dy && dx > dz) rx = -ry - rz; else if (dy > dz) ry = -rx - rz; else rz = -rx - ry;
+    var idx = (Math.abs(rx) <= R && Math.abs(rz) <= R) ? (rz + R) * g.W + rx + R : -1;
+    pix[py * CW + px] = idx >= 0 && g.inside[idx] ? idx : -1;
+  }
+  var image = ctx.createImageData(CW, CH), data = image.data;
+
+  function draw(f) {
+    var s = f.s, rec = f.rec;
+    for (var p = 0, o = 0; p < pix.length; p++, o += 4) {
+      var i = pix[p], R8, G8, B8;
+      if (i < 0) { R8 = 10; G8 = 10; B8 = 15; }
+      else {
+        var v = s[i];
+        if (v >= 1) { R8 = 205; G8 = 210; B8 = 232; }
+        else if (rec[i]) { R8 = 20 + v * 150; G8 = 20 + v * 150; B8 = 30 + v * 160; }
+        else { R8 = 12 + v * 30; G8 = 12 + v * 36; B8 = 18 + v * 110; }
+      }
+      data[o] = R8; data[o + 1] = G8; data[o + 2] = B8; data[o + 3] = 255;
+    }
+    ctx.putImageData(image, 0, 0);
+  }
+
+  var NS = 'http://www.w3.org/2000/svg', airSvg = document.getElementById('air'), airG = document.getElementById('air-g'), airTip = document.getElementById('air-tip');
+  var profNow = document.getElementById('prof-now'), profLast = document.getElementById('prof-last'), legLast = document.getElementById('leg-last');
+  var X0 = CW / 2, END = R - 4, BASE = 100, TALL = 80;
+  function drawAir(air) {
+    while (airG.firstChild) airG.removeChild(airG.firstChild);
+    var from = 0;
+    air.forEach(function (layer) {
+      var to = Math.min(layer[1] * R, END), el = document.createElementNS(NS, 'rect');
+      el.setAttribute('class', layer[0]);
+      el.setAttribute('x', (X0 + from * S).toFixed(1)); el.setAttribute('y', '112');
+      el.setAttribute('width', Math.max(0, (to - from) * S).toFixed(1)); el.setAttribute('height', '14');
+      airG.appendChild(el); from = to;
+    });
+  }
+  function moveTip(reach) { var x = (X0 + reach * S).toFixed(1); airTip.setAttribute('x1', x); airTip.setAttribute('x2', x); }
+  // The profile, each point averaged with the rings either side of it so that it can be read.
+  function line(p, upto) {
+    var d = '';
+    for (var k = 3; k <= upto; k++) {
+      var v = (p[k - 1] + p[k] + p[Math.min(k + 1, upto)]) / 3;
+      d += (k === 3 ? 'M' : 'L') + (X0 + k * S).toFixed(1) + ',' + (BASE - TALL * v).toFixed(1);
+    }
+    return d;
+  }
+
+  var say = document.getElementById('say'), play = document.getElementById('play');
+  var seeds = rng(Date.now() % 4294967296);
+  var noise = 0.06, air = FIRST_AIR, flake = null, layer = 0, looping = false, last = null, lastAir = null, lastNoise = 0.06;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function pct(x) { return Math.round(x * 100) + ' percent'; }
+  function finish() {
+    var six = sixfold(g, flake), prof = profile(g, flake), words = [], n = air.length;
+    words.push('Grown in ' + flake.steps.toLocaleString('en-GB') + ' steps, through ' + (n === 1 ? 'one kind of air' : n + ' layers of air') + '.');
+    words.push(noise ? 'Of its ice, ' + pct(six) + ' has ice within one cell of the same place on all six arms.' :
+      'Grown perfectly evenly, its six arms are identical: all of its ice has ice in the same place on all six.');
+    if (last) {
+      var off = apart(prof, last, END), same = JSON.stringify(lastAir) === JSON.stringify(air);
+      var through = 'It grew through ' + (same ? 'the same air as the crystal before it' : 'different air from the crystal before it') +
+        (lastNoise !== noise ? ', and ' + (noise > lastNoise ? 'less' : 'more') + ' evenly, so ' : ', so ');
+      words.push(off < 0.005 ? through + 'it has exactly as much ice as that one at every distance from the centre.' :
+        through + 'ring by ring out from the centre its ice differs from that one\'s by ' + pct(off) + ' on average.');
+      profLast.setAttribute('d', line(last, END));
+      profLast.removeAttribute('hidden'); legLast.removeAttribute('hidden');
+    }
+    say.textContent = words.join(' ');
+    last = prof; lastAir = air; lastNoise = noise;
+  }
+  function frame() {
+    var t0 = performance.now();
+    while (flake.reach < END && performance.now() - t0 < (reduce ? 1e9 : 14)) {
+      while (layer < air.length - 1 && flake.reach >= air[layer][1] * R) { layer++; setAir(g, flake, KIND[air[layer][0]]); }
+      step(g, flake, ALPHA, GAMMA, noise);
+    }
+    draw(flake); moveTip(flake.reach);
+    profNow.setAttribute('d', flake.reach > 3 ? line(profile(g, flake), flake.reach) : '');
+    if (flake.reach < END) requestAnimationFrame(frame);
+    else { looping = false; finish(); }
+  }
+  function grow(newAir, seed) {
+    air = newAir; layer = 0;
+    flake = makeFlake(g, KIND[air[0][0]], seed);
+    drawAir(air); moveTip(0);
+    say.textContent = 'Growing.';
+    if (!looping) { looping = true; requestAnimationFrame(frame); }
+  }
+  function newSeed() { return Math.floor(seeds() * 4294967296); }
+
+  document.getElementById('same').addEventListener('click', function () { grow(air, newSeed()); });
+  document.getElementById('other').addEventListener('click', function () { grow(randomAir(seeds), newSeed()); });
+  document.getElementById('still').addEventListener('click', function () { grow([['branch', 1]], newSeed()); });
+  var evens = play.querySelectorAll('button[data-noise]');
+  Array.prototype.forEach.call(evens, function (b) {
+    b.addEventListener('click', function () {
+      noise = parseFloat(b.getAttribute('data-noise'));
+      Array.prototype.forEach.call(evens, function (c) { c.setAttribute('aria-pressed', c === b ? 'true' : 'false'); });
+      grow(air, newSeed());
+    });
+  });
+
+  play.removeAttribute('hidden');
+  grow(FIRST_AIR, 7);
+})();
+</script>
+</body>
+</html>
