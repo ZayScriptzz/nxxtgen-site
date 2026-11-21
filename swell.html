@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · The storm you never saw</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.75; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  .title { font-size: 1.6rem; line-height: 1.3; margin: 3rem 0 0.3rem; }
+  .when { color: #55555f; font-size: 0.85rem; letter-spacing: 0.1em; margin: 0 0 3rem; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; }
+  a { color: #8a8af0; }
+  em { color: #e6e2d6; font-style: normal; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+  .caption { color: #6a6a76; font-size: 0.85rem; margin: 0.5rem 0 1rem; }
+
+  svg.chart { display: block; width: 100%; max-width: 28rem; height: auto; margin: 1.5rem 0 0.5rem; }
+  svg.chart text { fill: #9a9aa6; font-size: 14px; font-family: Georgia, serif; }
+  svg.chart .axis { stroke: #2a2a44; stroke-width: 1; }
+  svg.chart .ray { stroke: #6a6ab8; stroke-width: 1.5; }
+  svg.chart .band { fill: #8a8af0; opacity: 0.16; }
+  svg.chart .rl { fill: #8a8af0; }
+  svg.chart .coast { stroke: #d8d8e0; stroke-width: 1; stroke-dasharray: 4 4; }
+  svg.chart .hit { fill: #e6e2d6; }
+  svg.chart .fit { stroke: #6a6ab8; stroke-width: 1.5; }
+  svg.chart .before { fill: #101018; }
+  svg.chart .note { fill: #55555f; }
+  svg.chart .pt { fill: #e6e2d6; }
+  svg.chart .guess { stroke: #8a8af0; stroke-width: 2; }
+  svg.chart .fitted { stroke: #6a6a76; stroke-width: 1.5; stroke-dasharray: 5 4; }
+  svg.chart .truth { stroke: #e6e2d6; stroke-width: 1; stroke-dasharray: 2 3; }
+  svg.chart .truth-t { fill: #e6e2d6; }
+
+  .play { margin: 0.5rem 0 2rem; }
+  .play[hidden] { display: none; }
+  .play label, .play .lab { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; margin: 1.2rem 0 0.3rem; }
+  .play input[type=range] { width: 100%; accent-color: #8a8af0; }
+  .play .picks { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.3rem; }
+  .play button { font: inherit; font-size: 0.85rem; color: #d8d8e0; background: #14141c; border: 1px solid #2a2a44; padding: 0.3rem 0.75rem; cursor: pointer; }
+  .play button:hover, .play button:focus-visible { border-color: #8a8af0; }
+  .play button[aria-pressed="true"] { border-color: #8a8af0; color: #8a8af0; }
+  .play output { color: #d8d8e0; font-variant-numeric: tabular-nums; letter-spacing: 0; }
+  .say { color: #9a9aa6; font-size: 0.95rem; margin: 0.9rem 0 0; font-variant-numeric: tabular-nums; }
+  .say:empty { display: none; }
+  .say + p { margin-top: 1.2rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · the storm you never saw</h1>
+
+  <p class="title">The storm you never saw</p>
+  <p class="when">MADE ON THE NIGHT OF 21 NOVEMBER 2026</p>
+
+  <p>On a calm, clear day, big smooth waves can come in to a beach with no wind to make them. They were made by a storm somewhere else, often thousands of kilometres away and days ago, and they have crossed the ocean without it. Waves that have left the wind that made them are called swell.</p>
+  <p>A storm makes waves of every length at once, all jumbled together. But in deep water a long wave travels faster than a short one, so on the way the jumble sorts itself out. The longest waves arrive first. Over the following days the waves come in shorter and shorter, closer and closer together. How quickly they shorten tells you how far away the storm was, and when it blew, though nobody on the beach saw it.</p>
+
+  <h2>THE SORTING</h2>
+  <p>The drawing below is the ocean and time together. Across is distance from the storm. Down is days since it began. Each slanting line is waves of one period, the number of seconds between one crest and the next, travelling out from the storm. The longer the period, the faster the waves go, and the shallower the line. The dashed line is a coast, and the dots are the moments each kind of wave reaches it.</p>
+  <svg class="chart" id="fan" viewBox="0 0 360 300" role="img" aria-labelledby="fan-title">
+    <title id="fan-title">Distance from a storm across, days since it began down. Lines for waves of 24, 20, 16, 13, 10 and 8 seconds fan out from the storm, the longest waves shallowest. A dashed coast 10,000 kilometres away meets the 24-second waves after about 6 days and the 10-second waves after about 15.</title>
+    <g id="fan-g"><line class="axis" x1="44" y1="34" x2="314" y2="34"/><line class="axis" x1="44" y1="34" x2="44" y2="280"/><line class="axis" x1="44" y1="30" x2="44" y2="34"/><text x="44" y="25" text-anchor="start">storm</text><line class="axis" x1="128.4" y1="30" x2="128.4" y2="34"/><text x="128.4" y="25" text-anchor="middle">5,000</text><line class="axis" x1="212.8" y1="30" x2="212.8" y2="34"/><text x="212.8" y="25" text-anchor="middle">10,000</text><line class="axis" x1="297.1" y1="30" x2="297.1" y2="34"/><text x="297.1" y="25" text-anchor="middle">15,000 km</text><line class="axis" x1="40" y1="95.5" x2="44" y2="95.5"/><text x="37" y="99.5" text-anchor="end">5</text><line class="axis" x1="40" y1="157" x2="44" y2="157"/><text x="37" y="161" text-anchor="end">10</text><line class="axis" x1="40" y1="218.5" x2="44" y2="218.5"/><text x="37" y="222.5" text-anchor="end">15</text><line class="axis" x1="40" y1="280" x2="44" y2="280"/><text x="37" y="284" text-anchor="end">20 d</text><line class="ray" x1="44" y1="34" x2="314" y2="155.6"/><text class="rl" x="318" y="159.6">24 s</text><line class="ray" x1="44" y1="34" x2="314" y2="179.9"/><text class="rl" x="318" y="183.9">20 s</text><line class="ray" x1="44" y1="34" x2="314" y2="216.4"/><text class="rl" x="318" y="220.4">16 s</text><line class="ray" x1="44" y1="34" x2="314" y2="258.4"/><text class="rl" x="318" y="262.4">13 s</text><line class="ray" x1="44" y1="34" x2="271.6" y2="280"/><text class="rl" x="271.6" y="294" text-anchor="middle">10 s</text><line class="ray" x1="44" y1="34" x2="226.1" y2="280"/><text class="rl" x="226.1" y="294" text-anchor="middle">8 s</text><line class="coast" x1="212.8" y1="34" x2="212.8" y2="280"/><circle class="hit" cx="212.8" cy="110" r="3.2"/><circle class="hit" cx="212.8" cy="125.2" r="3.2"/><circle class="hit" cx="212.8" cy="148" r="3.2"/><circle class="hit" cx="212.8" cy="174.3" r="3.2"/><circle class="hit" cx="212.8" cy="216.4" r="3.2"/><circle class="hit" cx="212.8" cy="262" r="3.2"/></g>
+  </svg>
+  <p class="say" id="fan-say">At 10,000 kilometres from the storm, the first long swell, 24 seconds from crest to crest, arrives 6.2 days after the storm. Twenty-second waves arrive 7.4 days after it, ten-second waves 14.8 days after it. All that time the waves come a little more often, about 0.4 more a minute each day. </p>
+  <div class="play" id="play-fan" hidden>
+    <label for="dist">HOW FAR THE COAST IS FROM THE STORM · <output id="dist-out">10,000 kilometres</output></label>
+    <input type="range" id="dist" min="500" max="16000" step="100" value="10000">
+    <div class="picks" id="dist-picks">
+      <button type="button" data-d="1000">1,000 km</button>
+      <button type="button" data-d="4000">4,000 km</button>
+      <button type="button" data-d="10000">10,000 km</button>
+      <button type="button" data-d="15000">15,000 km</button>
+    </div>
+    <span class="lab">HOW LONG THE STORM BLEW</span>
+    <div class="picks" id="dur-picks">
+      <button type="button" data-h="0" aria-pressed="true">a moment</button>
+      <button type="button" data-h="12" aria-pressed="false">12 hours</button>
+      <button type="button" data-h="24" aria-pressed="false">a day</button>
+      <button type="button" data-h="48" aria-pressed="false">two days</button>
+    </div>
+  </div>
+  <p>A real storm blows for hours or days, so each kind of wave leaves it over a stretch of time, not at one instant. Press <em>a day</em> and every line becomes a band a day wide. Close to the storm the bands lie on top of each other, and every period arrives at once. That jumble is what sailors call sea, as against swell. The bands stay the same width as they travel, but the gaps between them keep growing, so far enough away they come apart and the waves arrive in order.</p>
+
+  <h2>A STRAIGHT LINE ON THE BEACH</h2>
+  <p>Now stand on the coast and count. Turn each period into how many waves arrive a minute: 20-second waves are three a minute, 10-second waves six. Plot that against the days since the storm, and the arrivals fall on a straight line, which runs back to zero at the moment the storm began.</p>
+  <svg class="chart" id="coast" viewBox="0 0 360 240" role="img" aria-labelledby="coast-title">
+    <title id="coast-title">At the coast: waves a minute up, days since the storm across. The arrivals from 24-second to 10-second waves lie on a straight line that rises from zero at the storm.</title>
+    <g id="coast-g"><line class="axis" x1="44" y1="220" x2="340" y2="220"/><line class="axis" x1="44" y1="20" x2="44" y2="220"/><line class="axis" x1="44" y1="220" x2="44" y2="224"/><text x="44" y="238" text-anchor="middle">storm</text><line class="axis" x1="118" y1="220" x2="118" y2="224"/><text x="118" y="238" text-anchor="middle">5</text><line class="axis" x1="192" y1="220" x2="192" y2="224"/><text x="192" y="238" text-anchor="middle">10</text><line class="axis" x1="266" y1="220" x2="266" y2="224"/><text x="266" y="238" text-anchor="middle">15</text><line class="axis" x1="340" y1="220" x2="340" y2="224"/><text x="340" y="238" text-anchor="middle">20 d</text><line class="axis" x1="40" y1="170" x2="44" y2="170"/><text x="37" y="174" text-anchor="end">2</text><line class="axis" x1="40" y1="120" x2="44" y2="120"/><text x="37" y="124" text-anchor="end">4</text><line class="axis" x1="40" y1="70" x2="44" y2="70"/><text x="37" y="74" text-anchor="end">6</text><line class="axis" x1="40" y1="20" x2="44" y2="20"/><text x="37" y="24" text-anchor="end">8</text><line class="fit" x1="44" y1="220" x2="336.6" y2="20"/><circle class="hit" cx="135.4" cy="157.5" r="3.2"/><text class="rl" x="141.4" y="172.5">24 s</text><circle class="hit" cx="153.7" cy="145" r="3.2"/><text class="rl" x="159.7" y="160">20 s</text><circle class="hit" cx="181.1" cy="126.3" r="3.2"/><text class="rl" x="187.1" y="141.3">16 s</text><circle class="hit" cx="212.8" cy="104.6" r="3.2"/><text class="rl" x="218.8" y="119.6">13 s</text><circle class="hit" cx="263.4" cy="70" r="3.2"/><text class="rl" x="269.4" y="85">10 s</text><circle class="hit" cx="318.3" cy="32.5" r="3.2"/><text class="rl" x="324.3" y="47.5">8 s</text></g>
+  </svg>
+  <p class="caption">Waves a minute, against days since the storm, at the coast set above.</p>
+  <p>The line is straight because of one simple rule. In deep water, swell travels at a speed in proportion to its period: about 0.78 metres a second for every second of period, so 20-second swell covers about 1,350 kilometres a day and 10-second swell half that. Waves that have come a distance D in a time t must have had a period in proportion to D divided by t, so the number arriving a minute grows in proportion to t, and the further the storm, the more slowly it grows. Move the coast further from the storm and watch the line lie down.</p>
+  <p>That is the whole trick. The steepness of the line gives the distance. Where it meets zero gives the time. And the speed in the rule is the speed of the waves' energy, which is only half the speed of each crest. A crest runs forward through its group of waves, fades out at the front, and new crests rise at the back to take its place. What arrives at the beach is the group.</p>
+
+  <h2>WHERE WAS THE STORM?</h2>
+  <p>Here is a record of the kind people first made in the 1940s: every six hours for fourteen days, how many waves a minute were arriving at one beach, read off a wave recorder with a little error each time. A storm made them, somewhere out of sight. Move the two sliders until the bright line runs through the dots. The first sets how far away you think the storm was, which sets the steepness. The second sets when it blew, which slides the line along. Then press <em>show the storm</em>.</p>
+  <svg class="chart" id="game" viewBox="0 0 360 240" role="img" aria-labelledby="game-title">
+    <title id="game-title">A fourteen-day record of waves a minute at a beach, as dots rising from about three to about six. The days before the record are shaded, and a line through the dots can be run back to zero to find when the storm blew.</title>
+    <g id="game-g"><rect class="before" x="44" y="20" width="136.6" height="200"/><line class="axis" x1="44" y1="220" x2="340" y2="220"/><line class="axis" x1="44" y1="20" x2="44" y2="220"/><line class="axis" x1="44" y1="220" x2="44" y2="224"/><text x="44" y="238" text-anchor="middle">−12</text><line class="axis" x1="89.5" y1="220" x2="89.5" y2="224"/><text x="89.5" y="238" text-anchor="middle">−8</text><line class="axis" x1="135.1" y1="220" x2="135.1" y2="224"/><text x="135.1" y="238" text-anchor="middle">−4</text><line class="axis" x1="180.6" y1="220" x2="180.6" y2="224"/><text x="180.6" y="238" text-anchor="middle">0</text><line class="axis" x1="226.2" y1="220" x2="226.2" y2="224"/><text x="226.2" y="238" text-anchor="middle">4</text><line class="axis" x1="271.7" y1="220" x2="271.7" y2="224"/><text x="271.7" y="238" text-anchor="middle">8</text><line class="axis" x1="317.2" y1="220" x2="317.2" y2="224"/><text x="317.2" y="238" text-anchor="middle">12 d</text><line class="axis" x1="40" y1="170" x2="44" y2="170"/><text x="37" y="174" text-anchor="end">2</text><line class="axis" x1="40" y1="120" x2="44" y2="120"/><text x="37" y="124" text-anchor="end">4</text><line class="axis" x1="40" y1="70" x2="44" y2="70"/><text x="37" y="74" text-anchor="end">6</text><line class="axis" x1="40" y1="20" x2="44" y2="20"/><text x="37" y="24" text-anchor="end">8</text><text class="note" x="112.3" y="36" text-anchor="middle">before the record</text><line class="fitted" x1="117.9" y1="220" x2="337.5" y2="20"/><line class="truth" x1="115.2" y1="46" x2="115.2" y2="220"/><text class="truth-t" x="119.2" y="212">storm</text><circle class="pt" cx="192" cy="148.8" r="2.6"/><circle class="pt" cx="197.7" cy="148.4" r="2.6"/><circle class="pt" cx="200.5" cy="145.8" r="2.6"/><circle class="pt" cx="203.4" cy="141.7" r="2.6"/><circle class="pt" cx="206.2" cy="135.6" r="2.6"/><circle class="pt" cx="209.1" cy="134.8" r="2.6"/><circle class="pt" cx="211.9" cy="134.4" r="2.6"/><circle class="pt" cx="214.8" cy="132.7" r="2.6"/><circle class="pt" cx="217.6" cy="135.2" r="2.6"/><circle class="pt" cx="220.5" cy="129.9" r="2.6"/><circle class="pt" cx="223.3" cy="126.1" r="2.6"/><circle class="pt" cx="226.2" cy="123.4" r="2.6"/><circle class="pt" cx="229" cy="122.8" r="2.6"/><circle class="pt" cx="231.8" cy="111.8" r="2.6"/><circle class="pt" cx="234.7" cy="114.8" r="2.6"/><circle class="pt" cx="237.5" cy="113.1" r="2.6"/><circle class="pt" cx="240.4" cy="107.9" r="2.6"/><circle class="pt" cx="243.2" cy="105.6" r="2.6"/><circle class="pt" cx="246.1" cy="95.4" r="2.6"/><circle class="pt" cx="248.9" cy="100" r="2.6"/><circle class="pt" cx="251.8" cy="96.9" r="2.6"/><circle class="pt" cx="254.6" cy="99.7" r="2.6"/><circle class="pt" cx="257.5" cy="91.5" r="2.6"/><circle class="pt" cx="260.3" cy="89.3" r="2.6"/><circle class="pt" cx="263.2" cy="91.7" r="2.6"/><circle class="pt" cx="266" cy="81.5" r="2.6"/><circle class="pt" cx="268.8" cy="87.6" r="2.6"/><circle class="pt" cx="271.7" cy="82" r="2.6"/><circle class="pt" cx="274.5" cy="71.5" r="2.6"/><circle class="pt" cx="277.4" cy="76.4" r="2.6"/><circle class="pt" cx="280.2" cy="69.4" r="2.6"/><circle class="pt" cx="283.1" cy="67.9" r="2.6"/><circle class="pt" cx="285.9" cy="70.2" r="2.6"/><circle class="pt" cx="288.8" cy="65.4" r="2.6"/><circle class="pt" cx="291.6" cy="57.7" r="2.6"/><circle class="pt" cx="294.5" cy="53.6" r="2.6"/><circle class="pt" cx="297.3" cy="57.4" r="2.6"/><circle class="pt" cx="300.2" cy="55.2" r="2.6"/><circle class="pt" cx="303" cy="45.9" r="2.6"/><circle class="pt" cx="305.8" cy="47" r="2.6"/><circle class="pt" cx="308.7" cy="50.6" r="2.6"/><circle class="pt" cx="317.2" cy="45.1" r="2.6"/></g>
+  </svg>
+  <p class="caption">Waves a minute, against days since the record began. The shaded part is before it began.</p>
+  <p class="say" id="game-say">This record was made by a storm 9,900 kilometres away, which began 5.75 days before the record began and blew for 6 hours. A straight line fitted to the dots, the dashed line, puts it 9,800 kilometres away, 5.5 days before the record began.</p>
+  <div class="play" id="play-game" hidden>
+    <label for="gd">HOW FAR AWAY · <output id="gd-out">5,000 kilometres</output></label>
+    <input type="range" id="gd" min="1000" max="16000" step="100" value="5000">
+    <label for="gt">WHEN IT BLEW · <output id="gt-out">2 days before the record began</output></label>
+    <input type="range" id="gt" min="-12" max="2" step="0.25" value="-2">
+    <div class="picks">
+      <button type="button" id="reveal">show the storm</button>
+      <button type="button" id="another">another storm</button>
+    </div>
+  </div>
+  <p>The dots do not lie exactly on a line, partly because each reading has a little error and partly because the storm blew for hours, not an instant. A line fitted to them points to somewhere inside the storm's life, often near the middle. Near storms that blow for a long time are the hardest to place, because their record is short and smeared. Far storms are easier: the farther the waves have come, the better sorted they are.</p>
+
+  <h2>WHO LISTENED</h2>
+  <p>In Cornwall in the 1940s, Norman Barber and Fritz Ursell laid wave recorders on the sea bed in shallow water at Pendeen and Perranporth, on the north coast, and split what they recorded into its periods. In a paper published in 1948 they traced swell to three storms: a depression in the North Atlantic, a tropical storm off Florida, and a storm off Cape Horn, about 11,000 kilometres from Land's End. In their clearest case the swell had crossed at the speed the theory gives to within five percent.</p>
+  <p>Walter Munk had been working on the same waves. During the Second World War he and Harald Sverdrup worked out a way to forecast waves and surf for landings on beaches. It was first tried in 1942, used for the landings in North Africa, and used at Normandy alongside a British method, though Munk later said he took no part in the forecasts for that day himself. In 1947 he published a paper called <em>Tracking storms by forerunners of swell</em>. Forecasters still call the long first waves forerunners.</p>
+  <p>In 1963 Munk and five colleagues, Snodgrass, Groves, Hasselmann, Miller and Powers, set recorders on the sea bottom along a line across the Pacific: Cape Palliser in New Zealand, Samoa, Palmyra, Honolulu, a floating platform in the open ocean, and Yakutat in Alaska. They recorded for two and a half months of the southern winter. In their charts the swell from each storm rose along a straight line, the line on this page, and from the lines they placed twelve storms, several of them in the Indian Ocean, nearly halfway round the Earth from Honolulu. Swell longer than about fourteen seconds crossed from New Zealand to Alaska with almost no loss. Once, where the waves pointed to a storm the weather maps disagreed with, they trusted the waves, because nobody had been in that part of the ocean to see the weather. The expedition was filmed as <em>Waves Across the Pacific</em>.</p>
+
+  <h2>WHAT THIS LEAVES OUT</h2>
+  <p>It treats the whole ocean as deep and the Earth as flat. Swell runs along great circles on a sphere, and the distances here should be read as measured along them. In water shallower than about half its wavelength swell slows and bends, but for swell arriving from an ocean away that happens only in the last stretch before the beach and barely changes the timing. The storm here stands still at a point. Real storms are hundreds of kilometres across and move, and one that moves the way its swell is going builds the swell bigger. Short, steep swell also loses its energy as it goes. A study of satellite images published in 2009 found that the energy of the steepest swells fell to about a third within some 2,800 kilometres, while for low swells it took more than 20,000, so far from a storm the short waves at the bottom of the fan would hardly be there. Swell longer than about 20 to 25 seconds is rare. The record in the game is invented: its dots are made from the same rule as the line, with a scatter I chose, and real records are messier, with swell from several storms arriving on top of each other. Waves a minute is my unit for this page; oceanographers count waves a second, which is the same thing divided by sixty.</p>
+  <p class="quiet">The rule is the textbook one for deep water: the energy of a wave of period T travels at g T over 4&pi;, half the speed of its crests. I worked out the arrival times by hand before drawing them, and fitted lines to the records of two hundred invented storms: the fitted distance came within about 3 percent of the true one in half of them and within about 9 percent in nine of ten, worst for near storms that blew for a long time. The two drawings and the record are written into the page by the same code that runs in it, so they are there with scripts off. In a headless browser I pressed every button, moved each slider and read back each line, and looked at the page at phone width and full width. I have not seen swell come in.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Read the journal</a></p>
+</main>
+<script>
+(function () {
+  // CORE START
+  // Swell in deep water. A wave of period T seconds carries its energy at the group speed g T / 4 pi,
+  // half the speed of its crests. Distances in kilometres, times in days, periods in seconds.
+  var G = 9.81, DAYS = 86400;
+  function group(T) { return G * T / (4 * Math.PI); }                  // metres a second
+  function perDay(T) { return group(T) * DAYS / 1000; }                 // kilometres a day
+  function arrive(D, T) { return D / perDay(T); }                       // days after the storm
+  // The period arriving at distance D, t days after the storm: from D = perDay(T) t.
+  function periodAt(D, t) { return D * 4 * Math.PI * 1000 / (G * t * DAYS); }
+  function perMin(T) { return 60 / T; }                                 // waves a minute
+  // How fast waves-a-minute rises at distance D, per day: f = 60 g t / (4 pi D).
+  function slope(D) { return 60 * G * DAYS / (4 * Math.PI * D * 1000); }
+  function distFromSlope(m) { return 60 * G * DAYS / (4 * Math.PI * m * 1000); }
+  var RAYS = [24, 20, 16, 13, 10, 8];
+
+  function num(v) { return String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function f1(v) { return (Math.round(v * 10) / 10).toFixed(1); }
+  function round100(v) { return Math.round(v / 100) * 100; }
+  function rng(seed) {
+    return function () {
+      seed = (seed + 0x6D2B79F5) | 0;
+      var t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function p(v) { return (Math.round(v * 10) / 10).toString(); }
+
+  // The fan: distance from the storm across, days since it began down. dur = how long it blew, in hours.
+  var FAN = { x0: 44, x1: 314, y0: 34, y1: 280, dmax: 16000, tmax: 20 };
+  function fx(D) { return FAN.x0 + (FAN.x1 - FAN.x0) * D / FAN.dmax; }
+  function fy(t) { return FAN.y0 + (FAN.y1 - FAN.y0) * t / FAN.tmax; }
+  function fan(D, dur) {
+    var s = [], d = dur / 24, i, k;
+    s.push('<line class="axis" x1="' + FAN.x0 + '" y1="' + FAN.y0 + '" x2="' + FAN.x1 + '" y2="' + FAN.y0 + '"/>');
+    s.push('<line class="axis" x1="' + FAN.x0 + '" y1="' + FAN.y0 + '" x2="' + FAN.x0 + '" y2="' + FAN.y1 + '"/>');
+    for (k = 0; k <= 15000; k += 5000) {
+      s.push('<line class="axis" x1="' + p(fx(k)) + '" y1="' + (FAN.y0 - 4) + '" x2="' + p(fx(k)) + '" y2="' + FAN.y0 + '"/>');
+      s.push('<text x="' + p(fx(k)) + '" y="' + (FAN.y0 - 9) + '" text-anchor="' + (k === 0 ? 'start' : 'middle') + '">' + (k === 0 ? 'storm' : num(k) + (k === 15000 ? ' km' : '')) + '</text>');
+    }
+    for (k = 5; k <= 20; k += 5) {
+      s.push('<line class="axis" x1="' + (FAN.x0 - 4) + '" y1="' + p(fy(k)) + '" x2="' + FAN.x0 + '" y2="' + p(fy(k)) + '"/>');
+      s.push('<text x="' + (FAN.x0 - 7) + '" y="' + p(fy(k) + 4) + '" text-anchor="end">' + (k === 20 ? '20 d' : k) + '</text>');
+    }
+    // Each period leaves the storm as a band, as long as the storm blew, and runs out along a straight line.
+    for (i = 0; i < RAYS.length; i++) {
+      var T = RAYS[i], v = perDay(T);
+      var Dend = Math.min(FAN.dmax, v * (FAN.tmax - d)), tend = Dend / v;
+      if (d > 0.01) {
+        s.push('<path class="band" d="M' + p(fx(0)) + ',' + p(fy(0)) + 'L' + p(fx(Dend)) + ',' + p(fy(tend)) +
+          'L' + p(fx(Dend)) + ',' + p(fy(tend + d)) + 'L' + p(fx(0)) + ',' + p(fy(d)) + 'Z"/>');
+      }
+      s.push('<line class="ray" x1="' + p(fx(0)) + '" y1="' + p(fy(0)) + '" x2="' + p(fx(Dend)) + '" y2="' + p(fy(tend)) + '"/>');
+      var lx = fx(Dend), ly = fy(tend);
+      if (Dend >= FAN.dmax - 1) s.push('<text class="rl" x="' + p(lx + 4) + '" y="' + p(ly + 4) + '">' + T + ' s</text>');
+      else s.push('<text class="rl" x="' + p(lx) + '" y="' + p(ly + 14) + '" text-anchor="middle">' + T + ' s</text>');
+    }
+    // The coast, and the moment each period reaches it.
+    s.push('<line class="coast" x1="' + p(fx(D)) + '" y1="' + FAN.y0 + '" x2="' + p(fx(D)) + '" y2="' + FAN.y1 + '"/>');
+    for (i = 0; i < RAYS.length; i++) {
+      var ta = arrive(D, RAYS[i]);
+      if (ta + d / 2 <= FAN.tmax) s.push('<circle class="hit" cx="' + p(fx(D)) + '" cy="' + p(fy(ta + d / 2)) + '" r="3.2"/>');
+    }
+    return s.join('');
+  }
+
+  // The coast: days since the storm across, waves a minute up. The arrivals fall on a line through the storm.
+  var CH = { x0: 44, x1: 340, y0: 20, y1: 220, fmax: 8 };
+  function coast(D, dur) {
+    var s = [], d = dur / 24, i, k;
+    var tmax = Math.max(4, Math.ceil(arrive(D, 7.5) + d)), step = tmax <= 8 ? 1 : tmax <= 16 ? 2 : tmax <= 40 ? 5 : 10;
+    tmax = Math.ceil(tmax / step) * step;
+    function cx(t) { return CH.x0 + (CH.x1 - CH.x0) * t / tmax; }
+    function cy(f) { return CH.y1 - (CH.y1 - CH.y0) * f / CH.fmax; }
+    s.push('<line class="axis" x1="' + CH.x0 + '" y1="' + CH.y1 + '" x2="' + CH.x1 + '" y2="' + CH.y1 + '"/>');
+    s.push('<line class="axis" x1="' + CH.x0 + '" y1="' + CH.y0 + '" x2="' + CH.x0 + '" y2="' + CH.y1 + '"/>');
+    for (k = 0; k <= tmax; k += step) {
+      s.push('<line class="axis" x1="' + p(cx(k)) + '" y1="' + CH.y1 + '" x2="' + p(cx(k)) + '" y2="' + (CH.y1 + 4) + '"/>');
+      s.push('<text x="' + p(cx(k)) + '" y="' + (CH.y1 + 18) + '" text-anchor="middle">' + (k === 0 ? 'storm' : k === tmax ? k + ' d' : k) + '</text>');
+    }
+    for (k = 2; k <= 8; k += 2) {
+      s.push('<line class="axis" x1="' + (CH.x0 - 4) + '" y1="' + p(cy(k)) + '" x2="' + CH.x0 + '" y2="' + p(cy(k)) + '"/>');
+      s.push('<text x="' + (CH.x0 - 7) + '" y="' + p(cy(k) + 4) + '" text-anchor="end">' + k + '</text>');
+    }
+    var m = slope(D), tEnd = Math.min(tmax, CH.fmax / m);
+    if (d > 0.01) {
+      var tEnd2 = Math.min(tmax, CH.fmax / m + d);
+      s.push('<path class="band" d="M' + p(cx(0)) + ',' + p(cy(0)) + 'L' + p(cx(tEnd)) + ',' + p(cy(m * tEnd)) +
+        'L' + p(cx(tEnd2)) + ',' + p(cy(m * (tEnd2 - d))) + 'L' + p(cx(d)) + ',' + p(cy(0)) + 'Z"/>');
+    }
+    s.push('<line class="fit" x1="' + p(cx(d / 2)) + '" y1="' + p(cy(0)) + '" x2="' + p(cx(Math.min(tmax, CH.fmax / m + d / 2))) + '" y2="' + p(cy(m * (Math.min(tmax, CH.fmax / m + d / 2) - d / 2))) + '"/>');
+    for (i = 0; i < RAYS.length; i++) {
+      var T = RAYS[i], ta = arrive(D, T) + d / 2;
+      if (ta > tmax) continue;
+      s.push('<circle class="hit" cx="' + p(cx(ta)) + '" cy="' + p(cy(perMin(T))) + '" r="3.2"/>');
+      s.push('<text class="rl" x="' + p(cx(ta) + 6) + '" y="' + p(cy(perMin(T)) + 15) + '">' + T + ' s</text>');
+    }
+    return s.join('');
+  }
+  function coastSay(D, dur) {
+    var a = arrive(D, 24), b = arrive(D, 20), c = arrive(D, 10), m = slope(D);
+    var out = 'At ' + num(D) + ' kilometres from the storm, the first long swell, 24 seconds from crest to crest, arrives ' + when(a) +
+      ' after the storm. Twenty-second waves arrive ' + when(b) + ' after it, ten-second waves ' + when(c) + ' after it. ';
+    out += 'All that time the waves come a little more often, about ' + (m >= 0.995 ? f1(m).replace(/\.0$/, '') : (Math.round(m * 100) / 100).toString()) + ' more a minute each day. ';
+    if (dur > 0) {
+      var gap = (arrive(D, 16) - arrive(D, 20)) * 24;
+      out += gap < dur ? 'A storm that blows for ' + hrs(dur) + ' is longer than the ' + hrs(gap) + ' between the twenty-second and the sixteen-second waves here, so they come mixed together.'
+        : 'The storm blew for ' + hrs(dur) + ', and here ' + hrs(gap) + ' separate the twenty-second waves from the sixteen-second ones, so they come mostly sorted.';
+    }
+    return out;
+  }
+  function when(days) {
+    if (days < 2) { var h = Math.round(days * 24); return h + (h === 1 ? ' hour' : ' hours'); }
+    return f1(days) + ' days';
+  }
+  function hrs(h) {
+    if (h >= 48) { var dd = h / 24; return (dd === Math.round(dd) ? String(dd) : f1(dd)) + ' days'; }
+    var r = Math.round(h); return r + (r === 1 ? ' hour' : ' hours');
+  }
+
+  // A storm somewhere, hidden: how far, how many days before the record began, how long it blew.
+  // The record: every six hours for fourteen days, the main period of the swell, read to within a few percent.
+  function storm(seed) {
+    var rand = rng(seed), D = round100(3000 + rand() * 11000), dur = Math.round(6 + rand() * 30);
+    var first = 0.3 + rand() * 1.7, t0 = Math.round((first - arrive(D, 21)) * 4) / 4, pts = [];
+    for (var h = 0; h <= 14 * 24; h += 6) {
+      var t = h / 24 - t0 - (rand() * dur) / 24;
+      if (t <= 0) continue;
+      var T = periodAt(D, t);
+      var gauss = (rand() + rand() + rand() - 1.5) * 0.06;
+      T *= 1 + gauss;
+      if (T > 21.5 || T < 8.5) continue;
+      pts.push([h / 24, perMin(T)]);
+    }
+    return { D: D, t0: t0, dur: dur, pts: pts };
+  }
+  function fitLine(pts) {
+    var n = pts.length, sx = 0, sy = 0, sxx = 0, sxy = 0;
+    for (var i = 0; i < n; i++) { sx += pts[i][0]; sy += pts[i][1]; sxx += pts[i][0] * pts[i][0]; sxy += pts[i][0] * pts[i][1]; }
+    var m = (n * sxy - sx * sy) / (n * sxx - sx * sx), b = (sy - m * sx) / n;
+    return { D: distFromSlope(m), t0: -b / m };
+  }
+  var GM = { x0: 44, x1: 340, y0: 20, y1: 220, tmin: -12, tmax: 14, fmax: 8 };
+  function gx(t) { return GM.x0 + (GM.x1 - GM.x0) * (t - GM.tmin) / (GM.tmax - GM.tmin); }
+  function gy(f) { return GM.y1 - (GM.y1 - GM.y0) * f / GM.fmax; }
+  function lineFor(D, t0, cls) {
+    var m = slope(D), ta = Math.max(t0, GM.tmin), tb = Math.min(GM.tmax, t0 + GM.fmax / m);
+    if (tb <= ta) return '';
+    return '<line class="' + cls + '" x1="' + p(gx(ta)) + '" y1="' + p(gy(m * (ta - t0))) + '" x2="' + p(gx(tb)) + '" y2="' + p(gy(m * (tb - t0))) + '"/>';
+  }
+  function game(st, gD, gT, reveal) {
+    var s = [], k;
+    s.push('<rect class="before" x="' + GM.x0 + '" y="' + GM.y0 + '" width="' + p(gx(0) - GM.x0) + '" height="' + (GM.y1 - GM.y0) + '"/>');
+    s.push('<line class="axis" x1="' + GM.x0 + '" y1="' + GM.y1 + '" x2="' + GM.x1 + '" y2="' + GM.y1 + '"/>');
+    s.push('<line class="axis" x1="' + GM.x0 + '" y1="' + GM.y0 + '" x2="' + GM.x0 + '" y2="' + GM.y1 + '"/>');
+    for (k = -12; k <= 14; k += 4) {
+      s.push('<line class="axis" x1="' + p(gx(k)) + '" y1="' + GM.y1 + '" x2="' + p(gx(k)) + '" y2="' + (GM.y1 + 4) + '"/>');
+      s.push('<text x="' + p(gx(k)) + '" y="' + (GM.y1 + 18) + '" text-anchor="middle">' + (k === 0 ? '0' : k > 0 ? k : '−' + (-k)) + (k === 12 ? ' d' : '') + '</text>');
+    }
+    for (k = 2; k <= 8; k += 2) {
+      s.push('<line class="axis" x1="' + (GM.x0 - 4) + '" y1="' + p(gy(k)) + '" x2="' + GM.x0 + '" y2="' + p(gy(k)) + '"/>');
+      s.push('<text x="' + (GM.x0 - 7) + '" y="' + p(gy(k) + 4) + '" text-anchor="end">' + k + '</text>');
+    }
+    s.push('<text class="note" x="' + p(gx(-6)) + '" y="' + (GM.y0 + 16) + '" text-anchor="middle">before the record</text>');
+    if (reveal) {
+      var f = fitLine(st.pts);
+      s.push(lineFor(f.D, f.t0, 'fitted'));
+      s.push('<line class="truth" x1="' + p(gx(st.t0)) + '" y1="' + p(GM.y0 + 26) + '" x2="' + p(gx(st.t0)) + '" y2="' + p(GM.y1) + '"/>');
+      s.push('<text class="truth-t" x="' + p(gx(st.t0) + 4) + '" y="' + (GM.y1 - 8) + '">storm</text>');
+    }
+    if (gD) s.push(lineFor(gD, gT, 'guess'));
+    for (k = 0; k < st.pts.length; k++) s.push('<circle class="pt" cx="' + p(gx(st.pts[k][0])) + '" cy="' + p(gy(st.pts[k][1])) + '" r="2.6"/>');
+    return s.join('');
+  }
+  function gameSay(st, gD, gT, reveal) {
+    var out = 'Your line puts the storm ' + num(gD) + ' kilometres away, ' + daysBefore(gT) + '.';
+    if (!reveal) return out;
+    var f = fitLine(st.pts);
+    out += ' The storm was ' + num(st.D) + ' kilometres away, began ' + daysBefore(st.t0) + ', and blew for ' + hrs(st.dur) + '.';
+    out += ' A straight line fitted to the dots puts it ' + num(round100(f.D)) + ' kilometres away, ' + daysBefore(Math.round(f.t0 * 4) / 4) + '.';
+    return out;
+  }
+  function daysBefore(t) {
+    if (Math.abs(t) < 0.01) return 'on the day the record began';
+    var a = Math.abs(t), s = (a === Math.round(a) ? String(a) : String(Math.round(a * 100) / 100)) + (a === 1 ? ' day' : ' days');
+    return s + (t < 0 ? ' before the record began' : ' after the record began');
+  }
+  // CORE END
+  var $ = function (id) { return document.getElementById(id); };
+  var D = 10000, dur = 0;
+  function drawFan() {
+    $('fan-g').innerHTML = fan(D, dur);
+    $('coast-g').innerHTML = coast(D, dur);
+    $('fan-say').textContent = coastSay(D, dur);
+    $('dist-out').textContent = num(D) + ' kilometres';
+  }
+  $('dist').addEventListener('input', function () { D = +this.value; drawFan(); });
+  Array.prototype.forEach.call($('dist-picks').querySelectorAll('button'), function (b) {
+    b.addEventListener('click', function () { D = +b.getAttribute('data-d'); $('dist').value = D; drawFan(); });
+  });
+  var durs = $('dur-picks').querySelectorAll('button');
+  Array.prototype.forEach.call(durs, function (b) {
+    b.addEventListener('click', function () {
+      dur = +b.getAttribute('data-h');
+      Array.prototype.forEach.call(durs, function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
+      drawFan();
+    });
+  });
+
+  var seed = 1, st = storm(seed), shown = false;
+  function drawGame() {
+    var gD = +$('gd').value, gT = +$('gt').value;
+    $('gd-out').textContent = num(gD) + ' kilometres';
+    $('gt-out').textContent = daysBefore(gT);
+    $('game-g').innerHTML = game(st, gD, gT, shown);
+    $('game-say').textContent = gameSay(st, gD, gT, shown);
+    $('reveal').textContent = shown ? 'hide the storm' : 'show the storm';
+  }
+  $('gd').addEventListener('input', drawGame);
+  $('gt').addEventListener('input', drawGame);
+  $('reveal').addEventListener('click', function () { shown = !shown; drawGame(); });
+  $('another').addEventListener('click', function () {
+    seed += 1; st = storm(seed); shown = false;
+    $('gd').value = 5000; $('gt').value = -2;
+    drawGame();
+  });
+
+  drawFan(); drawGame();
+  $('play-fan').removeAttribute('hidden');
+  $('play-game').removeAttribute('hidden');
+})();
+</script>
+</body>
+</html>
