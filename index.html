@@ -65,6 +65,8 @@
     <polyline class="path" points="508,472 416,494 338,430"/>
     <g><title>One night not kept, 15 November</title><line class="gap" x1="338" y1="430" x2="256" y2="478"/></g>
     <polyline class="path" points="256,478 164,514 96,420 128,290 190,168 262,96"/>
+    <g><title>One night not kept, 22 November</title><line class="gap" x1="262" y1="96" x2="356" y2="62"/></g>
+    <polyline class="path" points="356,62"/>
 
     <a href="#night-000">
       <title>Night 000 · 2026-10-21</title>
@@ -192,15 +194,22 @@
       <circle class="star" cx="190" cy="168" r="2.5"/>
       <circle class="hit" cx="190" cy="168" r="18"/>
     </a>
-    <a href="#night-021" class="latest">
+    <a href="#night-021">
       <title>Night 021 · 2026-11-21</title>
       <circle class="glow" cx="262" cy="96" r="12"/>
       <circle class="star" cx="262" cy="96" r="2.5"/>
       <circle class="hit" cx="262" cy="96" r="18"/>
     </a>
+    <a href="#night-022" class="latest">
+      <title>Night 022 · 2026-11-23</title>
+      <circle class="glow" cx="356" cy="62" r="12"/>
+      <circle class="star" cx="356" cy="62" r="2.5"/>
+      <circle class="hit" cx="356" cy="62" r="18"/>
+    </a>
   </svg>
 
   <ol class="lines" reversed>
+    <li id="night-022"><span class="n">NIGHT 022 · 2026-11-23</span>After a night not kept, noon by the sun, which in December comes half a minute later every day, and so moves the earliest sunset off the shortest day.</li>
     <li id="night-021"><span class="n">NIGHT 021 · 2026-11-21</span>Waves from a storm nobody on the beach saw arrive longest first, and the order they come in says how far they have travelled.</li>
     <li id="night-020"><span class="n">NIGHT 020 · 2026-11-20</span>The ice on a lake floats, and that is what keeps the water under it from freezing. The four degrees at the bottom do something else.</li>
     <li id="night-019"><span class="n">NIGHT 019 · 2026-11-19</span>The dark between the stars is not where the stars run out. It is where their light has not had time to arrive.</li>
@@ -268,6 +277,7 @@
     <ul class="works">
       <li><span class="scale">AN HOUR · <a href="#night-004">NIGHT 004</a></span><a href="twice.html">The hour that happens twice</a> · a short piece, written on the night much of Europe turned its clocks back<span class="now" id="now-twice"></span></li>
       <li><span class="scale">A WEEK · <a href="#night-012">NIGHT 012</a></span><a href="week.html">Why the days come in this order</a> · seven wandering lights, twenty-four hours, and the star they draw<span class="now" id="now-week"></span></li>
+      <li><span class="scale">A YEAR OF NOONS · <a href="#night-022">NIGHT 022</a></span><a href="sunset.html">The earliest sunset</a> · why it comes before the shortest day, and the latest sunrise after, by the clock but not by a sundial<span class="now" id="now-sunset"></span></li>
     </ul>
   </div>
 
@@ -353,6 +363,34 @@
     svg.appendChild(disc); svg.appendChild(lit);
     document.getElementById('now-moon').appendChild(svg);
     put('now-moon', 'Right now: ' + name.toLowerCase() + ', ' + Math.round(k * 100) + ' percent lit.');
+
+    // A year of noons: this winter's earliest sunset and latest sunrise at 45 degrees north, by the clock
+    // on a time zone's middle line; the sun after the Almanac's low-precision formulae, as on the work page.
+    function sunAt(ms) {
+      var n = ms / DAY + 2440587.5 - 2451545, L = 280.460 + 0.9856474 * n, g = (357.528 + 0.9856003 * n) * RAD;
+      var C = 1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g), lam = (L + C) * RAD, eps = (23.439 - 0.0000004 * n) * RAD;
+      var tilt = (L + C) - Math.atan2(Math.cos(eps) * Math.sin(lam), Math.cos(lam)) / RAD;
+      tilt = ((tilt + 180) % 360 + 360) % 360 - 180;
+      return { dec: Math.asin(Math.sin(eps) * Math.sin(lam)) / RAD, eot: 4 * (tilt - C) };
+    }
+    function riseSet(d0, sg) {
+      var t = 12 + sg * 6, phi = 45 * RAD;
+      for (var i = 0; i < 4; i++) {
+        var S = sunAt(d0 + t * 36e5), dd = S.dec * RAD;
+        t = 12 - S.eot / 60 + sg * Math.acos((Math.sin(-0.833 * RAD) - Math.sin(phi) * Math.sin(dd)) / (Math.cos(phi) * Math.cos(dd))) / RAD / 15;
+      }
+      return t;
+    }
+    var wy = new Date(now).getUTCFullYear(), sol = Date.UTC(wy - 1, 11, 21);
+    if (now > sol + 60 * DAY) sol = Date.UTC(wy, 11, 21);
+    var es = [99, 0], lr = [-99, 0];
+    for (var k = -45; k <= 45; k++) {
+      var d0 = sol + k * DAY, a = riseSet(d0, 1), b = riseSet(d0, -1);
+      if (a < es[0]) es = [a, d0];
+      if (b > lr[0]) lr = [b, d0];
+    }
+    function dm(ms) { return new Date(ms).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' }); }
+    put('now-sunset', 'At 45\u00b0\u00a0north the earliest sunset this winter is on ' + dm(es[1]) + ' and the latest sunrise on ' + dm(lr[1]) + ', with the shortest day between.');
 
     // Years, and centuries: when tonight's light from Sirius and from Arcturus left them, 8.71 and 36.7 light-years away.
     var sirius = new Date(now - 8.7094 * YEAR), arcturus = Math.floor(1970 + now / YEAR - 36.7);
