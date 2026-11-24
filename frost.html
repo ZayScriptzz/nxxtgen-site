@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · The cold of a clear sky</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.75; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  .title { font-size: 1.6rem; line-height: 1.3; margin: 3rem 0 0.3rem; }
+  .when { color: #55555f; font-size: 0.85rem; letter-spacing: 0.1em; margin: 0 0 3rem; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; }
+  a { color: #8a8af0; }
+  em { color: #e6e2d6; font-style: normal; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+
+  /* the garden */
+  .garden { display: block; width: 100%; height: auto; margin: 2rem 0 0.4rem; }
+  .garden .night { fill: #0c0c14; }
+  .garden .pt { fill: #d8d8e0; opacity: 0.7; }
+  .garden .cloud { fill: #2c2c3a; }
+  .garden .soil { fill: #121218; }
+  .garden .trunk { fill: #2a2420; }
+  .garden .yew { fill: #16241c; }
+  .garden .joint { stroke: #0a0a0f; stroke-width: 1.5; }
+  .garden .body { fill: #1c1c28; stroke: #2a2a44; stroke-width: 1; }
+  .garden .wheel { fill: #101016; stroke: #2a2a44; stroke-width: 1; }
+  .garden .rime { stroke: #eef3fa; stroke-width: 1.6; stroke-linecap: round; }
+  .garden .drop { fill: #8ad0f0; }
+  .garden .rime-glass { fill: none; stroke: #eef3fa; stroke-width: 2; stroke-dasharray: 2 3; }
+  .garden .dew-glass { fill: none; stroke: #8ad0f0; stroke-width: 2; stroke-dasharray: 1 5; stroke-linecap: round; }
+  .key { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.6rem; font-size: 0.75rem; color: #6a6a76; margin: 0 0 1rem; }
+  .key .k { white-space: nowrap; }
+  .key .bar { display: inline-block; width: 8rem; height: 0.6rem; background: linear-gradient(to right, rgb(74,116,208) 0%, rgb(106,138,224) 27%, rgb(154,154,200) 45%, rgb(192,138,128) 68%, rgb(240,176,112) 100%); }
+  .key .rime-k { display: inline-block; width: 1rem; height: 0.6rem; background: repeating-linear-gradient(to right, #eef3fa 0 2px, transparent 2px 5px); margin-left: 0.6rem; }
+  .key .dew-k { display: inline-block; width: 0.45rem; height: 0.45rem; border-radius: 50%; background: #8ad0f0; margin-left: 0.6rem; }
+
+  table.places { width: 100%; border-collapse: collapse; font-size: 0.95rem; margin: 0.5rem 0 0; font-variant-numeric: tabular-nums; }
+  table.places td { padding: 0.45rem 0.4rem 0.45rem 0; border-top: 1px solid #1c1c26; vertical-align: top; }
+  table.places .how { display: block; color: #6a6a76; font-size: 0.8rem; line-height: 1.4; }
+  table.places .num { text-align: right; white-space: nowrap; padding-right: 0.9rem; }
+  table.places .st { color: #6a6a76; white-space: nowrap; }
+  table.places .st-frost { color: #eef3fa; }
+  table.places .st-dew { color: #8ad0f0; }
+  table.places .sw { display: inline-block; width: 0.7rem; height: 0.7rem; margin-right: 0.5rem; vertical-align: -0.05rem; }
+
+  .say { color: #9a9aa6; font-size: 0.95rem; margin: 0.9rem 0 0; font-variant-numeric: tabular-nums; }
+  .say p { margin: 0 0 0.5rem; }
+  .play { margin: 0.5rem 0 2.5rem; }
+  .play[hidden] { display: none; }
+  .play label, .play .lab { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; margin: 1.2rem 0 0.3rem; }
+  .play input[type=range] { width: 100%; accent-color: #8a8af0; }
+  .play .picks { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.3rem; }
+  .play button { font: inherit; font-size: 0.85rem; color: #d8d8e0; background: #14141c; border: 1px solid #2a2a44; padding: 0.3rem 0.75rem; cursor: pointer; }
+  .play button:hover, .play button:focus-visible { border-color: #8a8af0; }
+  .play output { color: #d8d8e0; font-variant-numeric: tabular-nums; letter-spacing: 0; }
+
+  /* the roof against the wind */
+  .wind { display: block; width: 100%; max-width: 30rem; height: auto; margin: 1.5rem 0 0.5rem; }
+  .wind text { fill: #9a9aa6; font-size: 13px; font-family: Georgia, serif; }
+  .wind .frame { fill: none; stroke: #2a2a44; stroke-width: 1; }
+  .wind .zero { stroke: #4a74d0; stroke-width: 1; stroke-dasharray: 3 4; }
+  .wind .airl { stroke: #6a6a76; stroke-width: 1; }
+  .wind .dewl { stroke: #8ad0f0; stroke-width: 1; stroke-dasharray: 1 3; }
+  .wind .dewt { fill: #8ad0f0; }
+  .wind .ln { fill: none; stroke-width: 2.5; stroke-linejoin: round; }
+  .wind .ln-clear { stroke: #8a8af0; }
+  .wind .ln-half { stroke: #6a6a9a; }
+  .wind .ln-overcast { stroke: #4a4a5a; }
+  .wind .airt { fill: #9a9aa6; }
+  .wind .lt-clear { fill: #8a8af0; }
+  .wind .lt-half { fill: #7a7aa8; }
+  .wind .lt-overcast { fill: #6a6a76; }
+  .wind .here { fill: #d8d8e0; stroke: #0a0a0f; stroke-width: 2; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · the cold of a clear sky</h1>
+
+  <p class="title">The cold of a clear sky</p>
+  <p class="when">MADE ON THE NIGHT OF 24 NOVEMBER 2026</p>
+
+  <p>On a clear, still night late in the year you can go out in the morning and find frost on the car roof and white on the lawn, when the lowest the air went all night was three degrees above freezing. The forecast wasn't wrong. Weather services in Britain count the two separately: an air frost when the air about a metre up goes below freezing, a ground frost when a thermometer lying on the tips of the grass does. The roof and the grass were colder than the air, because they spent the night facing the sky, and a clear sky is cold.</p>
+  <p>Below is a garden on such a night. Each surface in it has settled at the temperature where the heat it loses balances the heat that reaches it, worked out from four things: how warm the air is, how damp, how much wind, and how much cloud.</p>
+
+  <h2>THE GARDEN</h2>
+  <!-- BAKED START: the garden at 3 degrees, 85 percent, a light air of one metre a second, a clear sky. Written from the CORE below. -->
+  <svg class="garden" id="garden" viewBox="0 0 640 280" role="img" aria-labelledby="garden-title">
+    <title id="garden-title">A garden at night: a yew on the left with lawn under it, open lawn, a stone path and a car. Each surface is coloured by its temperature; white marks are frost and blue dots are dew.</title>
+    <g id="garden-g"><rect class="night" x="0" y="0" width="640" height="232"/><circle class="pt" cx="22" cy="30" r="1.6"/><circle class="pt" cx="61" cy="94" r="1"/><circle class="pt" cx="98" cy="18" r="1"/><circle class="pt" cx="140" cy="52" r="1"/><circle class="pt" cx="171" cy="120" r="1"/><circle class="pt" cx="205" cy="26" r="1.6"/><circle class="pt" cx="238" cy="80" r="1"/><circle class="pt" cx="262" cy="140" r="1"/><circle class="pt" cx="297" cy="44" r="1"/><circle class="pt" cx="331" cy="104" r="1"/><circle class="pt" cx="356" cy="16" r="1.6"/><circle class="pt" cx="389" cy="66" r="1"/><circle class="pt" cx="420" cy="130" r="1"/><circle class="pt" cx="447" cy="36" r="1"/><circle class="pt" cx="478" cy="92" r="1"/><circle class="pt" cx="512" cy="20" r="1.6"/><circle class="pt" cx="540" cy="62" r="1"/><circle class="pt" cx="571" cy="118" r="1"/><circle class="pt" cx="600" cy="34" r="1"/><circle class="pt" cx="628" cy="86" r="1"/><circle class="pt" cx="44" cy="152" r="1.6"/><circle class="pt" cx="118" cy="148" r="1"/><circle class="pt" cx="214" cy="168" r="1"/><circle class="pt" cx="308" cy="160" r="1"/><circle class="pt" cx="396" cy="176" r="1"/><circle class="pt" cx="452" cy="158" r="1.6"/><circle class="pt" cx="520" cy="140" r="1"/><circle class="pt" cx="612" cy="160" r="1"/><circle class="pt" cx="80" cy="60" r="1"/><circle class="pt" cx="186" cy="84" r="1"/><circle class="pt" cx="276" cy="112" r="1.6"/><circle class="pt" cx="366" cy="40" r="1"/><circle class="pt" cx="500" cy="110" r="1"/><circle class="pt" cx="590" cy="8" r="1"/><g class="cloud" style="opacity:0.00"><rect x="0" y="0" width="640" height="78"/><ellipse cx="90" cy="76" rx="120" ry="22"/><ellipse cx="300" cy="80" rx="150" ry="24"/><ellipse cx="540" cy="76" rx="130" ry="22"/></g><rect class="soil" x="0" y="232" width="640" height="48"/><rect class="trunk" x="99" y="168" width="12" height="64"/><path class="yew" d="M105,46 L44,150 L64,150 L28,190 L182,190 L146,150 L166,150 Z"/><rect x="20" y="226" width="170" height="7" fill="rgb(168,148,173)"/><rect x="196" y="226" width="150" height="7" fill="rgb(128,145,213)"/><path class="rime" d="M199,223v-5"/><path class="rime" d="M205,223v-5"/><path class="rime" d="M211,223v-5"/><path class="rime" d="M217,223v-5"/><path class="rime" d="M223,223v-5"/><path class="rime" d="M229,223v-5"/><path class="rime" d="M235,223v-5"/><path class="rime" d="M241,223v-5"/><path class="rime" d="M247,223v-5"/><path class="rime" d="M253,223v-5"/><path class="rime" d="M259,223v-5"/><path class="rime" d="M265,223v-5"/><path class="rime" d="M271,223v-5"/><path class="rime" d="M277,223v-5"/><path class="rime" d="M283,223v-5"/><path class="rime" d="M289,223v-5"/><path class="rime" d="M295,223v-5"/><path class="rime" d="M301,223v-5"/><path class="rime" d="M307,223v-5"/><path class="rime" d="M313,223v-5"/><path class="rime" d="M319,223v-5"/><path class="rime" d="M325,223v-5"/><path class="rime" d="M331,223v-5"/><path class="rime" d="M337,223v-5"/><path class="rime" d="M343,223v-5"/><rect x="352" y="227" width="70" height="6" fill="rgb(142,150,206)"/><path class="joint" d="M375,227v6M399,227v6"/><path class="rime" d="M355,224v-3"/><path class="rime" d="M361,224v-3"/><path class="rime" d="M367,224v-3"/><path class="rime" d="M373,224v-3"/><path class="rime" d="M379,224v-3"/><path class="rime" d="M385,224v-3"/><path class="rime" d="M391,224v-3"/><path class="rime" d="M397,224v-3"/><path class="rime" d="M403,224v-3"/><path class="rime" d="M409,224v-3"/><path class="rime" d="M415,224v-3"/><path class="rime" d="M421,224v-3"/><path class="body" d="M436,212 L436,186 Q438,176 452,174 L480,172 L503,142 L575,142 L596,172 L616,176 Q626,180 626,192 L626,212 Z"/><path class="glass" fill="rgb(150,153,202)" d="M488,170 L507,148 L536,148 L536,170 Z M542,170 L542,148 L571,148 L588,170 Z"/><path class="rime-glass" d="M492,168 L507,150 L534,150 L534,168 Z M544,168 L544,150 L570,150 L585,168 Z"/><rect x="503" y="138" width="72" height="5" fill="rgb(118,142,218)"/><path class="rime" d="M506,135v-3"/><path class="rime" d="M512,135v-3"/><path class="rime" d="M518,135v-3"/><path class="rime" d="M524,135v-3"/><path class="rime" d="M530,135v-3"/><path class="rime" d="M536,135v-3"/><path class="rime" d="M542,135v-3"/><path class="rime" d="M548,135v-3"/><path class="rime" d="M554,135v-3"/><path class="rime" d="M560,135v-3"/><path class="rime" d="M566,135v-3"/><path class="rime" d="M572,135v-3"/><circle class="wheel" cx="470" cy="214" r="15"/><circle class="wheel" cx="592" cy="214" r="15"/></g>
+  </svg>
+  <div class="key" aria-hidden="true"><span class="k"><span>&minus;10&deg;</span> <span class="bar"></span> <span>12&deg;</span></span><span class="k"><span class="rime-k"></span> frost</span><span class="k"><span class="dew-k"></span> dew</span></div>
+  <table class="places">
+    <tbody id="places"><tr><td><span class="sw" style="background:rgb(118,142,218)"></span>The car roof<span class="how">thin metal, flat, facing the whole sky</span></td><td class="num">−3.0°</td><td class="st st-frost">frost</td></tr><tr><td><span class="sw" style="background:rgb(128,145,213)"></span>The lawn in the open<span class="how">grass blades, with air under them; each sees a little of the others</span></td><td class="num">−2.2°</td><td class="st st-frost">frost</td></tr><tr><td><span class="sw" style="background:rgb(142,150,206)"></span>The stone path<span class="how">facing the whole sky, but warmed from the ground under it</span></td><td class="num">−1.0°</td><td class="st st-frost">frost</td></tr><tr><td><span class="sw" style="background:rgb(150,153,202)"></span>The car’s side window<span class="how">upright, so half of what it faces is the garden</span></td><td class="num">−0.3°</td><td class="st st-frost">frost</td></tr><tr><td><span class="sw" style="background:rgb(168,148,173)"></span>The lawn under the yew<span class="how">the tree hides most of the sky</span></td><td class="num">1.9°</td><td class="st st-dry">nothing</td></tr></tbody>
+  </table>
+  <div class="say" id="say"><p>The clear sky sends down as much heat as a surface at −18.3° would. The air is 3.0°, and its dew point 0.7°.</p><p>At the temperature of the air, the roof would give off 86 watts a square metre more than reaches it from the sky. It cools until the air and the water settling on it make up the difference, at −3.0°, 6.0 degrees colder than the air.</p><p>Frost on the car roof, the lawn in the open, the stone path and the car’s side window. The air itself never goes below freezing.</p></div>
+  <!-- BAKED END -->
+
+  <div class="play" id="play" hidden>
+    <label for="air">THE AIR · <output id="air-out">3&deg;</output></label>
+    <input type="range" id="air" min="-4" max="12" step="0.5" value="3">
+    <label for="rh">HOW DAMP · <output id="rh-out">85 percent of what the air can hold</output></label>
+    <input type="range" id="rh" min="40" max="100" step="5" value="85">
+    <label for="wind">THE WIND AT THE GROUND · <output id="wind-out">1 metre a second, a light air</output></label>
+    <input type="range" id="wind" min="0" max="6" step="0.5" value="1">
+    <label for="cloud">CLOUD · <output id="cloud-out">none</output></label>
+    <input type="range" id="cloud" min="0" max="100" step="10" value="0">
+    <span class="lab">OR START FROM</span>
+    <div class="picks" id="presets">
+      <button type="button" data-set="3,85,1,0">a clear, still night</button>
+      <button type="button" data-set="3,85,1,100">the same night, overcast</button>
+      <button type="button" data-set="3,85,5,0">the same night, windy</button>
+      <button type="button" data-set="3,50,1,0">the same night, dry</button>
+      <button type="button" data-set="8,90,0.5,0">a mild, damp night</button>
+    </div>
+  </div>
+
+  <h2>WHAT THE ROOF SEES</h2>
+  <p>Everything gives off heat as light too long for eyes to see, and the warmer a thing is, the more it gives. A car roof at three degrees gives off about 310 watts for every square metre of it. It also takes in what everything it faces gives off, and a roof faces the sky. If the sky gave back as much as the roof gives off, the roof would stay at the temperature of the air. A clear sky doesn't. On the night in the garden it gives back as much as a surface at about eighteen below freezing would, and the roof is left short by more than 80 watts a square metre. Nothing in the dark makes that up.</p>
+  <p>So the roof cools, and as it falls below the air, the air touching it starts to warm it again. It settles where the two match. The air is a poor carrier of heat when it is still, so the roof has to get several degrees colder than the air before enough heat flows back. Each surface in the garden faces a different share of the sky and has something different underneath it, so each settles somewhere different.</p>
+  <p>The thin metal of the roof has only air under it, inside the car, and gets nothing from below. Grass is much the same: the blades stand in air, and the soil warms their tips very little through it. A stone path lies on the ground, and the ground a hand's depth down still holds some of the autumn's warmth and passes it up. That is why the lawn whitens before the path. The side window stands upright, so half of what it faces is the garden, which is near the temperature of the air, and only half is sky. Under the yew, the tree is what the grass faces, and the tree is at the temperature of the air too.</p>
+
+  <h2>WHY A CLEAR SKY IS COLD</h2>
+  <p>The air is not empty to this kind of light. The water vapour and carbon dioxide in it give off heat at the temperature of the air around them, and if they gave it off at every wavelength the sky would be as warm as the air and there would be no frost. They don't. Between wavelengths of about 8 and 13 micrometres, a band where the roof gives off a good share of its heat, the clear air lets most of it straight through. Through that window, a roof facing up is facing space, and space sends back nearly nothing. It is the same darkness <a href="dark.html">the night is made of</a>.</p>
+  <p>A cloud closes the window. Its droplets give off heat at every wavelength, at the temperature of the cloud, which for a low cloud is only a few degrees below the air on the ground. Under an overcast sky the garden barely cools below the air, which is why a cloudy night is a mild one. A tree closes the window for whatever is under it, and so does a wall for whatever stands beside it. Damp air narrows the window too, so the drier the air, the colder the clear sky.</p>
+
+  <h2>DEW, THEN FROST</h2>
+  <p>Air holds water as vapour, and how much it can hold depends on its temperature. Cool air down far enough and it holds more than it can keep; that temperature is the dew point. When the roof cools below the dew point of the air touching it, water comes out of that air onto the roof. Above freezing it comes out as dew. Below freezing it usually comes out as ice, straight from the vapour, in the feathery crystals of hoar frost.</p>
+  <p>Coming out of the air, the water gives up the heat it took to become vapour, and that warms the roof a little and slows its cooling. Very dry air works the other way: it makes the clear sky colder and the roof colder with it, but there is so little water to come out that a roof can go well below freezing and stay bare. In the garden, try the dry night. The roof still frosts. The lawn, the path and the side window go below freezing too, and stay bare.</p>
+
+  <h2>THE WIND</h2>
+  <p>Wind brings warmer air to the roof faster than still air can, so the roof doesn't have to get as cold before the air pays back what it loses. The chart follows the roof alone as the wind rises, at the garden's air and damp, under a clear sky, half cloud, and overcast. The dot is the garden as it is set now. Frost needs the lines to be low: a clear sky and little wind. In the model, by about five metres a second the clear-sky roof is within three degrees of the air. On real nights a breeze also stirs down warmer air from above, which the model doesn't, so it gives the wind less than its due.</p>
+  <svg class="wind" id="wind-chart" viewBox="0 0 440 250" role="img" aria-labelledby="wind-title">
+    <title id="wind-title">The temperature the car roof settles at, against the wind, under a clear sky, half cloud and overcast. It is lowest with no wind and a clear sky, and rises towards the temperature of the air as the wind grows or the cloud thickens.</title>
+    <g id="wind-g"><rect class="frame" x="52" y="18" width="292" height="188"/><text x="46" y="210" text-anchor="end">−8°</text><text x="46" y="183.14285714285714" text-anchor="end">−6°</text><text x="46" y="156.28571428571428" text-anchor="end">−4°</text><text x="46" y="129.42857142857144" text-anchor="end">−2°</text><text x="46" y="102.57142857142857" text-anchor="end">0°</text><text x="46" y="75.71428571428572" text-anchor="end">2°</text><text x="46" y="48.85714285714286" text-anchor="end">4°</text><text x="46" y="22" text-anchor="end">6°</text><text x="52" y="224" text-anchor="middle">0</text><text x="100.66666666666666" y="224" text-anchor="middle">1</text><text x="149.33333333333331" y="224" text-anchor="middle">2</text><text x="198" y="224" text-anchor="middle">3</text><text x="246.66666666666666" y="224" text-anchor="middle">4</text><text x="295.33333333333337" y="224" text-anchor="middle">5</text><text x="344" y="224" text-anchor="middle">6</text><text x="198" y="242" text-anchor="middle">wind, metres a second</text><line class="zero" x1="52" x2="344" y1="98.57142857142857" y2="98.57142857142857"/><line class="dewl" x1="52" x2="344" y1="88.86058561550439" y2="88.86058561550439"/><line class="airl" x1="52" x2="344" y1="58.28571428571428" y2="58.28571428571428"/><path class="ln ln-clear" d="M52.0,191.3L64.2,171.8L76.3,157.7L88.5,147.1L100.7,138.8L112.8,132.1L125.0,126.7L137.2,122.1L149.3,118.3L161.5,115.0L173.7,112.1L185.8,109.7L198.0,107.5L210.2,105.5L222.3,103.8L234.5,102.2L246.7,100.8L258.8,99.5L271.0,98.3L283.2,97.2L295.3,96.2L307.5,95.2L319.7,94.3L331.8,93.5L344.0,92.7"/><path class="ln ln-half" d="M52.0,142.6L64.2,131.3L76.3,123.1L88.5,116.9L100.7,112.1L112.8,108.2L125.0,105.0L137.2,102.3L149.3,100.1L161.5,98.1L173.7,96.4L185.8,94.8L198.0,93.4L210.2,92.2L222.3,91.1L234.5,90.2L246.7,89.3L258.8,88.2L271.0,87.0L283.2,86.0L295.3,84.9L307.5,84.0L319.7,83.1L331.8,82.3L344.0,81.6"/><path class="ln ln-overcast" d="M52.0,97.2L64.2,93.2L76.3,90.3L88.5,87.7L100.7,85.1L112.8,82.9L125.0,81.1L137.2,79.5L149.3,78.2L161.5,76.9L173.7,75.9L185.8,74.9L198.0,74.1L210.2,73.3L222.3,72.6L234.5,72.0L246.7,71.4L258.8,70.9L271.0,70.4L283.2,69.9L295.3,69.5L307.5,69.1L319.7,68.7L331.8,68.4L344.0,68.1"/><text class="airt" x="352" y="62.3">the air</text><text class="lt-overcast" x="352" y="76.3">overcast</text><text class="lt-half" x="352" y="90.3">half cloud</text><text class="dewt" x="352" y="104.3">dew point</text><text class="lt-clear" x="352" y="118.3">clear</text><circle class="here" cx="100.7" cy="138.8" r="4.5"/></g>
+  </svg>
+
+  <h2>WHO NOTICED</h2>
+  <p>Aristotle had the conditions right. "Both dew and hoar-frost are found when the sky is clear and there is no wind," in E. W. Webster's translation of the <em>Meteorology</em>. His reasons were not these. He thought a clear sky was needed to lift the vapour, and that wind would stop it condensing.</p>
+  <p>In 1775 Robert Barker sent the Royal Society an account of how ice was made in winter at Allahabad, Mootegil and Calcutta. On an open plain, pits about thirty feet square and two deep were strewn eight inches to a foot thick with dried sugar-cane or the stalks of Indian corn. On them stood small, shallow, unglazed earthen pans, an inch and a quarter deep, filled at dusk with boiled water. By morning, on the right nights, the water had frozen. It froze best when the night was calm and clear, he wrote, and changes of wind and cloud stopped it. He thought the air stayed some degrees above freezing, but said plainly that he had never measured it at night.</p>
+  <p>Nearly forty years later William Charles Wells, a London physician, measured what Barker hadn't. His <em>Essay on Dew</em> came out in 1814. On a clear, calm night in the autumn of 1811 he laid one thermometer on dewy grass and hung another two feet above it, and an hour later the one on the grass read eight degrees Fahrenheit lower. He went on comparing grass with the air four feet up, night after night. On clear, calm nights the grass was very often seven to nine degrees Fahrenheit colder, about four or five Celsius, and once, in an open field, fourteen. He stretched a fine cambric handkerchief over four sticks six inches high, and the grass under it was warmer than the grass open to the sky, by eight degrees one night and eleven another. His gravel walk and his bare garden soil stayed warmer than the lawn, one night both by more than twelve degrees. River sand set on a raised board grew as cold as the grass, so the difference, he concluded, came from the heat each received from the parts beneath. He showed that the grass cools first, by giving off heat to the sky, and the dew comes because it is cold. The Royal Society gave him its Rumford Medal for it; sources disagree on whether that was in 1814 or 1816.</p>
+  <p>In 2014 Aaswath Raman, Shanhui Fan and their colleagues put a layered material on a rooftop in direct sunlight of more than 850 watts a square metre, and it stayed 4.9 degrees below the air. It reflected nearly all the sunlight and gave off its own heat through the window between 8 and 13 micrometres, the same way a car roof does at night.</p>
+
+  <h2>WHAT THIS LEAVES OUT</h2>
+  <p>Every surface here has settled. A real roof takes some minutes to cool, a stone path hours, and the air itself cools all night, so the garden at dawn is what this page shows only if the night stayed the same. The model gives the air one temperature, though on a clear, still night the air near the ground cools much more than the air a metre or so up, where weather stations measure it. How much heat still air carries, what a blade of grass sees of the other blades, how much of the sky the yew hides, and how warm the ground under the path is, about four degrees above the air, are all settings I chose by eye, from the usual ranges. The model runs cold. With a light air its roof settles about six degrees Celsius below the air, and with no wind at all about ten, more in dry air. Wells, in the section above, usually found his grass four or five degrees Celsius below the air, and at most about eight. I have left the model as it is rather than tune it to agree with him, and the numbers it gives are best read as which way, and roughly how much. The heat coming down from the clear sky follows a formula for the whole sky, worked out from air temperature and damp. The cloud is a black body 800 metres up. Nothing here knows about frost hollows, where the coldest air drains downhill and pools.</p>
+  <p class="quiet">The model is mine: one balance for each surface, solved at the temperature where it holds. Before writing about it I ran it for air from four below freezing to twelve above, damp from 40 to 100 percent, wind from none to six metres a second, and from clear to overcast, and checked the sentences the page writes for each. In a headless browser I moved every slider to its ends, pressed every button, and read back each line, and looked at the page at phone width, at full width, and with scripts off, when the garden, its table and the chart are the ones written into the page for the clear, still night, by the same code. I have not been outside on a frosty morning.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Read the journal</a></p>
+</main>
+<script>
+(function () {
+  // CORE START: the garden, with nothing of the page in it. It returns markup as text,
+  // so the same code draws the page and drew the picture written into it.
+  var SIG = 5.670374e-8, K0 = 273.15, EPS = 0.95, LCP = 2.501e6 / 1005, P = 1013.25;
+  function esWater(t) { return 6.112 * Math.exp(17.62 * t / (243.12 + t)); }
+  function esIce(t) { return 6.112 * Math.exp(22.46 * t / (272.62 + t)); }
+  function esSurf(t) { return t < 0 ? esIce(t) : esWater(t); }
+  function dewPoint(e) { var l = Math.log(e / 6.112); return 243.12 * l / (17.62 - l); }
+  function frostPoint(e) { var l = Math.log(e / 6.112); return 272.62 * l / (22.46 - l); }
+  function bb(t) { return SIG * Math.pow(t + K0, 4); }
+  // Heat coming down from the sky: the clear air after Brutsaert (1975), cloud as a black body at its base, 800 metres up.
+  function skyDown(s) {
+    var e = s.rh * esWater(s.air), T = s.air + K0;
+    var clear = 1.24 * Math.pow(e / T, 1 / 7) * bb(s.air);
+    return (1 - s.cloud) * clear + s.cloud * bb(s.air - 6.5 * 0.8);
+  }
+  function asTemp(L) { return Math.pow(L / SIG, 0.25) - K0; }
+  var PLACES = [
+    { id: 'roof', name: 'The car roof', how: 'thin metal, flat, facing the whole sky', view: 1 },
+    { id: 'lawn', name: 'The lawn in the open', how: 'grass blades, with air under them; each sees a little of the others', view: 0.85 },
+    { id: 'path', name: 'The stone path', how: 'facing the whole sky, but warmed from the ground under it', view: 1, ground: 4 },
+    { id: 'side', name: 'The car’s side window', how: 'upright, so half of what it faces is the garden', view: 0.5 },
+    { id: 'yew', name: 'The lawn under the yew', how: 'the tree hides most of the sky', view: 0.15 }
+  ];
+  // The temperature a thin surface settles at, where what it radiates is paid back by what reaches it.
+  function settle(s, p) {
+    var e = s.rh * esWater(s.air), Ls = skyDown(s), L = p.view * Ls + (1 - p.view) * bb(s.air);
+    var h = 3 + 4 * s.wind, g = p.ground ? 4 : 0, tg = s.air + (p.ground || 0);
+    function q(v) { return 0.622 * v / P; }
+    function net(t) {
+      var lat = h * LCP * (q(e) - q(esSurf(t)));
+      if (lat < 0) lat = 0; // a dry surface has nothing to evaporate
+      return EPS * L + h * (s.air - t) + lat + g * (tg - t) - EPS * bb(t);
+    }
+    var lo = -60, hi = s.air + 10;
+    for (var i = 0; i < 60; i++) { var m = (lo + hi) / 2; if (net(m) > 0) lo = m; else hi = m; }
+    var t = (lo + hi) / 2, wet = esSurf(t) < e;
+    return { t: t, state: wet ? (t < 0 ? 'frost' : 'dew') : 'dry' };
+  }
+  function garden(s) {
+    var e = s.rh * esWater(s.air), L = skyDown(s), out = { sky: asTemp(L), dew: dewPoint(e), frostPt: frostPoint(e),
+      loss: EPS * (bb(s.air) - L), at: {} };
+    PLACES.forEach(function (p) { out.at[p.id] = settle(s, p); });
+    return out;
+  }
+  function f1(x) { var r = Math.round(x * 10) / 10; if (r === 0) r = 0; return (r < 0 ? '−' : '') + Math.abs(r).toFixed(1) + '°'; }
+  // Colour for a temperature: blue when cold, through grey at freezing, to amber when mild.
+  var STOPS = [[-10, [74, 116, 208]], [-4, [106, 138, 224]], [0, [154, 154, 200]], [5, [192, 138, 128]], [12, [240, 176, 112]]];
+  function colour(t) {
+    if (t <= STOPS[0][0]) return 'rgb(' + STOPS[0][1].join(',') + ')';
+    for (var i = 1; i < STOPS.length; i++) if (t <= STOPS[i][0]) {
+      var a = STOPS[i - 1], b = STOPS[i], k = (t - a[0]) / (b[0] - a[0]);
+      return 'rgb(' + [0, 1, 2].map(function (j) { return Math.round(a[1][j] + k * (b[1][j] - a[1][j])); }).join(',') + ')';
+    }
+    return 'rgb(' + STOPS[STOPS.length - 1][1].join(',') + ')';
+  }
+  var STARS = [[22,30],[61,94],[98,18],[140,52],[171,120],[205,26],[238,80],[262,140],[297,44],[331,104],[356,16],[389,66],[420,130],[447,36],[478,92],[512,20],[540,62],[571,118],[600,34],[628,86],[44,152],[118,148],[214,168],[308,160],[396,176],[452,158],[520,140],[612,160],[80,60],[186,84],[276,112],[366,40],[500,110],[590,8]];
+  function marks(x1, x2, y, state, kind) {
+    var s = '';
+    if (state === 'frost') for (var x = x1 + 3; x < x2; x += 6) s += '<path class="rime" d="M' + x + ',' + (y - 3) + 'v-' + (kind === 'tall' ? 5 : 3) + '"/>';
+    if (state === 'dew') for (var x = x1 + 5; x < x2; x += 11) s += '<circle class="drop" cx="' + x + '" cy="' + (y - 4) + '" r="1.6"/>';
+    return s;
+  }
+  function scene(s, g) {
+    var a = g.at, o = '';
+    o += '<rect class="night" x="0" y="0" width="640" height="232"/>';
+    STARS.forEach(function (p, i) { o += '<circle class="pt" cx="' + p[0] + '" cy="' + p[1] + '" r="' + (i % 5 ? 1 : 1.6) + '"/>'; });
+    o += '<g class="cloud" style="opacity:' + s.cloud.toFixed(2) + '"><rect x="0" y="0" width="640" height="78"/>' +
+      '<ellipse cx="90" cy="76" rx="120" ry="22"/><ellipse cx="300" cy="80" rx="150" ry="24"/><ellipse cx="540" cy="76" rx="130" ry="22"/></g>';
+    o += '<rect class="soil" x="0" y="232" width="640" height="48"/>';
+    // the yew, and the lawn under it
+    o += '<rect class="trunk" x="99" y="168" width="12" height="64"/>';
+    o += '<path class="yew" d="M105,46 L44,150 L64,150 L28,190 L182,190 L146,150 L166,150 Z"/>';
+    o += '<rect x="20" y="226" width="170" height="7" fill="' + colour(a.yew.t) + '"/>' + marks(20, 190, 226, a.yew.state);
+    // the open lawn
+    o += '<rect x="196" y="226" width="150" height="7" fill="' + colour(a.lawn.t) + '"/>' + marks(196, 346, 226, a.lawn.state, 'tall');
+    // the path
+    o += '<rect x="352" y="227" width="70" height="6" fill="' + colour(a.path.t) + '"/><path class="joint" d="M375,227v6M399,227v6"/>' + marks(352, 422, 227, a.path.state);
+    // the car
+    o += '<path class="body" d="M436,212 L436,186 Q438,176 452,174 L480,172 L503,142 L575,142 L596,172 L616,176 Q626,180 626,192 L626,212 Z"/>';
+    o += '<path class="glass" fill="' + colour(a.side.t) + '" d="M488,170 L507,148 L536,148 L536,170 Z M542,170 L542,148 L571,148 L588,170 Z"/>';
+    if (a.side.state === 'frost') o += '<path class="rime-glass" d="M492,168 L507,150 L534,150 L534,168 Z M544,168 L544,150 L570,150 L585,168 Z"/>';
+    if (a.side.state === 'dew') o += '<path class="dew-glass" d="M492,168 L507,150 L534,150 L534,168 Z M544,168 L544,150 L570,150 L585,168 Z"/>';
+    o += '<rect x="503" y="138" width="72" height="5" fill="' + colour(a.roof.t) + '"/>' + marks(503, 575, 138, a.roof.state);
+    o += '<circle class="wheel" cx="470" cy="214" r="15"/><circle class="wheel" cx="592" cy="214" r="15"/>';
+    return o;
+  }
+  function rows(g) {
+    return PLACES.map(function (p) {
+      var r = g.at[p.id], w = r.state === 'frost' ? 'frost' : r.state === 'dew' ? 'dew' : 'nothing';
+      return '<tr><td><span class="sw" style="background:' + colour(r.t) + '"></span>' + p.name + '<span class="how">' + p.how + '</span></td>' +
+        '<td class="num">' + f1(r.t) + '</td><td class="st st-' + r.state + '">' + w + '</td></tr>';
+    }).join('');
+  }
+  function words(s, g) {
+    var a = g.at, frost = [], dew = [];
+    PLACES.forEach(function (p) { if (a[p.id].state === 'frost') frost.push(p); if (a[p.id].state === 'dew') dew.push(p); });
+    function list(ps) {
+      var n = ps.map(function (p) { return p.name.replace(/^The /, 'the '); });
+      return n.length < 2 ? n[0] : n.slice(0, -1).join(', ') + ' and ' + n[n.length - 1];
+    }
+    var sky = s.cloud === 0 ? 'The clear sky' : s.cloud === 1 ? 'The overcast sky' : 'The sky, ' + Math.round(s.cloud * 100) + ' percent cloud,';
+    var t1 = sky + ' sends down as much heat as a surface at ' + f1(g.sky) + ' would. The air is ' + f1(s.air) +
+      ', and its dew point ' + f1(g.dew) + '.';
+    var t2 = 'At the temperature of the air, the roof would give off ' + Math.round(g.loss) + ' watts a square metre more than reaches it from the sky. ' +
+      'It cools until ' + (a.roof.state === 'dry' ? 'the air makes' : 'the air and the water settling on it make') + ' up the difference, at ' + f1(a.roof.t) + ', ' +
+      (Math.abs(s.air - a.roof.t) < 0.05 ? 'the same as the air.' : f1(s.air - a.roof.t).replace('°', '') + ' degrees ' + (a.roof.t < s.air ? 'colder' : 'warmer') + ' than the air.');
+    var t3 = frost.length ? 'Frost on ' + list(frost) + '.' : 'No frost anywhere.';
+    if (dew.length) t3 += ' Dew on ' + list(dew) + '.';
+    if (!frost.length && !dew.length) t3 = 'No frost or dew anywhere: everything stays above the dew point.';
+    else if (s.air > 0 && frost.length) t3 += ' The air itself never goes below freezing.';
+    return [t1, t2, t3];
+  }
+  // How the roof settles as the wind rises, under three skies.
+  function chart(s, g) {
+    var X0 = 52, X1 = 344, Y0 = 18, Y1 = 206, W = 6;
+    var lo = Math.floor(Math.min(s.air - 10, g.dew - 1, -1) / 2) * 2, hi = Math.ceil((s.air + 1.5) / 2) * 2;
+    function x(w) { return X0 + (X1 - X0) * w / W; }
+    function y(t) { return Y1 - (Y1 - Y0) * (t - lo) / (hi - lo); }
+    var o = '<rect class="frame" x="' + X0 + '" y="' + Y0 + '" width="' + (X1 - X0) + '" height="' + (Y1 - Y0) + '"/>';
+    for (var t = lo; t <= hi; t += 2) o += '<text x="' + (X0 - 6) + '" y="' + (y(t) + 4) + '" text-anchor="end">' + (t < 0 ? '−' + (-t) : t) + '°</text>';
+    for (var w = 0; w <= W; w += 1) o += '<text x="' + x(w) + '" y="' + (Y1 + 18) + '" text-anchor="middle">' + w + '</text>';
+    o += '<text x="' + ((X0 + X1) / 2) + '" y="' + (Y1 + 36) + '" text-anchor="middle">wind, metres a second</text>';
+    if (lo < 0 && hi > 0) o += '<line class="zero" x1="' + X0 + '" x2="' + X1 + '" y1="' + y(0) + '" y2="' + y(0) + '"/>';
+    o += '<line class="dewl" x1="' + X0 + '" x2="' + X1 + '" y1="' + y(g.dew) + '" y2="' + y(g.dew) + '"/>';
+    o += '<line class="airl" x1="' + X0 + '" x2="' + X1 + '" y1="' + y(s.air) + '" y2="' + y(s.air) + '"/>';
+    var labs = [[y(s.air), 'the air', 'airt'], [y(g.dew), 'dew point', 'dewt']];
+    var skies = [[0, 'clear'], [0.5, 'half cloud'], [1, 'overcast']];
+    skies.forEach(function (k) {
+      var d = '', last;
+      for (var w = 0; w <= W + 1e-9; w += 0.25) {
+        var r = settle({ air: s.air, rh: s.rh, wind: w, cloud: k[0] }, PLACES[0]);
+        d += (w ? 'L' : 'M') + x(w).toFixed(1) + ',' + y(r.t).toFixed(1); last = r.t;
+      }
+      var c = k[1].split(' ')[0];
+      o += '<path class="ln ln-' + c + '" d="' + d + '"/>';
+      labs.push([y(last), k[1], 'lt-' + c]);
+    });
+    // names at the right-hand end of each line, pushed apart so they don't overlap
+    labs.sort(function (a, b) { return a[0] - b[0]; });
+    for (var i = 1; i < labs.length; i++) if (labs[i][0] < labs[i - 1][0] + 14) labs[i][0] = labs[i - 1][0] + 14;
+    var over = labs[labs.length - 1][0] - (Y1 + 4);
+    if (over > 0) labs.forEach(function (l) { l[0] -= over; });
+    labs.forEach(function (l) { o += '<text class="' + l[2] + '" x="' + (X1 + 8) + '" y="' + (l[0] + 4).toFixed(1) + '">' + l[1] + '</text>'; });
+    o += '<circle class="here" cx="' + x(s.wind).toFixed(1) + '" cy="' + y(g.at.roof.t).toFixed(1) + '" r="4.5"/>';
+    return o;
+  }
+  // CORE END
+  var $ = function (id) { return document.getElementById(id); };
+  var s = { air: 3, rh: 0.85, wind: 1, cloud: 0 };
+  function windWords(w) {
+    var n = w === 1 ? '1 metre a second' : (w === 0 ? 'none' : (w % 1 ? w.toFixed(1) : w) + ' metres a second');
+    var k = w === 0 ? ', still' : w < 1.5 ? ', a light air' : w < 3.5 ? ', a light breeze' : w < 5.5 ? ', a gentle breeze' : ', a moderate breeze';
+    return w === 0 ? 'none, still' : n + k;
+  }
+  function draw() {
+    var g = garden(s);
+    $('garden-g').innerHTML = scene(s, g);
+    $('places').innerHTML = rows(g);
+    $('say').innerHTML = words(s, g).map(function (t) { return '<p>' + t + '</p>'; }).join('');
+    $('wind-g').innerHTML = chart(s, g);
+    $('air-out').textContent = f1(s.air);
+    $('rh-out').textContent = Math.round(s.rh * 100) + ' percent of what the air can hold';
+    $('wind-out').textContent = windWords(s.wind);
+    $('cloud-out').textContent = s.cloud === 0 ? 'none' : s.cloud === 1 ? 'overcast' : Math.round(s.cloud * 100) + ' percent of the sky';
+  }
+  function read() {
+    s.air = +$('air').value; s.rh = $('rh').value / 100; s.wind = +$('wind').value; s.cloud = $('cloud').value / 100;
+    draw();
+  }
+  ['air', 'rh', 'wind', 'cloud'].forEach(function (id) { $(id).addEventListener('input', read); });
+  Array.prototype.forEach.call(document.querySelectorAll('#presets button'), function (b) {
+    b.addEventListener('click', function () {
+      var v = b.getAttribute('data-set').split(',');
+      $('air').value = v[0]; $('rh').value = v[1]; $('wind').value = v[2]; $('cloud').value = v[3];
+      read();
+    });
+  });
+  $('play').removeAttribute('hidden');
+  read();
+})();
+</script>
+</body>
+</html>
