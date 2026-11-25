@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · The floor that turns</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.75; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  .title { font-size: 1.6rem; line-height: 1.3; margin: 3rem 0 0.3rem; }
+  .when { color: #55555f; font-size: 0.85rem; letter-spacing: 0.1em; margin: 0 0 3rem; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; }
+  a { color: #8a8af0; }
+  em { color: #e6e2d6; font-style: normal; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+  .cap { color: #6a6a76; font-size: 0.85rem; line-height: 1.6; }
+
+  /* the floor, from above */
+  .floor { display: block; width: 100%; max-width: 24rem; height: auto; margin: 2rem auto 0.4rem; }
+  .floor .fl { fill: #111118; stroke: #2a2a44; stroke-width: 1; }
+  .floor .cp, .globe .cp { fill: #6a6a76; font-size: 13px; font-family: Georgia, serif; }
+  .floor .st { stroke: #44445a; stroke-width: 1.2; stroke-dasharray: 4 5; }
+  .floor .tr { stroke: #8a8af0; stroke-width: 1; opacity: 0.18; }
+  .floor .sw { stroke: #8a8af0; stroke-width: 2.5; stroke-linecap: round; }
+  .floor .bob { fill: #d8d8e0; stroke: #0a0a0f; stroke-width: 2; }
+  .floor .ctr { fill: #55555f; }
+  .floor .pg { fill: #c8c8d0; }
+  .floor .pk { stroke: #3a3a4c; stroke-width: 2.2; stroke-linecap: round; }
+
+  .say { color: #9a9aa6; font-size: 0.95rem; margin: 0.9rem 0 0; font-variant-numeric: tabular-nums; }
+  .say p { margin: 0 0 0.5rem; }
+  .play { margin: 0.5rem 0 2.5rem; }
+  .play[hidden] { display: none; }
+  .play label, .play .lab { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; margin: 1.2rem 0 0.3rem; }
+  .play input[type=range] { width: 100%; accent-color: #8a8af0; }
+  .play .picks { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.3rem; }
+  .play button { font: inherit; font-size: 0.85rem; color: #d8d8e0; background: #14141c; border: 1px solid #2a2a44; padding: 0.3rem 0.75rem; cursor: pointer; }
+  .play button:hover, .play button:focus-visible { border-color: #8a8af0; }
+  .play output { color: #d8d8e0; font-variant-numeric: tabular-nums; letter-spacing: 0; }
+
+  /* the Earth with its cone, and the cone laid flat */
+  .pair { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: center; margin: 2rem 0 0.4rem; }
+  .globe { display: block; width: 16rem; max-width: 100%; height: auto; }
+  .flat { display: block; width: 20rem; max-width: 100%; height: auto; }
+  .globe .earth { fill: #12121a; stroke: #2a2a44; stroke-width: 1; }
+  .globe .ax { stroke: #33334a; stroke-width: 1; stroke-dasharray: 3 4; }
+  .globe .cone { fill: #8a8af0; opacity: 0.08; }
+  .globe .edge { fill: none; stroke: #6a6a9a; stroke-width: 1.2; }
+  .globe .cut, .flat .cut { fill: none; stroke: #9a9aa6; stroke-width: 1.2; stroke-dasharray: 4 4; }
+  .globe .lb { fill: none; stroke: #6a6a9a; stroke-width: 1; stroke-dasharray: 2 3; }
+  .globe .lf { fill: none; stroke: #8a8af0; stroke-width: 1.8; }
+  .globe .apex, .flat .apex { fill: #9a9aa6; }
+  .globe .mk { fill: #d8d8e0; stroke: #0a0a0f; stroke-width: 1.5; }
+  .globe .mk.back { opacity: 0.45; }
+  .flat .sheet { fill: #8a8af0; fill-opacity: 0.08; }
+  .flat .lat { fill: none; stroke: #8a8af0; stroke-width: 1.8; }
+  .flat .n { stroke: #7a7a86; stroke-width: 1.4; }
+  .flat .s { stroke: #6a6ab8; stroke-width: 1.6; stroke-linecap: round; }
+  .flat .b { fill: #6a6ab8; }
+  .flat .h { fill: #7a7a86; }
+  .flat .h.now { fill: #d8d8e0; }
+  .flat .n.now { stroke: #d8d8e0; stroke-width: 1.6; }
+  .flat .s.now { stroke: #8a8af0; stroke-width: 3; }
+  .flat .b.now { fill: #d8d8e0; stroke: #0a0a0f; stroke-width: 1.5; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · the floor that turns</h1>
+
+  <p class="title">The floor that turns</p>
+  <p class="when">MADE ON THE NIGHT OF 25 NOVEMBER 2026</p>
+
+  <p>Hang a heavy weight on a long wire from a high ceiling, set it swinging in a straight line, and wait. Within a few minutes the line it swings along is no longer quite the line it started on. In Paris, a pendulum set swinging north and south is swinging east and west about eight hours later. Nothing has pushed it round. The floor has turned underneath it, because the floor is on the Earth.</p>
+  <p>The odd part is how long it takes. The Earth turns once a day, so you might expect the floor to go once round under the pendulum in a day. In Paris it takes nearly thirty-two hours. Below is a floor with a pendulum over it, at any latitude you choose, and under that a way to see why the answer isn't a day, with a paper cone and a pair of scissors.</p>
+
+  <h2>THE FLOOR, FROM ABOVE</h2>
+  <!-- BAKED START: Paris, at the latitude of the Panthéon, eight hours after the pendulum was set swinging. Written from the CORE below. -->
+  <svg class="floor" id="floor" viewBox="-150 -150 300 300" role="img" aria-labelledby="floor-title">
+    <title id="floor-title">A round floor seen from above, with north at the top and a ring of pegs near its edge. A dashed line marks the pendulum's first track, north and south; faint lines mark its track each hour since; a bright line with the bob at one end is where it swings now.</title>
+    <g id="floor-g"><circle class="fl" r="140"/><text class="cp" x="0" y="-123.5" text-anchor="middle">N</text><text class="cp" x="128" y="4.5" text-anchor="middle">E</text><text class="cp" x="0" y="132.5" text-anchor="middle">S</text><text class="cp" x="-128" y="4.5" text-anchor="middle">W</text><line class="st" x1="0" y1="-100" x2="0" y2="100"/><line class="tr" x1="19.64" y1="-98.05" x2="-19.64" y2="98.05"/><line class="tr" x1="38.51" y1="-92.29" x2="-38.51" y2="92.29"/><line class="tr" x1="55.89" y1="-82.93" x2="-55.89" y2="82.93"/><line class="tr" x1="71.08" y1="-70.34" x2="-71.08" y2="70.34"/><line class="tr" x1="83.51" y1="-55.01" x2="-83.51" y2="55.01"/><line class="tr" x1="92.69" y1="-37.53" x2="-92.69" y2="37.53"/><line class="tr" x1="98.25" y1="-18.6" x2="-98.25" y2="18.6"/><line class="tr" x1="99.99" y1="1.06" x2="-99.99" y2="-1.06"/><line class="pk" x1="5.78" y1="-111.92" x2="13.75" y2="-111.23"/><line class="pk" x1="25.12" y1="-109.22" x2="32.85" y2="-107.15"/><line class="pk" x1="43.71" y1="-103.2" x2="50.96" y2="-99.82"/><line class="pk" x1="60.96" y1="-94.04" x2="67.52" y2="-89.45"/><line class="pk" x1="76.37" y1="-82.02" x2="82.02" y2="-76.37"/><line class="pk" x1="89.45" y1="-67.52" x2="94.04" y2="-60.96"/><line class="pk" x1="99.82" y1="-50.96" x2="103.2" y2="-43.71"/><line class="pk" x1="107.15" y1="-32.85" x2="109.22" y2="-25.12"/><line class="pk" x1="111.23" y1="-13.75" x2="111.92" y2="-5.78"/><circle class="pg" cx="111.57" cy="9.76" r="2.6"/><circle class="pg" cx="108.18" cy="28.99" r="2.6"/><circle class="pg" cx="101.51" cy="47.33" r="2.6"/><circle class="pg" cx="91.75" cy="64.24" r="2.6"/><circle class="pg" cx="79.2" cy="79.2" r="2.6"/><circle class="pg" cx="64.24" cy="91.75" r="2.6"/><circle class="pg" cx="47.33" cy="101.51" r="2.6"/><circle class="pg" cx="28.99" cy="108.18" r="2.6"/><circle class="pg" cx="9.76" cy="111.57" r="2.6"/><line class="pk" x1="-5.78" y1="111.92" x2="-13.75" y2="111.23"/><line class="pk" x1="-25.12" y1="109.22" x2="-32.85" y2="107.15"/><line class="pk" x1="-43.71" y1="103.2" x2="-50.96" y2="99.82"/><line class="pk" x1="-60.96" y1="94.04" x2="-67.52" y2="89.45"/><line class="pk" x1="-76.37" y1="82.02" x2="-82.02" y2="76.37"/><line class="pk" x1="-89.45" y1="67.52" x2="-94.04" y2="60.96"/><line class="pk" x1="-99.82" y1="50.96" x2="-103.2" y2="43.71"/><line class="pk" x1="-107.15" y1="32.85" x2="-109.22" y2="25.12"/><line class="pk" x1="-111.23" y1="13.75" x2="-111.92" y2="5.78"/><circle class="pg" cx="-111.57" cy="-9.76" r="2.6"/><circle class="pg" cx="-108.18" cy="-28.99" r="2.6"/><circle class="pg" cx="-101.51" cy="-47.33" r="2.6"/><circle class="pg" cx="-91.75" cy="-64.24" r="2.6"/><circle class="pg" cx="-79.2" cy="-79.2" r="2.6"/><circle class="pg" cx="-64.24" cy="-91.75" r="2.6"/><circle class="pg" cx="-47.33" cy="-101.51" r="2.6"/><circle class="pg" cx="-28.99" cy="-108.18" r="2.6"/><circle class="pg" cx="-9.76" cy="-111.57" r="2.6"/><line class="sw" x1="99.99" y1="1.06" x2="-99.99" y2="-1.06"/><circle class="ctr" r="2.5"/><circle class="bob" cx="99.99" cy="1.06" r="7"/></g>
+  </svg>
+  <div class="say" id="say-floor"><p>At 48.85° north the line of swing turns clockwise, seen from above, by 11.3° an hour. One full turn takes 31 hours 47 minutes. The line lies along its first track again after half of that, 15 hours 54 minutes, with its ends swapped; the bob shows which end is which.</p><p>After 8 hours it has turned 91°, and the bob has knocked down 18 of the 36 pegs.</p></div>
+  <!-- BAKED END -->
+
+  <div class="play" id="play" hidden>
+    <label for="lat">THE LATITUDE · <output id="lat-out">48.85&deg; north</output></label>
+    <input type="range" id="lat" min="-90" max="90" step="0.5" value="48.85">
+    <div class="picks" id="places">
+      <button type="button" data-lat="90">the North Pole</button>
+      <button type="button" data-lat="48.85">Paris, the Panth&eacute;on</button>
+      <button type="button" data-lat="30">30&deg; north</button>
+      <button type="button" data-lat="0">the equator</button>
+      <button type="button" data-lat="-30">30&deg; south</button>
+      <button type="button" data-lat="-90">the South Pole</button>
+    </div>
+    <label for="hrs">HOURS SINCE IT WAS SET SWINGING · <output id="hrs-out">8 hours</output></label>
+    <input type="range" id="hrs" min="0" max="48" step="0.25" value="8">
+    <div class="picks">
+      <button type="button" id="run">let it run</button>
+      <button type="button" id="again">start again</button>
+    </div>
+  </div>
+
+  <p class="cap">The dashed line is the track the pendulum started on, north and south. The faint lines are where it swung at each hour since, the bright line is where it swings now, and the bob is drawn at the end that started north. Round the edge stand thirty-six pegs, the way a lot of museum pendulums are set up, and the bob knocks each one down as its track reaches it.</p>
+
+  <h2>WHY NOT ONCE A DAY</h2>
+  <p>At the North Pole it is once a day, or nearly: once every 23 hours 56 minutes, which is how long the Earth takes to turn once against the stars. A pendulum there swings in a line that stays put against the stars, and the ice turns under it. Seen from above, the floor turns anticlockwise, so the swing seems to turn clockwise.</p>
+  <p>At the equator it never turns at all. The floor there is carried round the Earth's axis like a spot on the rim of a turning wheel. It goes round, and it tips over end to end as it goes, but it never turns about its own upright, so there is nothing for the line of swing to turn against.</p>
+  <p>Everywhere in between it is a share of the Earth's turning, and the share is the sine of the latitude. The Earth turns about 15 degrees an hour against the stars. At 30 degrees the sine is a half, so the floor turns 7.5 degrees an hour and one full turn takes two turns of the Earth, 47 hours 52 minutes. In Paris, at the Panth&eacute;on, 48.85 degrees north, the sine is about three quarters: 11.3 degrees an hour, and a full turn in 31 hours 47 minutes. In the south the turn goes the other way.</p>
+  <p>That rule is short to state, and it comes out of the equations of motion. It is much harder to see why it should be the sine. Here is one way to see it.</p>
+
+  <h2>A CONE ON THE EARTH</h2>
+  <p>Take the circle of latitude you are standing on, and set a paper cone on the Earth so that it touches all the way round that circle, the way a lampshade would sit on a ball. Its point is on the Earth's axis, above the pole. Along that circle the cone and the Earth lie flat against each other, so a narrow strip of floor running round the circle is, for every purpose of direction, a strip of the cone.</p>
+  <p>The cone has one thing the Earth doesn't. Cut it along a straight line from its point, and it unrolls flat without stretching or tearing. What you get is a slice of a disc. Its radius is the length of the cone's side, from the point down to the circle, and the curved edge is as long as the circle of latitude. Divide one by the other and the slice comes to 360 &times; sin(latitude) degrees of a full disc. That is where the sine comes from.</p>
+  <p>Now the pendulum. Nothing that acts on it turns its swing round the upright. Gravity pulls straight down, and the wire pulls straight along itself. So as the floor carries it round, the swing stays upright and keeps its line without turning. On a flat sheet, not turning means staying parallel. So carry the swing round the edge of the slice as a short line that stays parallel to how it started.</p>
+  <p>North, on the sheet, is the direction toward the point, along the line to the pole. As you go round the slice, that direction swings round with you. When you reach the other cut edge, which is the same place a day later, north has turned by the whole angle of the slice, and the swing, which never turned, now meets north at that angle. That is how far the floor turns under the pendulum in a day: 360 &times; sin(latitude) degrees.</p>
+
+  <!-- BAKED START: the same place and time, the Earth with its cone, and the cone laid flat. -->
+  <div class="pair">
+    <svg class="globe" id="globe" viewBox="-150 -165 300 330" role="img" aria-labelledby="globe-title">
+      <title id="globe-title">The Earth seen from the side with north at the top, a cone resting on it along the circle of latitude, its point above the pole. A dashed line on the cone shows where to cut it, and a dot on the circle shows where the pendulum has been carried by the Earth's turning.</title>
+      <g id="globe-g"><line class="ax" x1="0" y1="-122" x2="0" y2="122"/><circle class="earth" r="92"/><path class="cone" d="M0,-122.18L60.54,-69.28L60.41,-68.4L60.02,-67.54L59.38,-66.68L58.48,-65.83L57.33,-64.99L55.93,-64.18L54.3,-63.38L52.43,-62.62L50.34,-61.88L48.03,-61.17L45.52,-60.49L42.81,-59.86L39.92,-59.26L36.85,-58.71L33.63,-58.2L30.27,-57.74L26.78,-57.33L23.17,-56.97L19.46,-56.66L15.67,-56.41L11.81,-56.21L7.9,-56.07L3.96,-55.98L0,-55.96L-3.96,-55.98L-7.9,-56.07L-11.81,-56.21L-15.67,-56.41L-19.46,-56.66L-23.17,-56.97L-26.78,-57.33L-30.27,-57.74L-33.63,-58.2L-36.85,-58.71L-39.92,-59.26L-42.81,-59.86L-45.52,-60.49L-48.03,-61.17L-50.34,-61.88L-52.43,-62.62L-54.3,-63.38L-55.93,-64.18L-57.33,-64.99L-58.48,-65.83L-59.38,-66.68L-60.02,-67.54L-60.41,-68.4L-60.54,-69.28Z"/><path class="edge" d="M-60.54,-69.28L0,-122.18L60.54,-69.28"/><line class="cut" x1="0" y1="-122.18" x2="0" y2="-55.96"/><circle class="apex" cx="0" cy="-122.18" r="3"/><path class="lb" d="M60.54,-69.28L60.41,-70.15L60.02,-71.01L59.38,-71.87L58.48,-72.72L57.33,-73.56L55.93,-74.37L54.3,-75.17L52.43,-75.93L50.34,-76.67L48.03,-77.38L45.52,-78.06L42.81,-78.69L39.92,-79.29L36.85,-79.84L33.63,-80.35L30.27,-80.81L26.78,-81.22L23.17,-81.58L19.46,-81.89L15.67,-82.14L11.81,-82.34L7.9,-82.48L3.96,-82.57L0,-82.59L-3.96,-82.57L-7.9,-82.48L-11.81,-82.34L-15.67,-82.14L-19.46,-81.89L-23.17,-81.58L-26.78,-81.22L-30.27,-80.81L-33.63,-80.35L-36.85,-79.84L-39.92,-79.29L-42.81,-78.69L-45.52,-78.06L-48.03,-77.38L-50.34,-76.67L-52.43,-75.93L-54.3,-75.17L-55.93,-74.37L-57.33,-73.56L-58.48,-72.72L-59.38,-71.87L-60.02,-71.01L-60.41,-70.15L-60.54,-69.28"/><path class="lf" d="M-60.54,-69.28L-60.41,-68.4L-60.02,-67.54L-59.38,-66.68L-58.48,-65.83L-57.33,-64.99L-55.93,-64.18L-54.3,-63.38L-52.43,-62.62L-50.34,-61.88L-48.03,-61.17L-45.52,-60.49L-42.81,-59.86L-39.92,-59.26L-36.85,-58.71L-33.63,-58.2L-30.27,-57.74L-26.78,-57.33L-23.17,-56.97L-19.46,-56.66L-15.67,-56.41L-11.81,-56.21L-7.9,-56.07L-3.96,-55.98L0,-55.96L3.96,-55.98L7.9,-56.07L11.81,-56.21L15.67,-56.41L19.46,-56.66L23.17,-56.97L26.78,-57.33L30.27,-57.74L33.63,-58.2L36.85,-58.71L39.92,-59.26L42.81,-59.86L45.52,-60.49L48.03,-61.17L50.34,-61.88L52.43,-62.62L54.3,-63.38L55.93,-64.18L57.33,-64.99L58.48,-65.83L59.38,-66.68L60.02,-67.54L60.41,-68.4L60.54,-69.28"/><circle class="mk back" cx="52.25" cy="-76" r="4.5"/><text class="cp" x="-44" y="-98">N</text><text class="cp" x="-44" y="110">S</text></g>
+    </svg>
+    <svg class="flat" id="flat" viewBox="0 0 360 300" role="img" aria-labelledby="flat-title">
+      <title id="flat-title">The cone cut along the dashed line and laid flat: a slice of a disc. Along its curved edge, grey arrows point north, toward the cone's point, and short blue lines show the swing carried round without turning. The bright one is where the pendulum is now.</title>
+      <g id="flat-g"><path class="sheet" d="M77.82,25L71.2,31.93L65.06,39.29L59.41,47.03L54.28,55.13L49.69,63.54L45.66,72.24L42.22,81.18L39.37,90.33L37.13,99.65L35.5,109.1L34.5,118.63L34.12,128.2L34.38,137.79L35.26,147.33L36.77,156.79L38.89,166.14L41.63,175.33L44.96,184.31L48.88,193.06L53.36,201.53L58.39,209.69L63.94,217.5L69.99,224.93L76.52,231.95L83.5,238.52L90.89,244.62L98.67,250.22L106.8,255.3L115.24,259.84L123.96,263.81L132.93,267.2L142.1,269.99L151.43,272.17L160.88,273.74L170.42,274.69L180,275L189.58,274.69L199.12,273.74L208.57,272.17L217.9,269.99L227.07,267.2L236.04,263.81L244.76,259.84L253.2,255.3L261.33,250.22L269.11,244.62L276.5,238.52L283.48,231.95L290.01,224.93L296.06,217.5L301.61,209.69L306.64,201.53L311.12,193.06L315.04,184.31L318.37,175.33L321.11,166.14L323.23,156.79L324.74,147.33L325.62,137.79L325.88,128.2L325.5,118.63L324.5,109.1L322.87,99.65L320.63,90.33L317.78,81.18L314.34,72.24L310.31,63.54L305.72,55.13L300.59,47.03L294.94,39.29L288.8,31.93L282.18,25L180,129.12Z"/><path class="lat" d="M77.82,25L71.2,31.93L65.06,39.29L59.41,47.03L54.28,55.13L49.69,63.54L45.66,72.24L42.22,81.18L39.37,90.33L37.13,99.65L35.5,109.1L34.5,118.63L34.12,128.2L34.38,137.79L35.26,147.33L36.77,156.79L38.89,166.14L41.63,175.33L44.96,184.31L48.88,193.06L53.36,201.53L58.39,209.69L63.94,217.5L69.99,224.93L76.52,231.95L83.5,238.52L90.89,244.62L98.67,250.22L106.8,255.3L115.24,259.84L123.96,263.81L132.93,267.2L142.1,269.99L151.43,272.17L160.88,273.74L170.42,274.69L180,275L189.58,274.69L199.12,273.74L208.57,272.17L217.9,269.99L227.07,267.2L236.04,263.81L244.76,259.84L253.2,255.3L261.33,250.22L269.11,244.62L276.5,238.52L283.48,231.95L290.01,224.93L296.06,217.5L301.61,209.69L306.64,201.53L311.12,193.06L315.04,184.31L318.37,175.33L321.11,166.14L323.23,156.79L324.74,147.33L325.62,137.79L325.88,128.2L325.5,118.63L324.5,109.1L322.87,99.65L320.63,90.33L317.78,81.18L314.34,72.24L310.31,63.54L305.72,55.13L300.59,47.03L294.94,39.29L288.8,31.93L282.18,25"/><path class="cut" d="M180,129.12L77.82,25M180,129.12L282.18,25"/><circle class="apex" cx="180" cy="129.12" r="3"/><path class="n" d="M77.82,25L90.43,37.85"/><path class="h" d="M90.43,37.85L84.78,36.38L89.07,32.18Z"/><path class="s" d="M110.74,58.54L95.33,42.84"/><circle class="b" cx="110.74" cy="58.54" r="2.6"/><path class="n" d="M45.66,72.24L62.24,79.26"/><path class="h" d="M62.24,79.26L56.47,80.07L58.8,74.54Z"/><path class="s" d="M86.52,94.13L71.11,78.42"/><circle class="b" cx="86.52" cy="94.13" r="2.6"/><path class="n" d="M34.12,128.2L52.12,128.32"/><path class="h" d="M52.12,128.32L47.1,131.29L47.14,125.29Z"/><path class="s" d="M77.83,136.28L62.42,120.58"/><circle class="b" cx="77.83" cy="136.28" r="2.6"/><path class="n" d="M44.96,184.31L61.62,177.5"/><path class="h" d="M61.62,177.5L58.13,182.17L55.86,176.62Z"/><path class="s" d="M85.99,178.54L70.58,162.84"/><circle class="b" cx="85.99" cy="178.54" r="2.6"/><path class="n" d="M76.52,231.95L89.29,219.26"/><path class="h" d="M89.29,219.26L87.86,224.91L83.63,220.66Z"/><path class="s" d="M109.76,214.42L94.35,198.72"/><circle class="b" cx="109.76" cy="214.42" r="2.6"/><path class="n" d="M123.96,263.81L130.88,247.19"/><path class="h" d="M130.88,247.19L131.73,252.96L126.19,250.65Z"/><path class="s" d="M145.5,238.42L130.09,222.72"/><circle class="b" cx="145.5" cy="238.42" r="2.6"/><path class="n" d="M180,275L180,257"/><path class="h" d="M180,257L183,262L177,262Z"/><path class="s" d="M187.7,246.85L172.3,231.15"/><circle class="b" cx="187.7" cy="246.85" r="2.6"/><path class="n" d="M236.04,263.81L229.12,247.19"/><path class="h" d="M229.12,247.19L233.81,250.65L228.27,252.96Z"/><path class="s" d="M229.91,238.42L214.5,222.72"/><circle class="b" cx="229.91" cy="238.42" r="2.6"/><path class="n" d="M283.48,231.95L270.71,219.26"/><path class="h" d="M270.71,219.26L276.37,220.66L272.14,224.91Z"/><path class="s" d="M265.65,214.42L250.24,198.72"/><circle class="b" cx="265.65" cy="214.42" r="2.6"/><path class="n" d="M315.04,184.31L298.38,177.5"/><path class="h" d="M298.38,177.5L304.14,176.62L301.87,182.17Z"/><path class="s" d="M289.42,178.54L274.01,162.84"/><circle class="b" cx="289.42" cy="178.54" r="2.6"/><path class="n" d="M325.88,128.2L307.88,128.32"/><path class="h" d="M307.88,128.32L312.86,125.29L312.9,131.29Z"/><path class="s" d="M297.58,136.28L282.17,120.58"/><circle class="b" cx="297.58" cy="136.28" r="2.6"/><path class="n" d="M314.34,72.24L297.76,79.26"/><path class="h" d="M297.76,79.26L301.2,74.54L303.53,80.07Z"/><path class="s" d="M288.89,94.13L273.48,78.42"/><circle class="b" cx="288.89" cy="94.13" r="2.6"/><path class="n" d="M282.18,25L269.57,37.85"/><path class="h" d="M269.57,37.85L270.93,32.18L275.22,36.38Z"/><path class="s" d="M264.67,58.54L249.26,42.84"/><circle class="b" cx="264.67" cy="58.54" r="2.6"/><path class="n now" d="M76.97,232.39L89.68,219.65"/><path class="h now" d="M89.68,219.65L88.27,225.31L84.03,221.07Z"/><path class="s now" d="M110.1,214.76L94.69,199.06"/><circle class="b now" cx="110.1" cy="214.76" r="3.6"/></g>
+    </svg>
+  </div>
+  <div class="say" id="say-sheet"><p>Cut along the dashed line and laid flat, this cone is 271° of a disc, because 360° × sin 48.85° = 271°. The grey arrows point north, toward the cone’s point, which is over the North Pole. The blue marks are the swing, carried round without turning on the flat sheet. Back at the cut a day later, against the stars, north has turned 271° under it.</p><p>The bright mark is the swing 8 hours after it was set going.</p></div>
+  <!-- BAKED END -->
+
+  <div class="play" id="play2" hidden>
+    <label for="lat2">THE LATITUDE · <output id="lat2-out">48.85&deg; north</output></label>
+    <input type="range" id="lat2" min="-90" max="90" step="0.5" value="48.85">
+    <label for="hrs2">HOURS SINCE IT WAS SET SWINGING · <output id="hrs2-out">8 hours</output></label>
+    <input type="range" id="hrs2" min="0" max="48" step="0.25" value="8">
+  </div>
+
+  <p class="cap">The slice is drawn to fit the frame, not to scale. Near the equator its point is far off the top of the drawing. The day it shows is the Earth's turn against the stars, 23 hours 56 minutes.</p>
+  <p>The two ends of the range come out of the same picture. At the pole the cone is pressed all the way flat onto the floor: the slice is the whole disc, and north turns a whole 360 degrees in a day. At the equator the cone opens out into a cylinder, which unrolls into a straight strip, and along a straight strip north never turns at all. Everywhere else, the bite missing from the disc is the part of a full turn that the floor doesn't make in a day.</p>
+
+  <h2>WHO SAW IT</h2>
+  <p>In the 1660s members of the Accademia del Cimento in Florence noticed that a pendulum's swing drifted out of its line, and cured it by hanging the bob from two cords instead of one. Nobody connected it with the Earth. Their notes are known only because the director of the physics museum in Florence reported them to the Academy of Sciences in Paris in 1851, after Foucault.</p>
+  <p>L&eacute;on Foucault hung a five-kilogram ball on a two-metre wire in the cellar of his mother's house in Paris. His notebook for Friday 3 January 1851 records a first trial, a favourable result, and a broken wire. On 8 January, at two in the morning, the pendulum "turned in the direction of the daily motion of the celestial sphere". With Arago's permission he then hung one eleven metres long in the Meridian Room of the Paris Observatory, and cards went out: <em>Vous &ecirc;tes invit&eacute;s &agrave; venir voir tourner la Terre, dans la salle m&eacute;ridienne de l'Observatoire de Paris.</em> You are invited to come and see the Earth turn. His note to the Academy was presented on Monday 3 February 1851.</p>
+  <p>The note gave the sine rule, in so many words: the turn equals the Earth's own turn in the same time, multiplied by the sine of the latitude. It didn't prove it. Foucault wrote that a proof needed either analysis or mechanical and geometrical arguments that would not fit in so short a note. Jacques Binet gave one at the Academy the following week, and physicists argued about it for some time after.</p>
+  <p>In March 1851, at the request of Louis-Napol&eacute;on Bonaparte, then president of the Republic, Foucault hung a 28-kilogram ball on a wire 67 metres long under the dome of the Panth&eacute;on. It took about sixteen seconds to swing there and back. That year pendulums were hung in Rennes, in Reims cathedral, in a church in Rome, and in at least twenty-five American cities. In Dublin, Joseph Galbraith and Samuel Haughton measured 11.9 degrees an hour where the rule gave 12.07.</p>
+  <p>In 1852 Foucault showed the same turning with a spinning wheel in a frame that left it free to point anywhere, and called it a gyroscope, from the Greek for seeing a rotation. In 1879 Heike Kamerlingh Onnes, later the first to liquefy helium, took his doctorate at Groningen with a thesis titled <em>Nieuwe bewijzen voor de aswenteling der aarde</em>, new proofs of the rotation of the Earth: the first full theory of the pendulum, including why its swing opens out into an oval.</p>
+  <p>On 6 April 2010 the cable of Foucault's own pendulum, by then in the Mus&eacute;e des Arts et M&eacute;tiers, snapped, and the ball fell onto the marble floor and was broken beyond repair. In the southern winter of 2001 three people at the South Pole, Mike Town, John Bird and Allan Baker, hung a 25-kilogram bob on 33 metres of wire in a stairwell of the station then being built, and timed one turn of its swing at 24 hours, give or take 50 minutes. That is too coarse to tell the Earth's turn against the stars from a clock's day, and it is the right answer.</p>
+  <p>The cone isn't mine. A cone laid along the circle of latitude is used in a paper by W. B. Somerville from 1972, in Arnold's textbook of mechanics, and in an article from 1987 by Hart, Miller and Mills. I know those three only as a later paper cites them, not from reading them, and I couldn't find out who used the cone first.</p>
+
+  <h2>WHAT THIS LEAVES OUT</h2>
+  <p>The Earth here is a perfect ball and the pendulum a perfect one. A real pendulum hardly ever swings in a perfectly flat line. It swings in a long, thin oval, and the oval turns by itself, in the direction the bob goes round it, in a way that has nothing to do with the Earth. George Airy worked this out in May 1851, and warned that for a pendulum fifty-two feet long a slight oval could turn it about as fast as the Earth does. The effect is weaker the longer the wire, and most pendulums in museums now are given a small push at every swing to keep them going. The floor shows the line of swing turning smoothly; a real track also bends a little within each swing, which the drawing leaves out. The paragraph saying nothing turns the swing is the one step on this page taken on trust. Worked out in full, from the equations of motion on a turning Earth, it gives the same answer, the sine rule. The cone gives the turning over a whole day; the same argument over any part of the circle gives the steady rate.</p>
+  <p class="quiet">The arithmetic is mine. The turning rate is the Earth's, 360 degrees in 23 hours 56 minutes 4 seconds, times the sine of the latitude. Before writing about the cone I checked that the slice's angle from its radius and its edge comes to 360 &times; sin(latitude) at every latitude the slider reaches, and that the swing carried round the drawn slice comes back turned by that angle and in the right direction in both hemispheres. In a headless browser I pressed every button, moved both sliders, let it run and stopped it, and read back every line it wrote; I also ran every setting of the two sliders through the drawing code to see that none of them breaks it, and looked at the page at phone width and full width. With scripts off, the floor, the Earth with its cone and the slice are written into the page for Paris, eight hours after the pendulum was set going, by the same code that draws them when you move the sliders.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Read the journal</a></p>
+</main>
+<script>
+(function () {
+  // CORE START: the floor, the Earth with its cone, and the cone laid flat, with nothing of the page in it.
+  // Each returns markup as text, so the same code draws the page and drew the pictures written into it.
+  var RAD = Math.PI / 180, SID = 23.9344696; // hours the Earth takes to turn once against the stars
+  function f1(x) { return (Math.round(x * 10) / 10).toFixed(1); }
+  function f2(x) { return (Math.round(x * 100) / 100).toString(); }
+  function rate(lat) { return 360 * Math.sin(lat * RAD) / SID; } // degrees an hour, clockwise seen from above
+  function turnAt(lat, t) { return Math.abs(lat) < 0.001 ? 0 : rate(lat) * t; }
+
+  function floorG(lat, t) {
+    var A = 100, th = turnAt(lat, t), s = '<circle class="fl" r="140"/>';
+    [['N', 0], ['E', 90], ['S', 180], ['W', 270]].forEach(function (c) {
+      s += '<text class="cp" x="' + f2(128 * Math.sin(c[1] * RAD)) + '" y="' + f2(-128 * Math.cos(c[1] * RAD) + 4.5) + '" text-anchor="middle">' + c[0] + '</text>';
+    });
+    s += '<line class="st" x1="0" y1="' + (-A) + '" x2="0" y2="' + A + '"/>';
+    for (var h = 1; h <= Math.floor(t + 1e-9); h++) {
+      var a = turnAt(lat, h) * RAD, x = f2(A * Math.sin(a)), y = f2(-A * Math.cos(a));
+      s += '<line class="tr" x1="' + x + '" y1="' + y + '" x2="' + f2(-A * Math.sin(a)) + '" y2="' + f2(A * Math.cos(a)) + '"/>';
+    }
+    for (var k = 0; k < 36; k++) {
+      var p = 5 + 10 * k, m = p % 180, down = Math.abs(th) >= 180 || (th > 0 ? m < th : (180 - m) < -th);
+      var px = 112 * Math.sin(p * RAD), py = -112 * Math.cos(p * RAD);
+      if (down) s += '<line class="pk" x1="' + f2(px - 4 * Math.cos(p * RAD)) + '" y1="' + f2(py - 4 * Math.sin(p * RAD)) + '" x2="' + f2(px + 4 * Math.cos(p * RAD)) + '" y2="' + f2(py + 4 * Math.sin(p * RAD)) + '"/>';
+      else s += '<circle class="pg" cx="' + f2(px) + '" cy="' + f2(py) + '" r="2.6"/>';
+    }
+    var b = th * RAD, bx = A * Math.sin(b), by = -A * Math.cos(b);
+    s += '<line class="sw" x1="' + f2(bx) + '" y1="' + f2(by) + '" x2="' + f2(-bx) + '" y2="' + f2(-by) + '"/>';
+    s += '<circle class="ctr" r="2.5"/><circle class="bob" cx="' + f2(bx) + '" cy="' + f2(by) + '" r="7"/>';
+    return s;
+  }
+
+  function sphereG(lat, t) {
+    var a = Math.abs(lat), R = 92, ph = a * RAD, sg = lat < 0 ? -1 : 1, s = '';
+    function Y(y) { return f2(sg * y); }
+    s += '<line class="ax" x1="0" y1="' + (-R - 30) + '" x2="0" y2="' + (R + 30) + '"/>';
+    s += '<circle class="earth" r="' + R + '"/>';
+    var yc = -R * Math.sin(ph), rx = R * Math.cos(ph), ry = 0.22 * rx;
+    if (a < 0.25) {
+      s += '<path class="cone" d="M' + (-R) + ',-170V170H' + R + 'V-170Z"/>';
+      s += '<path class="edge" d="M' + (-R) + ',-170V170M' + R + ',-170V170"/>';
+      s += '<line class="cut" x1="0" y1="-170" x2="0" y2="170"/>';
+    } else if (a > 89.75) {
+      s += '<line class="edge" x1="-120" y1="' + Y(-R) + '" x2="120" y2="' + Y(-R) + '"/>';
+    } else {
+      var ay = -R / Math.sin(ph), fr = '';
+      for (var j = 0; j <= 48; j++) { var v0 = Math.PI / 2 - j * Math.PI / 48; fr += 'L' + f2(rx * Math.sin(v0)) + ',' + Y(yc + ry * Math.cos(v0)); }
+      s += '<path class="cone" d="M0,' + Y(ay) + fr + 'Z"/>';
+      s += '<path class="edge" d="M' + f2(-rx) + ',' + Y(yc) + 'L0,' + Y(ay) + 'L' + f2(rx) + ',' + Y(yc) + '"/>';
+      s += '<line class="cut" x1="0" y1="' + Y(ay) + '" x2="0" y2="' + Y(yc + ry) + '"/>';
+      if (Math.abs(ay) < 162) s += '<circle class="apex" cx="0" cy="' + Y(ay) + '" r="3"/>';
+    }
+    if (a <= 89.75) {
+      var back = '', front = '';
+      for (var i = 0; i <= 48; i++) {
+        var u = Math.PI / 2 + i * Math.PI / 48, v = -Math.PI / 2 + i * Math.PI / 48;
+        back += (i ? 'L' : 'M') + f2(rx * Math.sin(u)) + ',' + Y(yc + ry * Math.cos(u));
+        front += (i ? 'L' : 'M') + f2(rx * Math.sin(v)) + ',' + Y(yc + ry * Math.cos(v));
+      }
+      s += '<path class="lb" d="' + back + '"/><path class="lf" d="' + front + '"/>';
+    }
+    var w = 2 * Math.PI * t / SID, mx = rx * Math.sin(w), my = yc + ry * Math.cos(w);
+    s += '<circle class="' + (Math.cos(w) < 0 ? 'mk back' : 'mk') + '" cx="' + f2(mx) + '" cy="' + Y(my) + '" r="4.5"/>';
+    s += '<text class="cp" x="-44" y="' + (-R - 6) + '">N</text><text class="cp" x="-44" y="' + (R + 18) + '">S</text>';
+    return s;
+  }
+
+  // The cone cut along the dashed line and laid flat: a slice of a disc, 360 x sin(latitude) degrees of it.
+  // Drawn to fit the frame, not to scale. North on the sheet is toward the cone's point.
+  function sheetG(lat, t) {
+    var a = Math.max(Math.abs(lat), 0.001), al = 2 * Math.PI * Math.sin(a * RAD), W = 320, H = 250, r, ri;
+    if (al >= Math.PI) { r = Math.min(W / 2, H / (1 - Math.cos(al / 2))); ri = 0; }
+    else { r = W / (2 * Math.sin(al / 2)); ri = r <= H ? 0 : (r - H) / Math.cos(al / 2); }
+    // shape round an apex at (0,0), arc at the bottom; psi measured from straight down, positive to the right (east)
+    function pt(rad, psi) { return [rad * Math.sin(psi), rad * Math.cos(psi)]; }
+    var pts = [], i, n = 72;
+    for (i = 0; i <= n; i++) pts.push(pt(r, -al / 2 + al * i / n));
+    if (ri > 0) for (i = n; i >= 0; i--) pts.push(pt(ri, -al / 2 + al * i / n)); else pts.push([0, 0]);
+    var x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    pts.forEach(function (q) { x0 = Math.min(x0, q[0]); x1 = Math.max(x1, q[0]); y0 = Math.min(y0, q[1]); y1 = Math.max(y1, q[1]); });
+    var dx = 180 - (x0 + x1) / 2, dy = 150 - (y0 + y1) / 2, sg = lat < 0 ? -1 : 1;
+    function P(q) { return f2(q[0] + dx) + ',' + f2(sg > 0 ? q[1] + dy : 300 - (q[1] + dy)); }
+    function path(list) { return list.map(function (q, j) { return (j ? 'L' : 'M') + P(q); }).join(''); }
+    var s = '<path class="sheet" d="' + path(pts) + 'Z"/>';
+    var arc = []; for (i = 0; i <= n; i++) arc.push(pt(r, -al / 2 + al * i / n));
+    s += '<path class="lat" d="' + path(arc) + '"/>';
+    var ein = ri > 0 ? ri : 0;
+    s += '<path class="cut" d="' + path([pt(ein, -al / 2), pt(r, -al / 2)]) + path([pt(ein, al / 2), pt(r, al / 2)]) + '"/>';
+    if (ri === 0 && al < 2 * Math.PI - 0.01) s += '<circle class="apex" cx="' + P([0, 0]).split(',')[0] + '" cy="' + P([0, 0]).split(',')[1] + '" r="3"/>';
+    // the swing, carried without turning: its direction on the sheet stays what north was at the start
+    var d0 = [-Math.sin(-al / 2), -Math.cos(-al / 2)], bd = sg > 0 ? 1 : -1;
+    var L = Math.min(18, 0.3 * r), hl = Math.min(11, 0.18 * r), ins = Math.min(36, 0.55 * r);
+    function mark(psi, cls) {
+      var o = pt(r, psi), nd = [-Math.sin(psi), -Math.cos(psi)], c = pt(r - ins, psi);
+      var tip = sg > 0 ? [o[0] + L * nd[0], o[1] + L * nd[1]] : o, dr = sg > 0 ? nd : [-nd[0], -nd[1]], pp = [-dr[1], dr[0]];
+      var q = '<path class="n' + cls + '" d="' + path([o, [o[0] + L * nd[0], o[1] + L * nd[1]]]) + '"/>';
+      q += '<path class="h' + cls + '" d="' + path([tip, [tip[0] - 5 * dr[0] + 3 * pp[0], tip[1] - 5 * dr[1] + 3 * pp[1]], [tip[0] - 5 * dr[0] - 3 * pp[0], tip[1] - 5 * dr[1] - 3 * pp[1]]]) + 'Z"/>';
+      var e1 = [c[0] + bd * hl * d0[0], c[1] + bd * hl * d0[1]], e2 = [c[0] - bd * hl * d0[0], c[1] - bd * hl * d0[1]];
+      q += '<path class="s' + cls + '" d="' + path([e1, e2]) + '"/>';
+      var B = P(e1).split(',');
+      q += '<circle class="b' + cls + '" cx="' + B[0] + '" cy="' + B[1] + '" r="' + (cls ? 3.6 : 2.6) + '"/>';
+      return q;
+    }
+    for (i = 0; i <= 12; i++) s += mark(-al / 2 + al * i / 12, '');
+    var f = (t / SID) % 1;
+    if (t > 0 && f < 1e-9) f = 1;
+    s += mark(-al / 2 + al * f, ' now');
+    return s;
+  }
+
+  function latName(lat) {
+    if (lat >= 89.75) return 'the North Pole';
+    if (lat <= -89.75) return 'the South Pole';
+    if (Math.abs(lat) < 0.001) return 'the equator';
+    return f2(Math.abs(lat)) + '° ' + (lat > 0 ? 'north' : 'south');
+  }
+  function hm(h) {
+    if (h >= 72) { var hh = Math.round(h), D = Math.floor(hh / 24), r = hh % 24; return D + ' days' + (r ? ' ' + r + (r === 1 ? ' hour' : ' hours') : ''); }
+    var m = Math.round(h * 60), H = Math.floor(m / 60), M = m % 60, out = [];
+    if (H) out.push(H + (H === 1 ? ' hour' : ' hours'));
+    if (M || !H) out.push(M + (M === 1 ? ' minute' : ' minutes'));
+    return out.join(' ');
+  }
+  function laps(d) {
+    var n = Math.floor(d / 360 + 1e-9), rest = Math.round(d - 360 * n);
+    if (rest === 360) { n++; rest = 0; }
+    if (n < 1) return Math.round(d) + '°';
+    if (rest === 0) return 'exactly ' + (n === 1 ? 'once' : n === 2 ? 'twice' : n + ' times') + ' round';
+    return Math.round(d) + '°, ' + (n === 1 ? 'once' : n === 2 ? 'twice' : n + ' times') + ' round and ' + rest + '° more';
+  }
+
+  function sayFloor(lat, t) {
+    var out = [], th = turnAt(lat, t), at = latName(lat);
+    if (Math.abs(lat) < 0.001) {
+      out.push('At the equator the line of swing never turns. The floor is carried round with the Earth, but it never turns about its own upright.');
+      out.push(t > 0 ? 'After ' + hm(t) + ' the bob is still swinging north and south, and every peg is standing.' : 'Move the time and nothing turns.');
+      return out;
+    }
+    var T = SID / Math.abs(Math.sin(lat * RAD));
+    out.push('At ' + at + ' the line of swing turns ' + (lat > 0 ? 'clockwise' : 'anticlockwise') + ', seen from above, by ' + f1(Math.abs(rate(lat))) +
+      '° an hour. One full turn takes ' + hm(T) + '.' + (Math.abs(lat) >= 89.75 ? ' That is the time the Earth takes to turn once against the stars. Here the pendulum is keeping still, and the floor turns under it.' :
+      ' The line lies along its first track again after half of that, ' + hm(T / 2) + ', with its ends swapped; the bob shows which end is which.'));
+    if (t > 0) {
+      var downN = 0;
+      for (var k = 0; k < 36; k++) { var m = (5 + 10 * k) % 180; if (Math.abs(th) >= 180 || (th > 0 ? m < th : (180 - m) < -th)) downN++; }
+      out.push('After ' + hm(t) + ' it has turned ' + laps(Math.abs(th)) + ', and the bob has knocked down ' + (downN === 36 ? 'all 36 pegs' : downN === 0 ? 'none of the 36 pegs yet' : downN + ' of the 36 pegs') + '.');
+    } else out.push('It has just been set swinging, north and south.');
+    return out;
+  }
+
+  function saySheet(lat, t) {
+    var out = [], a = Math.abs(lat);
+    if (a < 0.001) {
+      out.push('At the equator the cone becomes a cylinder, and a cylinder laid flat is a straight strip. Carried along a straight strip without turning, the swing comes back a day later pointing exactly where north points. Nothing turns.');
+      return out;
+    }
+    var al = 360 * Math.sin(a * RAD), pole = lat > 0 ? 'North' : 'South';
+    if (a >= 89.75) out.push('At the pole the cone is flattened all the way: it is the floor itself, the whole of a disc. The grey arrows point north, ' + (lat > 0 ? 'at the pole in the middle' : 'away from the pole in the middle') + '. Carried round without turning, the swing comes back to the cut a day later, against the stars, and north has turned the whole 360° under it.');
+    else out.push('Cut along the dashed line and laid flat, this cone is ' + Math.round(al) + '° of a disc, because 360° × sin ' + f2(a) + '° = ' + Math.round(al) +
+      '°. The grey arrows point north, ' + (lat > 0 ? 'toward' : 'away from') + ' the cone’s point, which is over the ' + pole + ' Pole. The blue marks are the swing, carried round without turning on the flat sheet. Back at the cut a day later, against the stars, north has turned ' + Math.round(al) + '° under it.');
+    var n = Math.floor(t / SID + 1e-9), f = t / SID - n;
+    if (t > 0) out.push('The bright mark is the swing ' + hm(t) + ' after it was set going' + (n >= 1 && f > 1e-6 ? ', on its ' + (n === 1 ? 'second' : 'third') + ' time round' : '') + '.');
+    return out;
+  }
+  // CORE END
+
+  // THE PAGE: two sets of controls, kept in step, and a run that moves the hours on.
+  var lat = 48.85, hrs = 8, looping = false, last = 0;
+  var $ = function (id) { return document.getElementById(id); };
+  function draw() {
+    $('floor-g').innerHTML = floorG(lat, hrs);
+    $('globe-g').innerHTML = sphereG(lat, hrs);
+    $('flat-g').innerHTML = sheetG(lat, hrs);
+    $('say-floor').innerHTML = sayFloor(lat, hrs).map(function (x) { return '<p>' + x + '</p>'; }).join('');
+    $('say-sheet').innerHTML = saySheet(lat, hrs).map(function (x) { return '<p>' + x + '</p>'; }).join('');
+    var ln = latName(lat), hn = hrs > 0 ? hm(hrs) : 'none yet';
+    ['lat', 'lat2'].forEach(function (id) { $(id).value = lat; $(id + '-out').textContent = ln; });
+    ['hrs', 'hrs2'].forEach(function (id) { $(id).value = hrs; $(id + '-out').textContent = hn; });
+  }
+  ['lat', 'lat2'].forEach(function (id) { $(id).addEventListener('input', function () { lat = +this.value; draw(); }); });
+  ['hrs', 'hrs2'].forEach(function (id) { $(id).addEventListener('input', function () { hrs = +this.value; stop(); draw(); }); });
+  Array.prototype.forEach.call(document.querySelectorAll('#places button'), function (b) {
+    b.addEventListener('click', function () { lat = +b.getAttribute('data-lat'); draw(); });
+  });
+  function stop() { looping = false; $('run').textContent = 'let it run'; }
+  function frame(now) {
+    if (!looping) return;
+    var dt = Math.min(0.1, (now - last) / 1000); last = now;
+    hrs = Math.min(48, hrs + 3 * dt);
+    if (hrs >= 48) stop();
+    draw();
+    if (looping) requestAnimationFrame(frame);
+  }
+  $('run').addEventListener('click', function () {
+    if (looping) { stop(); return; }
+    if (hrs >= 48) hrs = 0;
+    looping = true; this.textContent = 'stop'; last = performance.now();
+    requestAnimationFrame(frame);
+  });
+  $('again').addEventListener('click', function () { stop(); hrs = 0; draw(); });
+  document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); });
+  $('play').removeAttribute('hidden');
+  $('play2').removeAttribute('hidden');
+  draw();
+})();
+</script>
+</body>
+</html>
