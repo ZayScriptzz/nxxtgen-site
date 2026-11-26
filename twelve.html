@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NXXTGEN · Why twelve notes</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; background: #0a0a0f; color: #d8d8e0; font-family: Georgia, 'Times New Roman', serif; }
+  main { max-width: 38rem; margin: 0 auto; padding: 3rem 2rem; line-height: 1.75; }
+  h1 { font-size: 1rem; letter-spacing: 0.35em; font-weight: normal; color: #8a8af0; }
+  h1 a { color: inherit; text-decoration: none; }
+  .title { font-size: 1.6rem; line-height: 1.3; margin: 3rem 0 0.3rem; }
+  .when { color: #55555f; font-size: 0.85rem; letter-spacing: 0.1em; margin: 0 0 3rem; }
+  h2 { font-size: 0.85rem; color: #55555f; font-weight: normal; letter-spacing: 0.1em; margin-top: 3rem; }
+  p { margin: 0 0 1.2rem; }
+  a { color: #8a8af0; }
+  em { color: #e6e2d6; }
+  .quiet { color: #6a6a76; font-size: 0.85rem; }
+  [hidden] { display: none !important; }
+
+  /* the circle of the octave */
+  svg.circle { display: block; width: 100%; max-width: 30rem; height: auto; margin: 2.5rem auto 0.5rem; }
+  .circle .ring { fill: none; stroke: #1c1c26; stroke-width: 1; }
+  .circle .fifth { stroke: #3a3a5c; stroke-width: 1; }
+  .circle .fifth.new { stroke: #8a8af0; stroke-width: 1.6; }
+  .circle .gap { fill: none; stroke-width: 5; stroke-linecap: butt; }
+  .circle .s0 { stroke: #8a8af0; }
+  .circle .s1 { stroke: #e6e2d6; }
+  .circle .s2 { stroke: #d0866a; }
+  .circle .dot { fill: #d8d8e0; }
+  .circle .home { fill: #e6e2d6; }
+  .circle .glow { fill: #8a8af0; opacity: 0.3; }
+  .circle .name { fill: #9a9aa6; font-size: 15px; text-anchor: middle; dominant-baseline: middle; }
+  .circle .name.new { fill: #8a8af0; }
+  .circle .name.home { fill: #e6e2d6; }
+  .circle .mid { fill: #55555f; font-size: 13px; text-anchor: middle; }
+  @media (max-width: 32rem) {
+    .circle .name { font-size: 20px; }
+    .circle .mid { font-size: 17px; }
+  }
+
+  /* the chart of equal steps */
+  svg.chart { display: block; width: 100%; height: auto; margin: 2.5rem 0 0.5rem; }
+  .chart .axis { stroke: #2a2a44; stroke-width: 1; }
+  .chart .grid { stroke: #1c1c26; stroke-width: 1; }
+  .chart .tick { fill: #55555f; font-size: 11px; text-anchor: end; dominant-baseline: middle; }
+  .chart .up { stroke: #8a8af0; stroke-width: 4; }
+  .chart .down { stroke: #e6e2d6; stroke-width: 4; opacity: 0.7; }
+  .chart .over { fill: #0a0a0f; stroke: none; }
+  .chart .n { fill: #55555f; font-size: 11px; text-anchor: middle; }
+  .chart .n.on { fill: #8a8af0; }
+  .chart .pick { fill: #8a8af0; opacity: 0.12; }
+  .chart .hit { fill: transparent; cursor: pointer; }
+  @media (max-width: 32rem) {
+    .chart .tick, .chart .n { font-size: 21px; }
+  }
+  .legend { color: #6a6a76; font-size: 0.85rem; margin: 0 0 0.5rem; }
+  .legend .sw { display: inline-block; width: 0.35em; height: 0.9em; vertical-align: -0.1em; margin: 0 0.35em 0 0; }
+  .legend .up { background: #8a8af0; } .legend .down { background: #e6e2d6; opacity: 0.7; }
+
+  .controls { margin: 0.5rem 0 2.5rem; }
+  .controls label { display: block; font-size: 0.75rem; letter-spacing: 0.1em; color: #55555f; margin: 1rem 0 0.3rem; }
+  .controls input { width: 100%; accent-color: #8a8af0; }
+  .picks { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.6rem 0 0; }
+  .picks button { font: inherit; font-size: 0.85rem; color: #d8d8e0; background: #14141c; border: 1px solid #2a2a44; padding: 0.35rem 0.8rem; cursor: pointer; }
+  .picks button:hover, .picks button:focus-visible { border-color: #8a8af0; }
+  .picks button[aria-pressed="true"] { border-color: #8a8af0; color: #8a8af0; }
+  .say { color: #9a9aa6; font-size: 0.95rem; margin: 0.9rem 0 0; font-variant-numeric: tabular-nums; }
+  .say .sw { display: inline-block; width: 0.8em; height: 0.35em; vertical-align: 0.2em; margin-right: 0.3em; }
+  .sw.s0 { background: #8a8af0; } .sw.s1 { background: #e6e2d6; } .sw.s2 { background: #d0866a; }
+  .hear { color: #6a6a76; font-size: 0.85rem; margin: 0.6rem 0 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1><a href="index.html">N X X T G E N</a> · twelve notes</h1>
+
+  <p class="title">Why twelve notes</p>
+  <p class="when">MADE ON THE NIGHT OF 26 NOVEMBER 2026</p>
+
+  <p>Pluck a string, then stop it at its middle and pluck the half. The second note is an <em>octave</em> above the first, at twice the rate of vibration, and to most listeners it sounds like the same note again, only higher. That is why the same seven letters come round again and again up a keyboard. Pitch goes round a circle, and one trip round is an octave.</p>
+  <p>Stop the string two thirds of the way along instead and you get the next simplest sound, a <em>fifth</em>: three vibrations for every two of the first note. Many of the world's scales have a fifth in them, or something close to one. So here is a way to find notes that need nothing but that one sound. Start on C. Go up a fifth, to G. Go up another, to D, and if that has climbed past the octave, bring it down one, which doesn't change what note it is. Keep going. Each fifth carries you 0.585 of the way round the circle.</p>
+  <p>The question is whether you ever come back to C. You never do, exactly. Every fifth multiplies by three halves and every octave by two, and no number of threes multiplied together ever equals a number of twos: one is always odd and the other even. But some counts come close. The drawing shows the notes you have after any number of fifths, brought into one octave, with C at the top.</p>
+
+  <!-- The octave as a circle: rate of vibration doubles once round, so equal turns are equal ratios. Each note is the one before turned by log2(3/2) = 0.58496 of a turn. The ring is coloured by the sizes of the steps between neighbouring notes. Written into the page at twelve fifths; the script redraws it. -->
+  <svg class="circle" id="circle" viewBox="-205 -210 410 410" role="img" aria-labelledby="circle-title">
+    <title id="circle-title">The octave drawn as a circle with C at the top. Each note is a fifth above the one before, brought down into the same octave, and joined to it by a line. The coloured ring shows the steps between neighbouring notes.</title>
+    <g id="circle-g"><!--BAKE circle--><circle class="ring" r="130"/><path class="gap s2" d="M2.0 -139.0A139 139 0 0 1 15.0 -138.2"/><path class="gap s1" d="M19.6 -137.6A139 139 0 0 1 75.8 -116.5"/><path class="gap s1" d="M80.1 -113.6A139 139 0 0 1 120.5 -69.3"/><path class="gap s0" d="M123.0 -64.7A139 139 0 0 1 138.6 10.2"/><path class="gap s1" d="M138.1 15.4A139 139 0 0 1 118.8 72.1"/><path class="gap s0" d="M116.0 76.6A139 139 0 0 1 57.9 126.4"/><path class="gap s1" d="M53.1 128.4A139 139 0 0 1 -5.9 138.9"/><path class="gap s1" d="M-11.1 138.6A139 139 0 0 1 -68.5 121.0"/><path class="gap s0" d="M-73.0 118.3A139 139 0 0 1 -124.5 61.8"/><path class="gap s1" d="M-126.8 57.0A139 139 0 0 1 -139.0 -1.6"/><path class="gap s0" d="M-138.8 -6.9A139 139 0 0 1 -114.2 -79.3"/><path class="gap s1" d="M-111.1 -83.5A139 139 0 0 1 -65.6 -122.6"/><path class="gap s1" d="M-60.9 -124.9A139 139 0 0 1 -2.6 -139.0"/><line class="fifth" x1="0.0" y1="-124.0" x2="-63.1" y2="106.7"/><line class="fifth" x1="-63.1" y1="106.7" x2="108.6" y2="-59.8"/><line class="fifth" x1="108.6" y1="-59.8" x2="-123.9" y2="-3.8"/><line class="fifth" x1="-123.9" y1="-3.8" x2="104.8" y2="66.3"/><line class="fifth" x1="104.8" y1="66.3" x2="-56.4" y2="-110.4"/><line class="fifth" x1="-56.4" y1="-110.4" x2="-7.6" y2="123.8"/><line class="fifth" x1="-7.6" y1="123.8" x2="69.5" y2="-102.7"/><line class="fifth" x1="69.5" y1="-102.7" x2="-112.1" y2="53.0"/><line class="fifth" x1="-112.1" y1="53.0" x2="123.5" y2="11.4"/><line class="fifth" x1="123.5" y1="11.4" x2="-100.5" y2="-72.6"/><line class="fifth" x1="-100.5" y1="-72.6" x2="49.5" y2="113.7"/><line class="fifth new" x1="49.5" y1="113.7" x2="15.2" y2="-123.1"/><circle class="home" cx="0.0" cy="-130.0" r="4.5"/><circle class="dot" cx="-66.1" cy="111.9" r="3.5"/><circle class="dot" cx="113.9" cy="-62.7" r="3.5"/><circle class="dot" cx="-129.9" cy="-4.0" r="3.5"/><circle class="dot" cx="109.8" cy="69.6" r="3.5"/><circle class="dot" cx="-59.2" cy="-115.8" r="3.5"/><circle class="dot" cx="-8.0" cy="129.8" r="3.5"/><circle class="dot" cx="72.9" cy="-107.6" r="3.5"/><circle class="dot" cx="-117.5" cy="55.6" r="3.5"/><circle class="dot" cx="129.4" cy="12.0" r="3.5"/><circle class="dot" cx="-105.4" cy="-76.2" r="3.5"/><circle class="dot" cx="51.9" cy="119.2" r="3.5"/><circle class="glow" cx="15.9" cy="-129.0" r="7"/><circle class="dot" cx="15.9" cy="-129.0" r="3.5"/><text class="name home" x="0.0" y="-164.0">C</text><text class="name" x="-83.4" y="141.2">G</text><text class="name" x="143.7" y="-79.1">D</text><text class="name" x="-163.9" y="-5.0">A</text><text class="name" x="138.6" y="87.7">E</text><text class="name" x="-74.6" y="-146.0">B</text><text class="name" x="-10.1" y="163.7">F♯</text><text class="name" x="92.0" y="-135.8">C♯</text><text class="name" x="-148.3" y="70.1">G♯</text><text class="name" x="163.3" y="15.1">D♯</text><text class="name" x="-132.9" y="-96.1">A♯</text><text class="name" x="65.5" y="150.3">E♯</text><text class="name new" x="23.0" y="-186.6">B♯</text><text class="mid" x="0" y="-6">13 notes</text><text class="mid" x="0" y="12">12 fifths</text><!--/BAKE--></g>
+  </svg>
+  <p class="say" id="circle-say"><!--BAKE circle-say-->The newest note, B♯, lands 23.46 cents past C, nearer than any note before it. The 13 notes cut the octave into steps of three sizes: <span class="sw s0"></span>4 of 113.69 cents, <span class="sw s1"></span>8 of 90.22 cents and <span class="sw s2"></span>1 of 23.46 cents.<!--/BAKE--></p>
+  <div class="controls" id="circle-controls" hidden>
+    <label for="k">FIFTHS STACKED</label>
+    <input id="k" type="range" min="0" max="53" step="1" value="12">
+    <div class="picks" id="k-picks">
+      <button type="button" data-k="4">5 notes</button>
+      <button type="button" data-k="6">7 notes</button>
+      <button type="button" data-k="11">12 notes</button>
+      <button type="button" data-k="12" aria-pressed="true">12 fifths</button>
+      <button type="button" data-k="41">41 fifths</button>
+      <button type="button" data-k="53">53 fifths</button>
+    </div>
+    <div class="picks" id="circle-sound" hidden>
+      <button type="button" data-play="last">Hear C with the newest note</button>
+      <button type="button" data-play="stop">Stop</button>
+    </div>
+    <p class="hear" id="circle-hear"></p>
+  </div>
+
+  <h2>TWO SIZES OF STEP</h2>
+  <p>Look at the ring between the notes rather than at the notes. After four fifths there are five notes, C, G, D, A and E, and they cut the octave into steps of only two sizes. Those five are a pentatonic scale, the one you get from the black keys of a piano. After six fifths there are seven notes, again in steps of only two sizes, five large and two small, and that is the pattern of the white keys: whole tones and half tones. After eleven fifths there are twelve notes, still in two sizes, now both about half a tone. The twelfth fifth lands just past C, at the note called B sharp, and splits one of the larger half tones into a smaller one and a sliver.</p>
+  <p>The sliver is 23.46 cents, where a cent is a hundredth of a half tone on a piano, so it is a little under a quarter of a half tone. It has a name, the <em>Pythagorean comma</em>. Twelve fifths overshoot seven octaves by the ratio 531,441 to 524,288, which is twelve threes multiplied together over nineteen twos multiplied together.</p>
+  <p>Stepping round a circle by the same amount every time always cuts it into gaps of at most three sizes, and when there are three, the largest is the other two put together. That was proved in the late 1950s. For the fifth, the counts that leave exactly two are 2, 3, 5, 7, 12, 17, 29, 41 and 53. Five, seven and twelve notes are the scales most music built on fifths is made of. The next good return to C after twelve takes forty-one fifths, which miss by 19.84 cents, and then fifty-three, which miss by only 3.62.</p>
+
+  <h2>SHARING OUT THE SLIVER</h2>
+  <p>Twelve fifths almost close the circle. To make them close exactly, take a twelfth of the comma off every fifth, about 1.96 cents each, and the twelve notes come out evenly spaced, 100 cents apart. That is <em>equal temperament</em>, and it is what most pianos, guitars and electronic instruments are tuned to now. Every key is then like every other, and a piece can start on any note. Its fifths are so close to pure that few people can hear the difference.</p>
+  <p>The cost falls on the other sounds. After the octave and the fifth, the next simplest is the major third, five vibrations to four, the sound at the bottom of a major chord. Four of the equal steps make 400 cents, and a pure major third is 386.31, so the piano's thirds are 13.69 cents wide. That can be heard. Nothing forces twelve, either. Divide the octave into any number of equal steps and some step will be the nearest to a fifth and some the nearest to a third. The chart shows how far each falls from pure, fifths above the line and thirds below, for every number of steps from 5 to 60. The shorter the bars, the better.</p>
+
+  <!-- Equal divisions of the octave, 5 to 60 steps: bar up = how far the nearest step to a fifth is from 3:2, bar down = the same for a major third, 5:4, in cents, cut off at 50. Written into the page with 12 picked; the script redraws it. -->
+  <svg class="chart" id="chart" viewBox="0 0 580 294" role="img" aria-labelledby="chart-title">
+    <title id="chart-title">For each number of equal steps in an octave, from 5 to 60, how far the nearest step to a pure fifth falls from it, drawn upward, and the same for a pure major third, drawn downward, in cents. Twelve has a very short bar for the fifth and a long one for the third. Nineteen, thirty-one, forty-one and fifty-three have short bars on both sides.</title>
+    <g id="chart-g"><!--BAKE chart--><line class="grid" x1="46" x2="553" y1="116" y2="116"/><line class="grid" x1="46" x2="553" y1="164" y2="164"/><text class="tick" x="40" y="116">10</text><text class="tick" x="40" y="164">10</text><line class="grid" x1="46" x2="553" y1="80" y2="80"/><line class="grid" x1="46" x2="553" y1="200" y2="200"/><text class="tick" x="40" y="80">25</text><text class="tick" x="40" y="200">25</text><line class="grid" x1="46" x2="553" y1="20" y2="20"/><line class="grid" x1="46" x2="553" y1="260" y2="260"/><text class="tick" x="40" y="20">50</text><text class="tick" x="40" y="260">50</text><rect class="pick" x="110" y="12" width="10" height="256"/><line class="up" x1="52" x2="52" y1="140" y2="96.7"/><line class="down" x1="52" x2="52" y1="140" y2="260.0"/><rect class="over" x="49" y="254" width="6" height="2"/><line class="up" x1="61" x2="61" y1="140" y2="20.0"/><line class="down" x1="61" x2="61" y1="140" y2="172.8"/><rect class="over" x="58" y="24" width="6" height="2"/><line class="up" x1="70" x2="70" y1="140" y2="101.0"/><line class="down" x1="70" x2="70" y1="140" y2="244.3"/><line class="up" x1="79" x2="79" y1="140" y2="24.7"/><line class="down" x1="79" x2="79" y1="140" y2="260.0"/><rect class="over" x="76" y="254" width="6" height="2"/><line class="up" x1="88" x2="88" y1="140" y2="55.3"/><line class="down" x1="88" x2="88" y1="140" y2="172.8"/><line class="up" x1="97" x2="97" y1="140" y2="96.7"/><line class="down" x1="97" x2="97" y1="140" y2="203.2"/><line class="up" x1="106" x2="106" y1="140" y2="26.2"/><line class="down" x1="106" x2="106" y1="140" y2="260.0"/><rect class="over" x="103" y="254" width="6" height="2"/><line class="up" x1="115" x2="115" y1="140" y2="135.3"/><line class="down" x1="115" x2="115" y1="140" y2="172.8"/><line class="up" x1="124" x2="124" y1="140" y2="52.4"/><line class="down" x1="124" x2="124" y1="140" y2="181.0"/><line class="up" x1="133" x2="133" y1="140" y2="101.0"/><line class="down" x1="133" x2="133" y1="140" y2="241.4"/><line class="up" x1="142" x2="142" y1="140" y2="96.7"/><line class="down" x1="142" x2="142" y1="140" y2="172.8"/><line class="up" x1="151" x2="151" y1="140" y2="75.3"/><line class="down" x1="151" x2="151" y1="140" y2="167.2"/><line class="up" x1="160" x2="160" y1="140" y2="130.6"/><line class="down" x1="160" x2="160" y1="140" y2="220.1"/><line class="up" x1="169" x2="169" y1="140" y2="64.7"/><line class="down" x1="169" x2="169" y1="140" y2="172.8"/><line class="up" x1="178" x2="178" y1="140" y2="122.7"/><line class="down" x1="178" x2="178" y1="140" y2="157.7"/><line class="up" x1="187" x2="187" y1="140" y2="96.7"/><line class="down" x1="187" x2="187" y1="140" y2="203.2"/><line class="up" x1="196" x2="196" y1="140" y2="101.0"/><line class="down" x1="196" x2="196" y1="140" y2="172.8"/><line class="up" x1="205" x2="205" y1="140" y2="122.9"/><line class="down" x1="205" x2="205" y1="140" y2="150.8"/><line class="up" x1="214" x2="214" y1="140" y2="83.1"/><line class="down" x1="214" x2="214" y1="140" y2="190.6"/><line class="up" x1="223" x2="223" y1="140" y2="135.3"/><line class="down" x1="223" x2="223" y1="140" y2="172.8"/><line class="up" x1="232" x2="232" y1="140" y2="96.7"/><line class="down" x1="232" x2="232" y1="140" y2="145.6"/><line class="up" x1="241" x2="241" y1="140" y2="116.8"/><line class="down" x1="241" x2="241" y1="140" y2="181.0"/><line class="up" x1="250" x2="250" y1="140" y2="118.0"/><line class="down" x1="250" x2="250" y1="140" y2="172.8"/><line class="up" x1="259" x2="259" y1="140" y2="101.0"/><line class="down" x1="259" x2="259" y1="140" y2="141.4"/><line class="up" x1="268" x2="268" y1="140" y2="136.4"/><line class="down" x1="268" x2="268" y1="140" y2="173.4"/><line class="up" x1="277" x2="277" y1="140" y2="96.7"/><line class="down" x1="277" x2="277" y1="140" y2="172.8"/><line class="up" x1="286" x2="286" y1="140" y2="127.6"/><line class="down" x1="286" x2="286" y1="140" y2="141.9"/><line class="up" x1="295" x2="295" y1="140" y2="114.7"/><line class="down" x1="295" x2="295" y1="140" y2="167.2"/><line class="up" x1="304" x2="304" y1="140" y2="113.5"/><line class="down" x1="304" x2="304" y1="140" y2="172.8"/><line class="up" x1="313" x2="313" y1="140" y2="130.6"/><line class="down" x1="313" x2="313" y1="140" y2="144.6"/><line class="up" x1="322" x2="322" y1="140" y2="101.0"/><line class="down" x1="322" x2="322" y1="140" y2="162.0"/><line class="up" x1="331" x2="331" y1="140" y2="135.3"/><line class="down" x1="331" x2="331" y1="140" y2="172.8"/><line class="up" x1="340" x2="340" y1="140" y2="112.3"/><line class="down" x1="340" x2="340" y1="140" y2="146.9"/><line class="up" x1="349" x2="349" y1="140" y2="122.7"/><line class="down" x1="349" x2="349" y1="140" y2="157.7"/><line class="up" x1="358" x2="358" y1="140" y2="126.2"/><line class="down" x1="358" x2="358" y1="140" y2="172.8"/><line class="up" x1="367" x2="367" y1="140" y2="111.3"/><line class="down" x1="367" x2="367" y1="140" y2="148.8"/><line class="up" x1="376" x2="376" y1="140" y2="138.8"/><line class="down" x1="376" x2="376" y1="140" y2="154.0"/><line class="up" x1="385" x2="385" y1="140" y2="110.4"/><line class="down" x1="385" x2="385" y1="140" y2="172.8"/><line class="up" x1="394" x2="394" y1="140" y2="129.7"/><line class="down" x1="394" x2="394" y1="140" y2="150.5"/><line class="up" x1="403" x2="403" y1="140" y2="122.9"/><line class="down" x1="403" x2="403" y1="140" y2="150.8"/><line class="up" x1="412" x2="412" y1="140" y2="119.3"/><line class="down" x1="412" x2="412" y1="140" y2="171.2"/><line class="up" x1="421" x2="421" y1="140" y2="134.3"/><line class="down" x1="421" x2="421" y1="140" y2="152.0"/><line class="up" x1="430" x2="430" y1="140" y2="109.8"/><line class="down" x1="430" x2="430" y1="140" y2="148.0"/><line class="up" x1="439" x2="439" y1="140" y2="135.3"/><line class="down" x1="439" x2="439" y1="140" y2="167.2"/><line class="up" x1="448" x2="448" y1="140" y2="120.2"/><line class="down" x1="448" x2="448" y1="140" y2="153.3"/><line class="up" x1="457" x2="457" y1="140" y2="125.7"/><line class="down" x1="457" x2="457" y1="140" y2="145.6"/><line class="up" x1="466" x2="466" y1="140" y2="130.6"/><line class="down" x1="466" x2="466" y1="140" y2="163.6"/><line class="up" x1="475" x2="475" y1="140" y2="116.8"/><line class="down" x1="475" x2="475" y1="140" y2="154.4"/><line class="down" x1="484" x2="484" y1="140" y2="143.4"/><line class="up" x1="493" x2="493" y1="140" y2="118.0"/><line class="down" x1="493" x2="493" y1="140" y2="160.5"/><line class="up" x1="502" x2="502" y1="140" y2="130.9"/><line class="down" x1="502" x2="502" y1="140" y2="155.4"/><line class="up" x1="511" x2="511" y1="140" y2="127.5"/><line class="down" x1="511" x2="511" y1="140" y2="141.4"/><line class="up" x1="520" x2="520" y1="140" y2="122.7"/><line class="down" x1="520" x2="520" y1="140" y2="157.7"/><line class="up" x1="529" x2="529" y1="140" y2="136.4"/><line class="down" x1="529" x2="529" y1="140" y2="156.3"/><line class="up" x1="538" x2="538" y1="140" y2="116.2"/><line class="down" x1="538" x2="538" y1="140" y2="140.3"/><line class="up" x1="547" x2="547" y1="140" y2="135.3"/><line class="down" x1="547" x2="547" y1="140" y2="155.2"/><line class="axis" x1="46" x2="553" y1="140" y2="140"/><text class="n" x="52" y="284">5</text><text class="n on" x="115" y="284">12</text><text class="n" x="178" y="284">19</text><text class="n" x="286" y="284">31</text><text class="n" x="376" y="284">41</text><text class="n" x="484" y="284">53</text><text class="n" x="547" y="284">60</text><rect class="hit" data-n="5" x="47.5" y="10" width="9" height="286"/><rect class="hit" data-n="6" x="56.5" y="10" width="9" height="286"/><rect class="hit" data-n="7" x="65.5" y="10" width="9" height="286"/><rect class="hit" data-n="8" x="74.5" y="10" width="9" height="286"/><rect class="hit" data-n="9" x="83.5" y="10" width="9" height="286"/><rect class="hit" data-n="10" x="92.5" y="10" width="9" height="286"/><rect class="hit" data-n="11" x="101.5" y="10" width="9" height="286"/><rect class="hit" data-n="12" x="110.5" y="10" width="9" height="286"/><rect class="hit" data-n="13" x="119.5" y="10" width="9" height="286"/><rect class="hit" data-n="14" x="128.5" y="10" width="9" height="286"/><rect class="hit" data-n="15" x="137.5" y="10" width="9" height="286"/><rect class="hit" data-n="16" x="146.5" y="10" width="9" height="286"/><rect class="hit" data-n="17" x="155.5" y="10" width="9" height="286"/><rect class="hit" data-n="18" x="164.5" y="10" width="9" height="286"/><rect class="hit" data-n="19" x="173.5" y="10" width="9" height="286"/><rect class="hit" data-n="20" x="182.5" y="10" width="9" height="286"/><rect class="hit" data-n="21" x="191.5" y="10" width="9" height="286"/><rect class="hit" data-n="22" x="200.5" y="10" width="9" height="286"/><rect class="hit" data-n="23" x="209.5" y="10" width="9" height="286"/><rect class="hit" data-n="24" x="218.5" y="10" width="9" height="286"/><rect class="hit" data-n="25" x="227.5" y="10" width="9" height="286"/><rect class="hit" data-n="26" x="236.5" y="10" width="9" height="286"/><rect class="hit" data-n="27" x="245.5" y="10" width="9" height="286"/><rect class="hit" data-n="28" x="254.5" y="10" width="9" height="286"/><rect class="hit" data-n="29" x="263.5" y="10" width="9" height="286"/><rect class="hit" data-n="30" x="272.5" y="10" width="9" height="286"/><rect class="hit" data-n="31" x="281.5" y="10" width="9" height="286"/><rect class="hit" data-n="32" x="290.5" y="10" width="9" height="286"/><rect class="hit" data-n="33" x="299.5" y="10" width="9" height="286"/><rect class="hit" data-n="34" x="308.5" y="10" width="9" height="286"/><rect class="hit" data-n="35" x="317.5" y="10" width="9" height="286"/><rect class="hit" data-n="36" x="326.5" y="10" width="9" height="286"/><rect class="hit" data-n="37" x="335.5" y="10" width="9" height="286"/><rect class="hit" data-n="38" x="344.5" y="10" width="9" height="286"/><rect class="hit" data-n="39" x="353.5" y="10" width="9" height="286"/><rect class="hit" data-n="40" x="362.5" y="10" width="9" height="286"/><rect class="hit" data-n="41" x="371.5" y="10" width="9" height="286"/><rect class="hit" data-n="42" x="380.5" y="10" width="9" height="286"/><rect class="hit" data-n="43" x="389.5" y="10" width="9" height="286"/><rect class="hit" data-n="44" x="398.5" y="10" width="9" height="286"/><rect class="hit" data-n="45" x="407.5" y="10" width="9" height="286"/><rect class="hit" data-n="46" x="416.5" y="10" width="9" height="286"/><rect class="hit" data-n="47" x="425.5" y="10" width="9" height="286"/><rect class="hit" data-n="48" x="434.5" y="10" width="9" height="286"/><rect class="hit" data-n="49" x="443.5" y="10" width="9" height="286"/><rect class="hit" data-n="50" x="452.5" y="10" width="9" height="286"/><rect class="hit" data-n="51" x="461.5" y="10" width="9" height="286"/><rect class="hit" data-n="52" x="470.5" y="10" width="9" height="286"/><rect class="hit" data-n="53" x="479.5" y="10" width="9" height="286"/><rect class="hit" data-n="54" x="488.5" y="10" width="9" height="286"/><rect class="hit" data-n="55" x="497.5" y="10" width="9" height="286"/><rect class="hit" data-n="56" x="506.5" y="10" width="9" height="286"/><rect class="hit" data-n="57" x="515.5" y="10" width="9" height="286"/><rect class="hit" data-n="58" x="524.5" y="10" width="9" height="286"/><rect class="hit" data-n="59" x="533.5" y="10" width="9" height="286"/><rect class="hit" data-n="60" x="542.5" y="10" width="9" height="286"/><!--/BAKE--></g>
+  </svg>
+  <p class="legend"><span class="sw up"></span>Up: the nearest step to a fifth. <span class="sw down"></span>Down: the nearest to a major third. Both in cents from pure, cut off at 50. Across: the number of equal steps in an octave.</p>
+  <p class="say" id="chart-say"><!--BAKE chart-say-->Twelve equal steps of 100 cents. The nearest to a pure fifth is 7 steps, 700 cents, 1.96 cents narrow. The nearest to a pure major third is 4 steps, 400 cents, 13.69 cents wide. This is the piano.<!--/BAKE--></p>
+  <div class="controls" id="chart-controls" hidden>
+    <label for="n">EQUAL STEPS IN AN OCTAVE</label>
+    <input id="n" type="range" min="5" max="60" step="1" value="12">
+    <div class="picks" id="n-picks">
+      <button type="button" data-n="5">5</button>
+      <button type="button" data-n="7">7</button>
+      <button type="button" data-n="12" aria-pressed="true">12</button>
+      <button type="button" data-n="19">19</button>
+      <button type="button" data-n="22">22</button>
+      <button type="button" data-n="31">31</button>
+      <button type="button" data-n="41">41</button>
+      <button type="button" data-n="53">53</button>
+    </div>
+    <div class="picks" id="chart-sound" hidden>
+      <button type="button" data-play="fifth-pure">Pure fifth</button>
+      <button type="button" data-play="fifth-n">This fifth</button>
+      <button type="button" data-play="third-pure">Pure third</button>
+      <button type="button" data-play="third-n">This third</button>
+      <button type="button" data-play="stop">Stop</button>
+    </div>
+    <p class="hear" id="chart-hear"></p>
+  </div>
+
+  <h2>HOW YOU HEAR IT</h2>
+  <p>Two notes a little out of tune with each other beat: the sound swells and fades, slowly if they are close, faster as they draw apart. A plucked or bowed note is not one rate of vibration but a stack of them, the note itself and fainter ones at two, three, four and five times its rate. The third in C's stack and the second in G's are the same pitch when the fifth is pure, so they ring together. When the fifth is the piano's, they miss by a little under one vibration a second, at the C in the middle of the keyboard, and the fifth beats slowly, once every second or so. For a major third the notes that meet are the fifth in the lower stack and the fourth in the upper. On a piano those miss by about ten a second, a fast flutter that is part of what a piano's major chord sounds like. Hermann von Helmholtz, in 1863, made this the centre of his account of why some pairs of notes sound smooth and others rough.</p>
+  <p id="noscript-hear"><noscript>With scripts on, the buttons under each drawing play the sounds, made in your browser. With scripts off, the drawings show twelve fifths and twelve equal steps, and the lines under them say what they show.</noscript></p>
+  <p class="quiet" id="sound-note" hidden>The sounds are made in your browser, only when you press a button, and stop when you leave the page. Each note is built from its first eight partials, the stack described above, so that the beats have something to happen between. They start on the C in the middle of the keyboard, 261.63 vibrations a second.</p>
+
+  <h2>WHO NOTICED</h2>
+  <p>The oldest surviving telling is the story of Pythagoras passing a smithy and hearing hammers that rang in octaves, fifths and fourths, then finding their weights in the proportions 12, 9, 8 and 6. It is in the <em>Manual of Harmonics</em> of Nicomachus, written around AD 100, and it is wrong as physics: a hammer's weight doesn't set its note that way. The same story says the weights also work hung from strings. In 1589 Vincenzo Galilei, the father of Galileo, showed that they don't: to sound a fifth, the weights on two equal strings must be in the proportion 9 to 4, the square of 3 to 2. Historians still argue over how much of that he tried by hand.</p>
+  <p>In China, Jing Fang, who lived from 78 to 37 BC, carried the chain of fifths on to sixty notes, and he is credited with noticing that fifty-three of them come back very near the start, the 3.62-cent miss in the drawing. Its usual modern name is Mercator's comma, after Nicholas Mercator in seventeenth-century England, who divided the octave into fifty-three. In 1872 and 1873 a harmonium with fifty-three notes to the octave was built for R. H. M. Bosanquet.</p>
+  <p>Sharing out the comma evenly was worked out exactly twice within about twenty years, at opposite ends of the world. Zhu Zaiyu, a prince of the Ming dynasty, gave the twelve equal steps as numbers in a book whose preface is dated 1584, with the twelfth root of two worked out to more than twenty digits. Simon Stevin in the Netherlands wrote out the same scheme in a manuscript of around 1600 to 1605 that was not printed until 1884. Marin Mersenne printed string lengths for it in Paris in 1636. Scholars argue over how much credit each should get. Christiaan Huygens in 1691 proposed thirty-one equal steps instead, for thirds that are nearly pure, and a thirty-one-note organ built for Adriaan Fokker was opened in Haarlem in 1950; it is in Amsterdam now. Bach's <em>Well-Tempered Clavier</em>, dated 1722, says in its title that the keyboard is well tempered. What tuning he meant by that is still argued over. Pianos came late to equal temperament: in England the maker Broadwood took it up around 1846.</p>
+  <p>The cent is Alexander Ellis's, brought in during the 1880s and used in his paper of 1885 on the scales of many nations, which measured instruments from many countries and concluded that there is no one musical scale, and nothing natural about any of them, only great variety.</p>
+
+  <h2>HOW THIS IS MADE</h2>
+  <p class="quiet" id="made">Everything in the drawings and the lines under them is worked out on the page from two numbers, the fifth as three to two and the major third as five to four, and the same code wrote the versions you see with scripts off. A real instrument is not so tidy. A piano's strings are stiff, so the partials above each note run a little sharp, and tuners make the octaves slightly wider than two to one to match; nothing on the page does that. The sounds are made from eight partials of fixed strength, which is not any instrument. The page treats the fifth and the major third as the sounds that matter, which is true of the music the twelve notes were made for and not of all music. A Javanese gamelan, for one, is tuned set by set to its own scales, with no fixed standard from one gamelan to the next. The three sizes of gap come from a theorem conjectured by Hugo Steinhaus and first proved by Vera S&oacute;s, and others, around 1957 and 1958. The history above is from standard references and the studies they cite. I have not read Nicomachus, Zhu Zaiyu or Ellis myself. The page keeps nothing and sends nothing.</p>
+  <p class="quiet"><a href="index.html">Back to the sky</a> · <a href="journal.html">Journal</a></p>
+</main>
+
+<script>
+// CORE START: everything here is pure arithmetic and string building, also run outside the page to write the drawings into it.
+var FIFTH = Math.log2(1.5);          // a fifth, as a share of the octave: 0.5849625
+var THIRD = Math.log2(1.25);         // a pure major third: 0.3219281
+var NAMES = ['C', 'G', 'D', 'A', 'E', 'B', 'F♯', 'C♯', 'G♯', 'D♯', 'A♯', 'E♯', 'B♯'];
+var R = 130;
+
+function frac(x) { return x - Math.floor(x); }
+function cents(x) { return x * 1200; }
+function fix(x, d) { return (+x).toFixed(d); }
+function pt(p, r) { var a = 2 * Math.PI * p; return [r * Math.sin(a), -r * Math.cos(a)]; }
+function f1(x) { return fix(x, 1); }
+
+// The notes after k fifths, as shares of the octave, in the order they were made.
+function notes(k) { var out = []; for (var i = 0; i <= k; i++) out.push(frac(i * FIFTH)); return out; }
+
+// Steps between neighbouring notes round the ring. Sizes are grouped, largest first.
+function steps(k) {
+  var ps = notes(k).slice().sort(function (a, b) { return a - b; });
+  var n = ps.length, out = [], sizes = [];
+  for (var i = 0; i < n; i++) {
+    var a = ps[i], b = i + 1 < n ? ps[i + 1] : 1 + ps[0];
+    var len = b - a, cls = -1;
+    for (var j = 0; j < sizes.length; j++) if (Math.abs(sizes[j].len - len) < 1e-9) { cls = j; break; }
+    if (cls < 0) { sizes.push({ len: len, count: 0 }); cls = sizes.length - 1; }
+    sizes[cls].count++;
+    out.push({ a: a, b: b, cls: cls });
+  }
+  var order = sizes.map(function (s, i) { return i; }).sort(function (x, y) { return sizes[y].len - sizes[x].len; });
+  var rank = []; order.forEach(function (o, r) { rank[o] = r; });
+  out.forEach(function (s) { s.cls = rank[s.cls]; });
+  return { gaps: out, sizes: order.map(function (o) { return sizes[o]; }) };
+}
+
+function arc(a, b, r) {
+  var p = pt(a, r), q = pt(b, r), large = (b - a) > 0.5 ? 1 : 0;
+  return 'M' + f1(p[0]) + ' ' + f1(p[1]) + 'A' + r + ' ' + r + ' 0 ' + large + ' 1 ' + f1(q[0]) + ' ' + f1(q[1]);
+}
+
+function circleSVG(k) {
+  var ns = notes(k), st = steps(k), s = '';
+  s += '<circle class="ring" r="' + R + '"/>';
+  if (k >= 1) st.gaps.forEach(function (g) {
+    // a hair of space at each end, so neighbouring steps of the same size still read as separate
+    var pad = Math.min(0.003, (g.b - g.a) * 0.12);
+    s += '<path class="gap s' + g.cls + '" d="' + arc(g.a + pad, g.b - pad, R + 9) + '"/>';
+  });
+  for (var i = 1; i <= k; i++) {
+    var p = pt(ns[i - 1], R - 6), q = pt(ns[i], R - 6);
+    s += '<line class="fifth' + (i === k ? ' new' : '') + '" x1="' + f1(p[0]) + '" y1="' + f1(p[1]) + '" x2="' + f1(q[0]) + '" y2="' + f1(q[1]) + '"/>';
+  }
+  for (i = 0; i <= k; i++) {
+    var c = pt(ns[i], R);
+    if (i === k && k > 0) s += '<circle class="glow" cx="' + f1(c[0]) + '" cy="' + f1(c[1]) + '" r="7"/>';
+    s += '<circle class="' + (i === 0 ? 'home' : 'dot') + '" cx="' + f1(c[0]) + '" cy="' + f1(c[1]) + '" r="' + (i === 0 ? 4.5 : (k > 20 ? 2.4 : 3.5)) + '"/>';
+  }
+  for (i = 0; i <= Math.min(k, 12); i++) {
+    var lr = (i === 12) ? 188 : 164;
+    var t = pt(ns[i], lr);
+    s += '<text class="name' + (i === 0 ? ' home' : (i === k ? ' new' : '')) + '" x="' + f1(t[0]) + '" y="' + f1(t[1]) + '">' + NAMES[i] + '</text>';
+  }
+  s += '<text class="mid" x="0" y="-6">' + (k + 1) + (k === 0 ? ' note' : ' notes') + '</text>';
+  s += '<text class="mid" x="0" y="12">' + k + (k === 1 ? ' fifth' : ' fifths') + '</text>';
+  return s;
+}
+
+function ordinal(n) {
+  var w = ['', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth'];
+  if (n < w.length) return w[n];
+  var s = ['th', 'st', 'nd', 'rd'], v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+function count(n) {
+  var w = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+  return n < w.length ? w[n] : String(n);
+}
+
+// How near the newest note comes to C, in cents: positive past it, negative short of it.
+function miss(k) { var p = frac(k * FIFTH); return cents(p > 0.5 ? p - 1 : p); }
+function isRecord(k) { for (var i = 1; i < k; i++) if (Math.abs(miss(i)) <= Math.abs(miss(k))) return false; return true; }
+
+function circleSay(k) {
+  if (k === 0) return 'One note, C, and nothing to measure yet. Move the slider to stack fifths on it.';
+  var st = steps(k), m = miss(k), name = k <= 12 ? NAMES[k] : 'the ' + ordinal(k) + ' fifth';
+  var s = 'The newest note, ' + name + ',';
+  if (Math.abs(m) < 100) {
+    s += ' lands ' + fix(Math.abs(m), 2) + ' cents ' + (m > 0 ? 'past' : 'short of') + ' C';
+    s += isRecord(k) ? ', nearer than any note before it. ' : '. ';
+  } else {
+    s += ' is ' + Math.round(cents(frac(k * FIFTH))) + ' cents above C. ';
+  }
+  s += 'The ' + count(k + 1) + ' notes cut the octave into steps of ' + count(st.sizes.length) + (st.sizes.length === 1 ? ' size' : ' sizes') + ': ';
+  var parts = st.sizes.map(function (z, i) {
+    return '<span class="sw s' + i + '"></span>' + z.count + ' of ' + fix(cents(z.len), 2) + ' cents';
+  });
+  return s + (parts.length > 1 ? parts.slice(0, -1).join(', ') + ' and ' + parts[parts.length - 1] : parts[0]) + '.';
+}
+
+// Equal steps: the nearest step to a fifth and to a third, and how far each falls from pure, in cents.
+function division(n) {
+  var k = Math.round(n * FIFTH), j = Math.round(n * THIRD);
+  return { n: n, step: 1200 / n, k: k, j: j, e5: cents(k / n - FIFTH), e3: cents(j / n - THIRD) };
+}
+
+var CX0 = 52, CDX = 9, AXY = 140, SC = 2.4, CAP = 50;
+function cx(n) { return CX0 + (n - 5) * CDX; }
+function chartSVG(pick) {
+  var s = '';
+  [10, 25, 50].forEach(function (c) {
+    s += '<line class="grid" x1="' + (CX0 - 6) + '" x2="' + (cx(60) + 6) + '" y1="' + (AXY - c * SC) + '" y2="' + (AXY - c * SC) + '"/>';
+    s += '<line class="grid" x1="' + (CX0 - 6) + '" x2="' + (cx(60) + 6) + '" y1="' + (AXY + c * SC) + '" y2="' + (AXY + c * SC) + '"/>';
+    s += '<text class="tick" x="' + (CX0 - 12) + '" y="' + (AXY - c * SC) + '">' + c + '</text>';
+    s += '<text class="tick" x="' + (CX0 - 12) + '" y="' + (AXY + c * SC) + '">' + c + '</text>';
+  });
+  s += '<rect class="pick" x="' + (cx(pick) - 5) + '" y="' + (AXY - CAP * SC - 8) + '" width="10" height="' + (2 * CAP * SC + 16) + '"/>';
+  for (var n = 5; n <= 60; n++) {
+    var d = division(n), u = Math.min(Math.abs(d.e5), CAP) * SC, w = Math.min(Math.abs(d.e3), CAP) * SC, x = cx(n);
+    if (u > 0.3) s += '<line class="up" x1="' + x + '" x2="' + x + '" y1="' + AXY + '" y2="' + f1(AXY - u) + '"/>';
+    if (w > 0.3) s += '<line class="down" x1="' + x + '" x2="' + x + '" y1="' + AXY + '" y2="' + f1(AXY + w) + '"/>';
+    if (Math.abs(d.e5) > CAP) s += '<rect class="over" x="' + (x - 3) + '" y="' + (AXY - CAP * SC + 4) + '" width="6" height="2"/>';
+    if (Math.abs(d.e3) > CAP) s += '<rect class="over" x="' + (x - 3) + '" y="' + (AXY + CAP * SC - 6) + '" width="6" height="2"/>';
+  }
+  s += '<line class="axis" x1="' + (CX0 - 6) + '" x2="' + (cx(60) + 6) + '" y1="' + AXY + '" y2="' + AXY + '"/>';
+  [5, 12, 19, 31, 41, 53, 60].forEach(function (n) {
+    s += '<text class="n' + (n === pick ? ' on' : '') + '" x="' + cx(n) + '" y="' + (AXY + CAP * SC + 24) + '">' + n + '</text>';
+  });
+  if ([5, 12, 19, 31, 41, 53, 60].indexOf(pick) < 0) s += '<text class="n on" x="' + cx(pick) + '" y="' + (AXY + CAP * SC + 24) + '">' + pick + '</text>';
+  for (n = 5; n <= 60; n++) s += '<rect class="hit" data-n="' + n + '" x="' + (cx(n) - CDX / 2) + '" y="' + (AXY - CAP * SC - 10) + '" width="' + CDX + '" height="' + (2 * CAP * SC + 46) + '"/>';
+  return s;
+}
+
+function off(e) { return fix(Math.abs(e), 2) + ' cents ' + (e < 0 ? 'narrow' : 'wide'); }
+function chartSay(n) {
+  var d = division(n);
+  var s = count(n).replace(/^./, function (c) { return c.toUpperCase(); }) + ' equal steps of ' + fix(d.step, 2).replace(/\.00$/, '') + ' cents. ';
+  s += 'The nearest to a pure fifth is ' + d.k + ' steps, ' + fix(d.k * d.step, 1).replace(/\.0$/, '') + ' cents, ' + (Math.abs(d.e5) < 0.005 ? 'pure to a hundredth of a cent' : off(d.e5)) + '. ';
+  s += 'The nearest to a pure major third is ' + d.j + ' steps, ' + fix(d.j * d.step, 1).replace(/\.0$/, '') + ' cents, ' + off(d.e3) + '.';
+  if (n === 12) s += ' This is the piano.';
+  return s;
+}
+// CORE END
+</script>
+<script>
+(function () {
+  var cg = document.getElementById('circle-g'), csay = document.getElementById('circle-say');
+  var hg = document.getElementById('chart-g'), hsay = document.getElementById('chart-say');
+  var kIn = document.getElementById('k'), nIn = document.getElementById('n');
+  var k = 12, n = 12;
+  document.getElementById('circle-controls').hidden = false;
+  document.getElementById('chart-controls').hidden = false;
+
+  function press(groupId, attr, val) {
+    [].forEach.call(document.querySelectorAll('#' + groupId + ' button'), function (b) {
+      b.setAttribute('aria-pressed', String(+b.getAttribute(attr) === val));
+    });
+  }
+  function drawCircle() { cg.innerHTML = circleSVG(k); csay.innerHTML = circleSay(k); press('k-picks', 'data-k', k); hearCircle(); }
+  function drawChart() { hg.innerHTML = chartSVG(n); hsay.textContent = chartSay(n); press('n-picks', 'data-n', n); hearChart(); }
+
+  kIn.addEventListener('input', function () { k = +kIn.value; drawCircle(); });
+  nIn.addEventListener('input', function () { n = +nIn.value; drawChart(); });
+  document.getElementById('k-picks').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return; k = +b.getAttribute('data-k'); kIn.value = k; drawCircle();
+  });
+  document.getElementById('n-picks').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return; n = +b.getAttribute('data-n'); nIn.value = n; drawChart();
+  });
+  hg.addEventListener('click', function (e) {
+    var r = e.target.closest('[data-n]'); if (!r) return; n = +r.getAttribute('data-n'); nIn.value = n; drawChart();
+  });
+
+  // Sound: two notes at once, each built from eight partials, so that their overtones can beat.
+  var C4 = 261.6256;
+  var AC = window.AudioContext || window.webkitAudioContext;
+  var ctx = null, master, wave, voices = [];
+
+  // Near C, play the newest note on whichever side of C it fell, so the two beat; otherwise above C, as the line says.
+  function newestFreq() { var m = Math.abs(miss(k)) < 60 ? miss(k) / 1200 : frac(k * FIFTH); return C4 * Math.pow(2, m); }
+  function hearCircle() {
+    var el = document.getElementById('circle-hear'); if (!AC || k === 0) { el.textContent = ''; return; }
+    var m = miss(k), f = newestFreq();
+    el.textContent = Math.abs(m) < 60
+      ? 'Played together, C at ' + C4.toFixed(2) + ' and the newest note at ' + f.toFixed(2) + ' beat about ' + Math.abs(f - C4).toFixed(1) + ' times a second.'
+      : 'Played together: C at ' + C4.toFixed(2) + ' vibrations a second and the newest note at ' + f.toFixed(2) + '.';
+  }
+  function hearChart() {
+    var el = document.getElementById('chart-hear'); if (!AC) { el.textContent = ''; return; }
+    var d = division(n), g = C4 * Math.pow(2, d.k / n), e = C4 * Math.pow(2, d.j / n);
+    var b5 = Math.abs(3 * C4 - 2 * g), b3 = Math.abs(5 * C4 - 4 * e);
+    var s = 'On C, ';
+    s += b5 < 0.5 ? 'this fifth beats about once every ' + Math.round(1 / b5) + ' seconds' + (1 / b5 > 6 ? ', longer than the sound here lasts' : '') : Math.abs(d.e5) < 30 ? 'this fifth beats about ' + b5.toFixed(1) + ' times a second' : 'this fifth is too far from pure to hear as a beat';
+    s += ', and ';
+    s += Math.abs(d.e3) < 30 ? 'this third about ' + b3.toFixed(1) + ' times a second' : 'this third is too far from pure to hear as a beat';
+    el.textContent = s + '. The pure ones do not beat.';
+  }
+
+  function stop() {
+    if (!ctx) return;
+    var t = ctx.currentTime;
+    voices.forEach(function (v) { v.g.gain.cancelScheduledValues(t); v.g.gain.setTargetAtTime(0, t, 0.05); v.o.stop(t + 0.4); });
+    voices = [];
+  }
+  function play(fs) {
+    if (!ctx) {
+      ctx = new AC();
+      master = ctx.createGain(); master.gain.value = 0.25; master.connect(ctx.destination);
+      var re = new Float32Array(9), im = new Float32Array(9);
+      for (var h = 1; h <= 8; h++) im[h] = 1 / h;
+      wave = ctx.createPeriodicWave(re, im);
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    stop();
+    var t = ctx.currentTime + 0.02;
+    fs.forEach(function (f) {
+      var o = ctx.createOscillator(), g = ctx.createGain();
+      o.setPeriodicWave(wave); o.frequency.value = f;
+      g.gain.value = 0;
+      g.gain.setTargetAtTime(0.35, t, 0.04);
+      g.gain.setTargetAtTime(0, t + 6, 0.4);
+      o.connect(g); g.connect(master); o.start(t); o.stop(t + 8.5);
+      voices.push({ o: o, g: g });
+    });
+  }
+  function onPlay(what) {
+    var d = division(n);
+    if (what === 'stop') return stop();
+    if (what === 'last') return play([C4, newestFreq()]);
+    if (what === 'fifth-pure') return play([C4, C4 * 1.5]);
+    if (what === 'fifth-n') return play([C4, C4 * Math.pow(2, d.k / n)]);
+    if (what === 'third-pure') return play([C4, C4 * 1.25]);
+    if (what === 'third-n') return play([C4, C4 * Math.pow(2, d.j / n)]);
+  }
+  if (AC) {
+    document.getElementById('circle-sound').hidden = false;
+    document.getElementById('chart-sound').hidden = false;
+    document.getElementById('sound-note').hidden = false;
+    [].forEach.call(document.querySelectorAll('button[data-play]'), function (b) {
+      b.addEventListener('click', function () { onPlay(b.getAttribute('data-play')); });
+    });
+    document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); });
+    window.addEventListener('pagehide', stop);
+  }
+
+  drawCircle(); drawChart();
+})();
+</script>
+</body>
+</html>
